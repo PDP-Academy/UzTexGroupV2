@@ -4,36 +4,36 @@ using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Infrastructure.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class AddressConfiguration : IEntityTypeConfiguration<Address>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<Address> builder)
     {
-        builder.ToTable(nameof(User));
+        builder.ToTable(nameof(Address));
 
-        builder.HasKey(user => user.Id);
+        builder.HasKey(add => add.Id);
 
         builder
-            .Property(user => user.FirstName)
+            .Property(add => add.Country)
             .HasMaxLength(50)
             .IsRequired();
         
         builder
-            .Property(user => user.LastName)
-            .HasMaxLength(50)
-            .IsRequired(false);
-
-        builder
-            .Property(user => user.Email)
+            .Property(add => add.Region)
             .HasMaxLength(50)
             .IsRequired();
 
         builder
-            .Property(user => user.PasswordHash)
+            .Property(add => add.District)
+            .HasMaxLength(50)
             .IsRequired();
 
         builder
-            .Property(user => user.UserRole)
+            .Property(add => add.Street)
+            .HasMaxLength(50)
             .IsRequired();
 
+        builder
+            .Property(add => add.PostalCode)
+            .IsRequired();
     }
 }
