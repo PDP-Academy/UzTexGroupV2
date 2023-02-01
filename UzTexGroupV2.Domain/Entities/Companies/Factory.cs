@@ -6,4 +6,9 @@ public class Factory
     public string Name { get; set; }
     public Guid AddressId { get; set; }
     public Guid CompanyId { get; set; }
+
+
+    public Company Company { get; set; }
+    public Address Address { get; set; }
+    public IList<Job> Jobs { get; set; }
 }
