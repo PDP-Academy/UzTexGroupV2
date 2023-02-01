@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UzTexGroupV2.Infrastructure\UzTexGroupV2.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
