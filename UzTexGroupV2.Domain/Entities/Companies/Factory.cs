@@ -10,5 +10,5 @@ public class Factory
 
     public Company Company { get; set; }
     public Address Address { get; set; }
-    public IList<Job> Jobs { get; set; }
+    public ICollection<Job> Jobs { get; set; }
 }

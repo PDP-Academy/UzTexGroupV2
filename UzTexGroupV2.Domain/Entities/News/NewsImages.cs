@@ -1,6 +1,6 @@
 ﻿namespace UzTexGroupV2.Domain.Entities;
 
-public class NewImages
+public class NewsImages
 {
     public Guid Id { get; set; }
     public string ImageUrl { get; set; }

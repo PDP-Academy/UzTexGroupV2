@@ -9,4 +9,5 @@ public class News
 
     public ICollection<Dictionary> Titles { get; set; }
     public ICollection<Dictionary> Descriptions { get; set; }
+    public ICollection<NewsImages> Images { get;}
 }
