@@ -12,6 +12,6 @@ public class Application
     public string ApplicationMessage { get; set; }
 
     public Job Job { get; set; }
-    public Address Address { get; set; }
+    public Address? Address { get; set; }
 
 }

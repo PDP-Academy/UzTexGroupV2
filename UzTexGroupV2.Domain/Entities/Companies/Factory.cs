@@ -8,7 +8,7 @@ public class Factory
     public Guid CompanyId { get; set; }
 
 
-    public Company Company { get; set; }
+    public Company? Company { get; set; }
     public Address Address { get; set; }
-    public ICollection<Job> Jobs { get; set; }
+    public ICollection<Job>? Jobs { get; set; }
 }

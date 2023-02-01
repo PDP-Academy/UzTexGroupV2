@@ -5,5 +5,5 @@ public class Company
     public Guid Id { get; set; }
     public string Name { get; set; }
 
-    public ICollection<Factory> Factories { get;set; }
+    public ICollection<Factory>? Factories { get;set; }
 }
