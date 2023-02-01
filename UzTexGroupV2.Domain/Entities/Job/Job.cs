@@ -12,4 +12,5 @@ public class Job
     public Factory Factory { get; set; }
     public ICollection<Dictionary> JobNames { get; set; }
     public ICollection<Dictionary> Descriptions { get; set; }
+    public ICollection<Application> Applications { get; set; }
 }
