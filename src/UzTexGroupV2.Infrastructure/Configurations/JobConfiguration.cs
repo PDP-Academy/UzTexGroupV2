@@ -8,30 +8,21 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
 {
     public void Configure(EntityTypeBuilder<Job> builder)
     {
-        builder.ToTable(nameof(Job))
-            .HasKey(job => job.Id);
+        builder
+            .ToTable(nameof(Job))
+            .HasKey(job => new { job.Id, job.LanguageCode });
 
-        builder.Property(job => job.Salary)
+        builder
+            .Property(job => job.Salary)
             .IsRequired();
 
-        builder.Property(job => job.WorkTime)
+        builder
+            .Property(job => job.WorkTime)
             .IsRequired();
 
-        builder.HasOne(job => job.Factory)
+        builder
+            .HasOne(job => job.Factory)
             .WithMany(factory => factory.Jobs)
-            .HasForeignKey(job => job.FactoryId);
-
-        builder
-            .HasMany(job => job.JobNames)
-            .WithOne()
-            .HasForeignKey(dict => dict.Id)
-            .HasPrincipalKey(job => job.JobNameId);
-
-        builder
-            .HasMany(job => job.Descriptions)
-            .WithOne()
-            .HasForeignKey(dict => dict.Id)
-            .HasPrincipalKey(job => job.DescriptionId);
-
+            .HasForeignKey(job => new { job.FactoryId, job.LanguageCode });
     }
 }

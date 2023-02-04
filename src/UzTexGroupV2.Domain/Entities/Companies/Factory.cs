@@ -2,11 +2,10 @@
 
 namespace UzTexGroupV2.Domain.Entities;
 
-public class Factory
+public class Factory: LocalizedObject
 {
     public Guid Id { get; set; }
-    public Guid NameTextId { get; set; }
-    public ICollection<LanguageDictionary> Names { get; set; }
+    public string Name { get; set; }
     public Guid CompanyId { get; set; }
     public Company? Company { get; set; }
     public Guid AddressId { get; set; }
