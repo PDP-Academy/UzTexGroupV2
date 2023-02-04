@@ -11,9 +11,10 @@ public class FactoryConfiguration : IEntityTypeConfiguration<Factory>
         builder.ToTable(nameof(Factory))
             .HasKey(factory => factory.Id);
 
-        builder.Property(factory => factory.Name)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder
+            .HasOne(factory => factory.Names)
+            .WithMany()
+            .HasForeignKey(factory => factory.NameTextId);
 
         builder.HasOne(factory => factory.Company)
             .WithMany(company => company.Factories)

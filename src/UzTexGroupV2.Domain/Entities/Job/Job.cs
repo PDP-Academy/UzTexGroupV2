@@ -8,7 +8,6 @@ public class Job
     public string WorkTime { get; set; }
     public decimal Salary { get; set; }
     public Guid FactoryId { get; set; }
-
     public Factory Factory { get; set; }
     public ICollection<Dictionary> JobNames { get; set; }
     public ICollection<Dictionary> Descriptions { get; set; }
