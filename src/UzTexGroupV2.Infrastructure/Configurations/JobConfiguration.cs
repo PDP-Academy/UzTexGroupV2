@@ -21,13 +21,17 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
             .WithMany(factory => factory.Jobs)
             .HasForeignKey(job => job.FactoryId);
 
-        builder.HasMany(job => job.JobNames)
+        builder
+            .HasMany(job => job.JobNames)
             .WithOne()
-            .HasForeignKey(dict => dict.Id);
+            .HasForeignKey(dict => dict.Id)
+            .HasPrincipalKey(job => job.JobNameId);
 
-        builder.HasMany(job => job.Descriptions)
+        builder
+            .HasMany(job => job.Descriptions)
             .WithOne()
-            .HasForeignKey(dict => dict.Id);
+            .HasForeignKey(dict => dict.Id)
+            .HasPrincipalKey(job => job.DescriptionId);
 
     }
 }
