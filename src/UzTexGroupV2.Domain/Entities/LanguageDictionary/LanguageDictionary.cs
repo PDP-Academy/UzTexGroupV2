@@ -1,5 +1,5 @@
 ﻿namespace UzTexGroupV2.Domain.Entities; 
-public class Dictionary
+public class LanguageDictionary
 {
     public Guid Id { get; set; }
     public string LanguageCode { get; set; }

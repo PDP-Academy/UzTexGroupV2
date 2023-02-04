@@ -4,21 +4,17 @@ using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Infrastructure.Configurations;
 
-public class DictionaryConfiguration : IEntityTypeConfiguration<Dictionary>
+public class DictionaryConfiguration : IEntityTypeConfiguration<LanguageDictionary>
 {
-    public void Configure(EntityTypeBuilder<Dictionary> builder)
+    public void Configure(EntityTypeBuilder<LanguageDictionary> builder)
     {
-        builder.ToTable(nameof(Dictionary));
+        builder.ToTable(nameof(LanguageDictionary));
 
         builder.HasKey(dict => dict.Id);
 
         builder
             .Property(dict => dict.LanguageCode)
             .HasMaxLength(5)
-            .IsRequired();
-
-        builder
-            .Property(dict => dict.Content)
             .IsRequired();
     }
 }

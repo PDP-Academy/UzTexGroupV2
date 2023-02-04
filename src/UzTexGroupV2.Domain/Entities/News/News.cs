@@ -7,7 +7,7 @@ public class News
     public Guid TitleId { get; set; }
     public Guid DescriptionId { get; set; }
 
-    public ICollection<Dictionary> Titles { get; set; }
-    public ICollection<Dictionary> Descriptions { get; set; }
+    public ICollection<LanguageDictionary> Titles { get; set; }
+    public ICollection<LanguageDictionary> Descriptions { get; set; }
     public ICollection<NewsImages> Images { get;}
 }

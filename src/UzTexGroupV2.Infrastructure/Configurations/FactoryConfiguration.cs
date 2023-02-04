@@ -12,15 +12,19 @@ public class FactoryConfiguration : IEntityTypeConfiguration<Factory>
             .HasKey(factory => factory.Id);
 
         builder
-            .HasOne(factory => factory.Names)
-            .WithMany()
-            .HasForeignKey(factory => factory.NameTextId);
+            .HasMany(factory => factory.Names)
+            .WithOne()
+            .HasForeignKey(dictionary => dictionary.Id)
+            .HasPrincipalKey(factory => factory.NameTextId)
+            .IsRequired();
 
-        builder.HasOne(factory => factory.Company)
+        builder
+            .HasOne(factory => factory.Company)
             .WithMany(company => company.Factories)
             .HasForeignKey(factory => factory.CompanyId);
 
-        builder.HasOne(factory => factory.Address)
+        builder
+            .HasOne(factory => factory.Address)
             .WithOne()
             .HasForeignKey<Factory>(factory => factory.AddressId);
 

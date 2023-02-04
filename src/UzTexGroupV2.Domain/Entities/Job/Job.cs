@@ -9,7 +9,7 @@ public class Job
     public decimal Salary { get; set; }
     public Guid FactoryId { get; set; }
     public Factory Factory { get; set; }
-    public ICollection<Dictionary> JobNames { get; set; }
-    public ICollection<Dictionary> Descriptions { get; set; }
+    public ICollection<LanguageDictionary> JobNames { get; set; }
+    public ICollection<LanguageDictionary> Descriptions { get; set; }
     public ICollection<Application>? Applications { get; set; }
 }

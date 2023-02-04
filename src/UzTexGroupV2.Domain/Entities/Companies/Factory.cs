@@ -6,7 +6,7 @@ public class Factory
 {
     public Guid Id { get; set; }
     public Guid NameTextId { get; set; }
-    public ICollection<Dictionary> Names { get; set; }
+    public ICollection<LanguageDictionary> Names { get; set; }
     public Guid CompanyId { get; set; }
     public Company? Company { get; set; }
     public Guid AddressId { get; set; }
