@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
         {
             obj.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"),
                 obj => obj.EnableRetryOnFailure());
-        }); 
+        });
 
         return services;
     }
