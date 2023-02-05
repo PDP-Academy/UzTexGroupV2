@@ -25,7 +25,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
             .Where(expression);
     }
 
-    public async ValueTask<T> CreateAsync(T entity)
+    public virtual async ValueTask<T> CreateAsync(T entity)
     {
         return (await context
                 .Set<T>()

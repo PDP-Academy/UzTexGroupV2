@@ -10,7 +10,6 @@ public class LocalizedRepositoryBase<T> : RepositoryBase<T> where T : LocalizedO
     public LocalizedRepositoryBase(UzTexGroupDbContext context) : base(context)
     {
     }
-
     public override async ValueTask<IQueryable<T>> GetAllAsync()
     {
         return (await base.GetAllAsync())
