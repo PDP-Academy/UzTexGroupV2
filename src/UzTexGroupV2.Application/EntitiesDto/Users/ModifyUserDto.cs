@@ -1,4 +1,4 @@
-﻿namespace UzTexGroupV2.Application.Entities.Users;
+﻿namespace UzTexGroupV2.Application.EntitiesDto.Users;
 
 public record ModifyUserDto(
     string? firstName,
