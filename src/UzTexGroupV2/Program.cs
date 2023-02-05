@@ -1,4 +1,5 @@
 
+using Swashbuckle.AspNetCore.SwaggerUI;
 using UzTexGroupV2.Extensions;
 
 namespace UzTexGroupV2
@@ -24,7 +25,6 @@ namespace UzTexGroupV2
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
