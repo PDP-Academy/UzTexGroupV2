@@ -11,8 +11,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         this.context = context;
     }
-
-
+    
     public virtual async ValueTask<IQueryable<T>> GetAllAsync()
     {
         return context
@@ -35,7 +34,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
     }
 
-    public async ValueTask<T> UpdateAsync(T entity)
+    public virtual async ValueTask<T> UpdateAsync(T entity)
     {
         return context
             .Set<T>()
