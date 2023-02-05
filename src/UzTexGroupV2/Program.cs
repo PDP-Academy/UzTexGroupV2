@@ -13,6 +13,8 @@ namespace UzTexGroupV2
 
             builder.Services.AddControllers();
 
+            builder.Services.ConfigureRepositories();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -29,9 +31,8 @@ namespace UzTexGroupV2
 
             app.UseAuthorization();
 
-
-            app.MapControllers();
-
+            app.MapControllerRoute("default", 
+                "{langCode=uz}/{controller=User}/{action=Index}");
             app.Run();
         }
     }

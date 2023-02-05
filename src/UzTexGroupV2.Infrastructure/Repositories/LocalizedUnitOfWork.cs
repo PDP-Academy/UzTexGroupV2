@@ -3,13 +3,18 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 
 namespace UzTexGroupV2.Infrastructure.Repositories;
 
-public class LocalizedUnitOfWork
+public class LocalizedUnitOfWork : UnitOfWorkBase
 {
-    public UserRepository UserRepository { get; private set; }
-
-    public LocalizedUnitOfWork(UzTexGroupDbContext uzTexGroupDbContext)
+    public readonly NewsRepository NewsRepository;
+    public readonly JobRepository JobRepository;
+    public readonly CompanyRepository CompanyRepository;
+    public readonly FactoryRepository FactoryRepository;
+    public LocalizedUnitOfWork(UzTexGroupDbContext uzTexGroupDbContext) : base(uzTexGroupDbContext)
     {
-        this.UserRepository = new UserRepository(uzTexGroupDbContext);
+        this.NewsRepository = new NewsRepository(this.uzTexGroupDbContext);
+        this.JobRepository = new JobRepository(this.uzTexGroupDbContext);
+        this.CompanyRepository = new CompanyRepository(this.uzTexGroupDbContext);
+        this.FactoryRepository = new FactoryRepository(this.uzTexGroupDbContext);
     }
 
     public async ValueTask ChangeLocalization(Language? language)

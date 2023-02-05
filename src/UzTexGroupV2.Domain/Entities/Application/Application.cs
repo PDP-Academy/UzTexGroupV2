@@ -1,6 +1,6 @@
 ﻿namespace UzTexGroupV2.Domain.Entities;
 
-public class Application : LocalizedObject
+public class Application
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
