@@ -10,7 +10,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
     {
         builder
             .ToTable(nameof(Application))
-            .HasKey(app => new { app.Id, app.LanguageCode });
+            .HasKey(app => app.Id);
 
         builder
             .Property(app => app.FirstName)
@@ -39,7 +39,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
         builder
             .HasOne(app => app.Job)
             .WithMany(job => job.Applications)
-            .HasForeignKey(app => new { app.JobId, app.LanguageCode })
+            .HasForeignKey(app => app.JobId)
             .OnDelete(DeleteBehavior.ClientCascade);
     }
 }
