@@ -365,3 +365,8 @@ FodyWeavers.xsd
 /.idea/
 /.idea/
 /src/UzTexGroupV2/appsettings.Development.json
+/src/dbo.Address.data.sql
+/src/UzTexGroupV2.Infrastructure/Migrations/20230205064427_Initial.cs
+/src/UzTexGroupV2.Infrastructure/Migrations/20230205064427_Initial.Designer.cs
+/src/UzTexGroupV2.Infrastructure/Migrations/UzTexGroupDbContextModelSnapshot.cs
+/src/UzTexGroupV2/appsettings.json

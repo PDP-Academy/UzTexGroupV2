@@ -10,7 +10,8 @@ public class Languages: IEntityTypeConfiguration<Language>
     {
         builder
             .ToTable("Languages");
+
         builder
-            .Property(language => language.Id);
+            .HasNoKey();
     }
 }

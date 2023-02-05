@@ -5,10 +5,10 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-public class LocalizedController : Controller
+public class LocalizedControllerBase : Controller
 {
     protected readonly LocalizedUnitOfWork localizedUnitOfWork;
-    public LocalizedController(LocalizedUnitOfWork localizedUnitOfWork)
+    public LocalizedControllerBase(LocalizedUnitOfWork localizedUnitOfWork)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
     }
