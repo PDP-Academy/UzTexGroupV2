@@ -1,8 +1,8 @@
 ﻿namespace UzTexGroupV2.Application.EntitiesDto.Addresses;
 public record AddressDto(
-    Guid Id,
-    string Country,
-    string Region,
-    string District,
-    string Street,
-    short PostalCode);
+    Guid id,
+    string country,
+    string region,
+    string district,
+    string street,
+    short postalCode);

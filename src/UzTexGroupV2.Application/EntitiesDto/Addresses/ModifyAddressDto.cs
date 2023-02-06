@@ -1,7 +1,8 @@
 ﻿namespace UzTexGroupV2.Application.EntitiesDto.Addresses;
 public record ModifyAddressDto(
-    string? Country,
-    string? Region,
-    string? District,
-    string? Street,
-    short? PostalCode);
+    Guid addressId,
+    string? country,
+    string? region,
+    string? district,
+    string? street,
+    short? postalCode);
