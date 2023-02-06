@@ -2,12 +2,15 @@
 
 namespace UzTexGroupV2.Application.Services
 {
-    public interface IServiceBase
+    public interface IServiceBase<TEntryCreate,TReturn, TEntryModify>
+        where TEntryCreate : class 
+        where TReturn : class
+        where TEntryModify : class
     {
-        ValueTask<UserDto> CreateEntityAsync<TEntry, TReturn>(CreateUserDto createUserDto);
-        ValueTask<TReturn> DeleteEntityAsync<Guid, TReturn>(Guid Id);
-        ValueTask<TReturn> ModifyEntityAsync<TEntry, TReturn>(TEntry entity);
-        ValueTask<IQueryable<TReturn>> RetrieveAllEntitiesAsync<TReturn>();
-        ValueTask<TReturn> RetrieveByIdEntityAsync<Guid, TReturn>(Guid Id);
+        ValueTask<TReturn> CreateEntityAsync(TEntryCreate entity);
+        ValueTask<TReturn> DeleteEntityAsync(Guid Id);
+        ValueTask<TReturn> ModifyEntityAsync(TEntryModify entity);
+        ValueTask<IQueryable<TReturn>> RetrieveAllEntitiesAsync();
+        ValueTask<TReturn> RetrieveByIdEntityAsync(Guid Id);
     }
 }

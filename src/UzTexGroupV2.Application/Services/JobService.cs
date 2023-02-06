@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class JobService : IJobService
+public class JobService : IServiceBase<CreateJobDto, JobDto, ModifyJobDto>
 {
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
 
@@ -14,7 +14,7 @@ public class JobService : IJobService
         this.localizedUnitOfWork = localizedUnitOfWork;
     }
 
-    public async ValueTask<JobDto> CreateJobAsync(CreateJobDto createJobDto)
+    public async ValueTask<JobDto> CreateEntityAsync(CreateJobDto createJobDto)
     {
         var job = JobMap.MapToJob(createJobDto);
 
@@ -26,7 +26,7 @@ public class JobService : IJobService
         return JobMap.MapToJobDto(storageJob);
     }
 
-    public async ValueTask<IQueryable<JobDto>> RetrieveAllJobsAsync()
+    public async ValueTask<IQueryable<JobDto>> RetrieveAllEntitiesAsync()
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetAllAsync();
@@ -34,7 +34,7 @@ public class JobService : IJobService
         return jobs.Select(job => JobMap.MapToJobDto(job));
     }
 
-    public async ValueTask<JobDto> RetrieveJobByIdAsync(Guid id)
+    public async ValueTask<JobDto> RetrieveByIdEntityAsync(Guid id)
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetByExpression(expression: job => job.Id == id);
@@ -44,7 +44,7 @@ public class JobService : IJobService
         return JobMap.MapToJobDto(storageJob);
     }
 
-    public async ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
+    public async ValueTask<JobDto> ModifyEntityAsync(ModifyJobDto modifyJobDto)
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetByExpression(expression: job => job.Id == modifyJobDto.Id);
@@ -58,7 +58,7 @@ public class JobService : IJobService
         return JobMap.MapToJobDto(job : job);
     }
 
-    public async ValueTask<JobDto> DeleteJobAsync(Guid id)
+    public async ValueTask<JobDto> DeleteEntityAsync(Guid id)
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetByExpression(expression: job => job.Id == id);

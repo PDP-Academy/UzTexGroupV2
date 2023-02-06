@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class ApplicationService : IApplicationService
+public class ApplicationService : IServiceBase<CreateApplicationDto, ApplicationDto,ModifyApplicationDto>
 {
     private readonly UnitOfWork unitOfWork;
 
@@ -14,11 +14,14 @@ public class ApplicationService : IApplicationService
         this.unitOfWork = unitOfWork;
     }
 
-    public async ValueTask<ApplicationDto> CreateApplicationAsync(
+    public async ValueTask<ApplicationDto> CreateEntityAsync(
         CreateApplicationDto createApplicationDto)
     {
         var storageApplication = ApplicationMap.MapToApplication(createApplicationDto);
-        var storageAdress = AddressMap.MapToAddress(createApplicationDto.createAddressDto);
+
+        var storageAdress = AddressMap.MapToAddress(
+            createApplicationDto.createAddressDto,
+            storageApplication.AddressId);
 
         await unitOfWork.AddressRepository.CreateAsync(storageAdress);
 
@@ -29,7 +32,7 @@ public class ApplicationService : IApplicationService
         return ApplicationMap.MapToApplicationDto(application);
     }
 
-    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllApplicationsAsync()
+    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllEntitiesAsync()
     {
         var storageApplications = await this.unitOfWork.ApplicationRepository.GetAllAsync();
 
@@ -37,7 +40,7 @@ public class ApplicationService : IApplicationService
             application => ApplicationMap.MapToApplicationDto(application));
     }
 
-    public async ValueTask<ApplicationDto> RetrieveApplicationByIdAsync(Guid id)
+    public async ValueTask<ApplicationDto> RetrieveByIdEntityAsync(Guid id)
     {
         var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
             app => app.Id == id);
@@ -45,7 +48,7 @@ public class ApplicationService : IApplicationService
         return ApplicationMap.MapToApplicationDto(await storageApplications.FirstOrDefaultAsync());
     }
 
-    public async ValueTask<ApplicationDto> ModifyApplicationAsync(
+    public async ValueTask<ApplicationDto> ModifyEntityAsync(
         ModifyApplicationDto modifyApplicationDto)
     {
         var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
@@ -64,7 +67,7 @@ public class ApplicationService : IApplicationService
         return ApplicationMap.MapToApplicationDto(application);
     }
 
-    public async ValueTask<ApplicationDto> DeleteApplicationAsync(Guid id)
+    public async ValueTask<ApplicationDto> DeleteEntityAsync(Guid id)
     {
         var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
                     app => app.Id == id);

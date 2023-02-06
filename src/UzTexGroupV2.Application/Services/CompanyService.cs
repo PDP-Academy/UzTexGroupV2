@@ -7,7 +7,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class CompanyService
+public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyCompanyDTO>
 {
     private readonly LocalizedUnitOfWork unitOfWork;
 
@@ -16,7 +16,8 @@ public class CompanyService
         this.unitOfWork = unitOfWork;
     }
 
-    public async ValueTask<CompanyDTO> CreateEntityAsync<TEntry, TReturn>(CreateCompanyDTO createCompanyDTO)
+    public async ValueTask<CompanyDTO> CreateEntityAsync(
+        CreateCompanyDTO createCompanyDTO)
     {
 
         var company = CompanyMapper
@@ -32,7 +33,7 @@ public class CompanyService
         return CompanyMapper
             .ToCompanyDTO(company);
     }
-    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompaniesAsync()
+    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllEntitiesAsync()
     {
         var companies = await unitOfWork
             .CompanyRepository
@@ -41,7 +42,7 @@ public class CompanyService
         return companies.Select(company =>
         CompanyMapper.ToCompanyDTO(company));
     }
-    public async ValueTask<CompanyDTO> RetrieveCompanyByIdAsync(Guid id)
+    public async ValueTask<CompanyDTO> RetrieveByIdEntityAsync(Guid id)
     {
         var storageCompanies = await this.unitOfWork
             .CompanyRepository
@@ -53,7 +54,8 @@ public class CompanyService
 
         return CompanyMapper.ToCompanyDTO(storageCompany);
     }
-    public async ValueTask<CompanyDTO> ModifyCompanyAsync(ModifyCompanyDTO modifyCompanyDTO)
+    public async ValueTask<CompanyDTO> ModifyEntityAsync(
+        ModifyCompanyDTO modifyCompanyDTO)
     {
         var storageCompanies = await this.unitOfWork
             .CompanyRepository
@@ -73,7 +75,7 @@ public class CompanyService
 
         return CompanyMapper.ToCompanyDTO(modifiedCompany);
     }
-    public async ValueTask<CompanyDTO> DeleteCompanyAsync(Guid id)
+    public async ValueTask<CompanyDTO> DeleteEntityAsync(Guid id)
     {
         var companies = await this.unitOfWork
             .CompanyRepository

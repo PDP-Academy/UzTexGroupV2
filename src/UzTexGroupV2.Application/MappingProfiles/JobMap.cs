@@ -1,6 +1,6 @@
 ﻿using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
-using UzTexGroupV2.Application.EntitiesDto.Job;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Application.MappingProfiles;

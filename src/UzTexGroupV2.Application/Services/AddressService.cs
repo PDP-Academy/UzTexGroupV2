@@ -8,7 +8,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class AddressService
+public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyAddressDto> 
 {
     private readonly UnitOfWork unitOfWork;
 
@@ -16,7 +16,8 @@ public class AddressService
     {
         this.unitOfWork = unitOfWork;
     }
-    public async ValueTask<AddressDto> CreateUserAsync<TEntry, TReturn>(CreateAddressDto createAddressDto)
+    public async ValueTask<AddressDto> CreateEntityAsync(
+        CreateAddressDto createAddressDto)
     {
         var address = AddressMap.MapToAddress(createAddressDto);
         var storedAddress = await unitOfWork
@@ -28,7 +29,7 @@ public class AddressService
         return AddressMap.MapToAddressDto(address);
     }
 
-    public async ValueTask<AddressDto> DeleteUserAsync(Guid Id)
+    public async ValueTask<AddressDto> DeleteEntityAsync(Guid Id)
     {
         var addresses = await this.unitOfWork
             .AddressRepository
@@ -43,7 +44,7 @@ public class AddressService
         return AddressMap.MapToAddressDto(deletedAddress);
     }
 
-    public async ValueTask<AddressDto> ModifyUserAsync(ModifyAddressDto modifyAddressDto)
+    public async ValueTask<AddressDto> ModifyEntityAsync(ModifyAddressDto modifyAddressDto)
     {
         var addresses = await this.unitOfWork
             .AddressRepository
@@ -62,7 +63,7 @@ public class AddressService
         return AddressMap.MapToAddressDto(address);
     }
 
-    public async ValueTask<IQueryable<AddressDto>> RetrieveAllUsersAsync()
+    public async ValueTask<IQueryable<AddressDto>> RetrieveAllEntitiesAsync()
     {
         var addresses = await this.unitOfWork
             .AddressRepository.GetAllAsync();
@@ -70,15 +71,15 @@ public class AddressService
         return addresses.Select(address => AddressMap.MapToAddressDto(address));
     }
 
-    public async ValueTask<UserDto> RetrieveByIdEntityAsync(Guid Id)
+    public async ValueTask<AddressDto> RetrieveByIdEntityAsync(Guid Id)
     {
-        var users = await this.unitOfWork
+        var addresses = await this.unitOfWork
             .AddressRepository
             .GetByExpression(expression: address =>
             address.Id == Id);
 
         var storedAddress = await addresses.FirstOrDefaultAsync();
 
-        return AddressMap.MapToAddressDto(storedUser);
+        return AddressMap.MapToAddressDto(storedAddress);
     }
 }

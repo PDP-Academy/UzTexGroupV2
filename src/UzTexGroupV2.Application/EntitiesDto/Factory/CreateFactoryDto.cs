@@ -1,5 +1,10 @@
-﻿namespace UzTexGroupV2.Application.EntitiesDto.Factory;
+﻿using UzTexGroupV2.Application.EntitiesDto.Addresses;
 
-public record CreateFactoryDto
-{
-}
+namespace UzTexGroupV2.Application.EntitiesDto.Factory;
+
+public record CreateFactoryDto(
+    Guid? id,
+    string name,
+    Guid companyId,
+    CreateAddressDto createAddressDto);
+
