@@ -1,4 +1,5 @@
-﻿using UzTexGroupV2.Application.EntitiesDto;
+﻿using Microsoft.EntityFrameworkCore;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
@@ -42,27 +43,30 @@ public class CompanyService
     }
     public async ValueTask<CompanyDTO> RetrieveCompanyByIdAsync(Guid id)
     {
-        var storageCompanies = await this.unitOfWork.CompanyRepository
+        var storageCompanies = await this.unitOfWork
+            .CompanyRepository
             .GetByExpression(expression: company =>
             company.Id == id);
 
-        var storageCompany = storageCompanies
-            .FirstOrDefault();
+        var storageCompany = await storageCompanies
+            .FirstOrDefaultAsync();
 
         return CompanyMapper.ToCompanyDTO(storageCompany);
     }
     public async ValueTask<CompanyDTO> ModifyCompanyAsync(ModifyCompanyDTO modifyCompanyDTO)
     {
-        var storageCompanies = await this.unitOfWork.CompanyRepository
+        var storageCompanies = await this.unitOfWork
+            .CompanyRepository
             .GetByExpression(expression: company =>
             company.Id == modifyCompanyDTO.Id);
 
-        var storageCompany = storageCompanies
-            .FirstOrDefault();
+        var storageCompany = await storageCompanies
+            .FirstOrDefaultAsync();
 
         CompanyMapper.ToCompany(modifyCompanyDTO, storageCompany);
 
-        var modifiedCompany = await this.unitOfWork.CompanyRepository
+        var modifiedCompany = await this.unitOfWork
+            .CompanyRepository
             .UpdateAsync(storageCompany);
 
         await unitOfWork.SaveChangesAsync();
@@ -71,12 +75,13 @@ public class CompanyService
     }
     public async ValueTask<CompanyDTO> DeleteCompanyAsync(Guid id)
     {
-        var companies = await this.unitOfWork.CompanyRepository
+        var companies = await this.unitOfWork
+            .CompanyRepository
             .GetByExpression(expression: company =>
             company.Id == id);
 
-        var storageCompany = companies
-            .FirstOrDefault();
+        var storageCompany = await companies
+            .FirstOrDefaultAsync();
 
         var company = await unitOfWork.CompanyRepository
             .DeleteAsync(storageCompany);
