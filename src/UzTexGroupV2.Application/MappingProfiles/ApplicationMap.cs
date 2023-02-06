@@ -30,7 +30,19 @@ internal static class ApplicationMap
             applicationMassage: applications.ApplicationMessage,
             phoneNumber: applications.PhoneNumber,
             job: JobMap.MapToJobDto(applications.Job),
-            addressDto : 
+            addressDto : AddressMap.MapToAddressDto(applications.Address)
        ); 
+    }
+
+    internal static void MapToApplication(
+        Applications applications,
+        ModifyApplicationDto modifyApplicationDto)
+    {
+        applications.FirstName = modifyApplicationDto.firstName ?? applications.FirstName;
+        applications.LastName = modifyApplicationDto.lastName ?? applications.LastName;
+        applications.PhoneNumber = modifyApplicationDto.phoneNumber ?? applications.PhoneNumber;
+        applications.ApplicationMessage = modifyApplicationDto.applicationMassage ?? applications.ApplicationMessage;
+        applications.JobId = modifyApplicationDto.jobId ?? applications.JobId;
+
     }
 }

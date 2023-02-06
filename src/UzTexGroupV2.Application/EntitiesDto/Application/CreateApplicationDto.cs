@@ -9,8 +9,4 @@ public record CreateApplicationDto(
     string applicationMassage,
     string email,
     Guid jobId,
-    string Country,
-    string Region,
-    string District,
-    string Street,
-    short PostalCode);
+    CreateAddressDto createAddressDto);
