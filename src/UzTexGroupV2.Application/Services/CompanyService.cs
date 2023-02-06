@@ -31,5 +31,58 @@ public class CompanyService
         return CompanyMapper
             .ToCompanyDTO(company);
     }
+    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompaniesAsync()
+    {
+        var companies = await unitOfWork
+            .CompanyRepository
+            .GetAllAsync();
 
+        return companies.Select(company =>
+        CompanyMapper.ToCompanyDTO(company));
+    }
+    public async ValueTask<CompanyDTO> RetrieveCompanyByIdAsync(Guid id)
+    {
+        var storageCompanies = await this.unitOfWork.CompanyRepository
+            .GetByExpression(expression: company =>
+            company.Id == id);
+
+        var storageCompany = storageCompanies
+            .FirstOrDefault();
+
+        return CompanyMapper.ToCompanyDTO(storageCompany);
+    }
+    public async ValueTask<CompanyDTO> ModifyCompanyAsync(ModifyCompanyDTO modifyCompanyDTO)
+    {
+        var storageCompanies = await this.unitOfWork.CompanyRepository
+            .GetByExpression(expression: company =>
+            company.Id == modifyCompanyDTO.Id);
+
+        var storageCompany = storageCompanies
+            .FirstOrDefault();
+
+        CompanyMapper.ToCompany(modifyCompanyDTO, storageCompany);
+
+        var modifiedCompany = await this.unitOfWork.CompanyRepository
+            .UpdateAsync(storageCompany);
+
+        await unitOfWork.SaveChangesAsync();
+
+        return CompanyMapper.ToCompanyDTO(modifiedCompany);
+    }
+    public async ValueTask<CompanyDTO> DeleteCompanyAsync(Guid id)
+    {
+        var companies = await this.unitOfWork.CompanyRepository
+            .GetByExpression(expression: company =>
+            company.Id == id);
+
+        var storageCompany = companies
+            .FirstOrDefault();
+
+        var company = await unitOfWork.CompanyRepository
+            .DeleteAsync(storageCompany);
+
+        await unitOfWork.SaveChangesAsync();
+
+        return CompanyMapper.ToCompanyDTO(company);
+    }
 }

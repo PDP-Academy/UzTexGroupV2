@@ -23,4 +23,8 @@ public static class CompanyMapper
             Name = createCompanyDTO.Name,
         };
     }
+    public static void ToCompany(ModifyCompanyDTO modifyCompanyDTO, Company company)
+    {
+        company.Name = modifyCompanyDTO.Name ?? company.Name;
+    }
 }
