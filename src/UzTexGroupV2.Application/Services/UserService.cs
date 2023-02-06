@@ -1,10 +1,11 @@
-﻿using UzTexGroupV2.Application.EntitiesDto;
+﻿using Microsoft.EntityFrameworkCore;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class UserService : IServiceBase
+public class UserService
 {
     private readonly UnitOfWork unitOfWork;
 
@@ -13,11 +14,11 @@ public class UserService : IServiceBase
         this.unitOfWork = unitOfWork;
     }
 
-    public async ValueTask<UserDto> CreateEntityAsync<TEntry, TReturn>(CreateUserDto createUserDto)
+    public async ValueTask<UserDto> CreateUserAsync<TEntry, TReturn>(CreateUserDto createUserDto)
     {
         var user = UserMap.MapToUser(createUserDto);
-        var storedUser = await unitOfWork.UserRepository
-            .CreateAsync(user);
+        var storedUser = await unitOfWork
+            .UserRepository.CreateAsync(user);
 
         await unitOfWork
             .SaveChangesAsync();
@@ -25,23 +26,57 @@ public class UserService : IServiceBase
         return UserMap.MapToUserDto(user);
     }
 
-    public override ValueTask<TReturn> DeleteEntityAsync<Guid, TReturn>(Guid Id)
+    public async ValueTask<UserDto> DeleteUserAsync(Guid Id)
     {
+        var users = await this.unitOfWork
+            .UserRepository
+            .GetByExpression(expression: user =>
+            user.Id == Id);
 
+        var storedUser = await users.FirstOrDefaultAsync();
+
+        var deletedUser = await this.unitOfWork
+            .UserRepository.DeleteAsync(storedUser);
+
+        return UserMap.MapToUserDto(deletedUser);
     }
 
-    public override ValueTask<TReturn> ModifyEntityAsync<TEntry, TReturn>(TEntry entity)
+    public async ValueTask<UserDto> ModifyUserAsync(ModifyUserDto modifyUserDto)
     {
+        var users = await this.unitOfWork
+            .UserRepository
+            .GetByExpression(expression: user =>
+            user.Id == modifyUserDto.id);
 
+        var user = await users.FirstOrDefaultAsync();
+
+        UserMap.MapToUser(modifyUserDto, user);
+
+        var modifiedUser = await this.unitOfWork
+            .UserRepository.UpdateAsync(user);
+
+        await this.unitOfWork.SaveChangesAsync();
+
+        return UserMap.MapToUserDto(user);
     }
 
-    public override ValueTask<IQueryable<TReturn>> RetrieveAllEntitiesAsync<TReturn>()
+    public async ValueTask<IQueryable<UserDto>> RetrieveAllUsersAsync()
     {
+        var users = await this.unitOfWork
+            .UserRepository.GetAllAsync();
 
+        return users.Select(user => UserMap.MapToUserDto(user));
     }
 
-    public override ValueTask<TReturn> RetrieveByIdEntityAsync<Guid, TReturn>(Guid Id)
+    public async ValueTask<UserDto> RetrieveByIdEntityAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        var users = await this.unitOfWork
+            .UserRepository
+            .GetByExpression(expression: user =>
+            user.Id == Id);
+
+        var storedUser = await users.FirstOrDefaultAsync();
+
+        return UserMap.MapToUserDto(storedUser);
     }
 }
