@@ -1,6 +1,6 @@
 ﻿using UzTexGroupV2.Domain.Entities;
 
-namespace UzTexGroupV2.Application.EntitiesDto.Job;
+namespace UzTexGroupV2.Application.EntitiesDto;
 
 public record CreateJobDto : LocalizedDTO
 {

@@ -5,7 +5,7 @@ using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Application.MappingProfiles;
 
-public static class JobMap
+internal static class JobMap
 {
     internal static Job MapToJob(CreateJobDto createJobDto)
     {
@@ -20,7 +20,7 @@ public static class JobMap
             FactoryId = createJobDto.FactoryId
         };
     }
-    public static JobDto MapToJobDto(Job job)
+    internal static JobDto MapToJobDto(Job job)
     {
         return new JobDto
         (
@@ -29,8 +29,17 @@ public static class JobMap
             description : job.Desription,
             salary : job.Salary,
             workTime : job.WorkTime,
-            factoryDto : null
-
+            factoryDto : FactoryMap.MapToFactoryDto(job.Factory)
         );
     }
+
+    internal static void MapToJob(Job job, ModifyJobDto modifyJobDto)
+    {
+        job.Name = modifyJobDto.Name ?? job.Name;
+        job.Salary = modifyJobDto.Salary ?? job.Salary;
+        job.Desription = modifyJobDto.Desription ?? job.Desription;
+        job.FactoryId = modifyJobDto.FactoryId ?? job.FactoryId;
+        job.WorkTime = modifyJobDto.WorkTime ?? job.WorkTime;
+    }
+    
 }
