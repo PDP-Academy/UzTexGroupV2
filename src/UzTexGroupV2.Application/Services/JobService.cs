@@ -1,4 +1,5 @@
-﻿using UzTexGroupV2.Application.EntitiesDto;
+﻿using Microsoft.EntityFrameworkCore;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Infrastructure.Repositories;
 
@@ -20,26 +21,52 @@ public class JobService : IJobService
         var storageJob = await this.localizedUnitOfWork.JobRepository
             .CreateAsync(job);
 
+        await this.localizedUnitOfWork.SaveChangesAsync();
+
         return JobMap.MapToJobDto(storageJob);
     }
 
-    public ValueTask<JobDto> DeleteJobAsync(Guid id)
+    public async ValueTask<IQueryable<JobDto>> RetrieveAllJobsAsync()
     {
-        throw new NotImplementedException();
+        var jobs = await this.localizedUnitOfWork.JobRepository
+            .GetAllAsync();
+
+        return jobs.Select(job => JobMap.MapToJobDto(job));
     }
 
-    public ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
+    public async ValueTask<JobDto> RetrieveJobByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var jobs = await this.localizedUnitOfWork.JobRepository
+            .GetByExpression(expression: job => job.Id == id);
+
+        var storageJob = await jobs.FirstOrDefaultAsync();
+
+        return JobMap.MapToJobDto(storageJob);
     }
 
-    public ValueTask<IQueryable<JobDto>> RetrieveAllJobsAsync()
+    public async ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
     {
-        throw new NotImplementedException();
+        var jobs = await this.localizedUnitOfWork.JobRepository
+            .GetByExpression(expression: job => job.Id == modifyJobDto.Id);
+
+        var storageJob = await jobs.FirstOrDefaultAsync();
+
+        var job = await this.localizedUnitOfWork.JobRepository.UpdateAsync(storageJob);
+
+        await this.localizedUnitOfWork.SaveChangesAsync();
+
+        return JobMap.MapToJobDto(job : job);
     }
 
-    public ValueTask<JobDto> RetrieveJobByIdAsync(Guid id)
+    public async ValueTask<JobDto> DeleteJobAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var jobs = await this.localizedUnitOfWork.JobRepository
+            .GetByExpression(expression: job => job.Id == id);
+
+        var storageJob = await jobs.FirstOrDefaultAsync();
+
+        var deletedJob = await this.localizedUnitOfWork.JobRepository.DeleteAsync(storageJob);
+
+        return JobMap.MapToJobDto(deletedJob);
     }
 }
