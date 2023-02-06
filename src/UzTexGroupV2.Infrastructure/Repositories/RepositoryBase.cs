@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.DbContexts;
@@ -15,14 +16,16 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     public virtual async ValueTask<IQueryable<T>> GetAllAsync()
     {
         return context
-            .Set<T>();
+            .Set<T>()
+            .AsNoTracking();
     }
 
     public virtual async ValueTask<IQueryable<T>> GetByExpression(Expression<Func<T, bool>> expression)
     {
         return context
             .Set<T>()
-            .Where(expression);
+            .Where(expression)
+            .AsNoTracking();
     }
 
     public virtual async ValueTask<T> CreateAsync(T entity)

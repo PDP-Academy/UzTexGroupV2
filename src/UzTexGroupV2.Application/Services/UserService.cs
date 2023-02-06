@@ -14,7 +14,7 @@ public class UserService
         this.unitOfWork = unitOfWork;
     }
 
-    public async ValueTask<UserDto> CreateUserAsync<TEntry, TReturn>(CreateUserDto createUserDto)
+    public async ValueTask<UserDto> CreateUserAsync(CreateUserDto createUserDto)
     {
         var user = UserMap.MapToUser(createUserDto);
         var storedUser = await unitOfWork
@@ -23,7 +23,7 @@ public class UserService
         await unitOfWork
             .SaveChangesAsync();
 
-        return UserMap.MapToUserDto(user);
+        return UserMap.MapToUserDto(storedUser);
     }
 
     public async ValueTask<UserDto> DeleteUserAsync(Guid Id)
@@ -37,6 +37,8 @@ public class UserService
 
         var deletedUser = await this.unitOfWork
             .UserRepository.DeleteAsync(storedUser);
+        
+        await this.unitOfWork.SaveChangesAsync();
 
         return UserMap.MapToUserDto(deletedUser);
     }
