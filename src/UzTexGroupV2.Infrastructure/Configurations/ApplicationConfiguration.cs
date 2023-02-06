@@ -4,12 +4,12 @@ using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Infrastructure.Configurations;
 
-public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
+public class ApplicationConfiguration : IEntityTypeConfiguration<Applications>
 {
-    public void Configure(EntityTypeBuilder<Application> builder)
+    public void Configure(EntityTypeBuilder<Applications> builder)
     {
         builder
-            .ToTable(nameof(Application))
+            .ToTable(nameof(Applications))
             .HasKey(app => app.Id);
 
         builder

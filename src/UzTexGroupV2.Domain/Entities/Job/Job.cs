@@ -9,5 +9,5 @@ public class Job : LocalizedObject
     public decimal Salary { get; set; }
     public Guid FactoryId { get; set; }
     public Factory Factory { get; set; }
-    public ICollection<Application>? Applications { get; set; }
+    public ICollection<Applications>? Applications { get; set; }
 }

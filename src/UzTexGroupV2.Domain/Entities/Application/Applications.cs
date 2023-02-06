@@ -1,6 +1,6 @@
 ﻿namespace UzTexGroupV2.Domain.Entities;
 
-public class Application
+public class Applications
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }

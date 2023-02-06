@@ -1,4 +1,6 @@
-﻿namespace UzTexGroupV2.Application.EntitiesDto;
+﻿using UzTexGroupV2.Application.EntitiesDto.Factory;
+
+namespace UzTexGroupV2.Application.EntitiesDto;
 
 public record JobDto(
     Guid id,
@@ -6,4 +8,4 @@ public record JobDto(
     string description,
     string workTime,
     decimal salary,
-    Guid factoryId);
+    FactoryDto? factoryDto);
