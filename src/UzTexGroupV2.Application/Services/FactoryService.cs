@@ -60,6 +60,10 @@ public class FactoryService : IServiceBase<CreateFactoryDto, FactoryDto, ModifyF
 
         var storageFactory = await factories.FirstOrDefaultAsync();
 
+        FactoryMap.MapToFactory(
+            factory : storageFactory,
+            modifyFactoryDto : modifyFactoryDto);
+
         var modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
             .UpdateAsync(entity: storageFactory);
 

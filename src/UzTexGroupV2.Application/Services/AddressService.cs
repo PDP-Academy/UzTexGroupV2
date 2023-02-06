@@ -19,7 +19,7 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
     public async ValueTask<AddressDto> CreateEntityAsync(
         CreateAddressDto createAddressDto)
     {
-        var address = AddressMap.MapToAddress(createAddressDto);
+        var address = AddressMap.MapToAddress(createAddressDto, Guid.NewGuid());
         var storedAddress = await unitOfWork
             .AddressRepository.CreateAsync(address);
 
