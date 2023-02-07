@@ -45,38 +45,15 @@ public class FactoryService : IServiceBase<CreateFactoryDto, FactoryDto, ModifyF
 
     public async ValueTask<FactoryDto> RetrieveByIdEntityAsync(Guid id)
     {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-            .GetByExpression(expression: factory => factory.Id == id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
+        var storageFactory = await GetByExpressionAsync(id);
 
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
 
-    public async ValueTask<FactoryDto> ModifyEntityAsync(ModifyFactoryDto modifyFactoryDto)
-    {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-            .GetByExpression(expression: factory => factory.Id == modifyFactoryDto.id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
-
-        FactoryMap.MapToFactory(
-            factory : storageFactory,
-            modifyFactoryDto : modifyFactoryDto);
-
-        var modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
-            .UpdateAsync(entity: storageFactory);
-
-        this.localizedUnitOfWork.SaveChangesAsync();
-
-        return FactoryMap.MapToFactoryDto(modifiedFactory);
-    }
+   
     public async ValueTask<FactoryDto> DeleteEntityAsync(Guid id)
     {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-           .GetByExpression(expression: factory => factory.Id == id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
+        var storageFactory = await GetByExpressionAsync(id);
 
         var deletedFactory = await this.localizedUnitOfWork.FactoryRepository
             .DeleteAsync(entity: storageFactory);
@@ -84,5 +61,29 @@ public class FactoryService : IServiceBase<CreateFactoryDto, FactoryDto, ModifyF
         await this.localizedUnitOfWork.SaveChangesAsync();
 
         return FactoryMap.MapToFactoryDto(factory : deletedFactory);
+    }
+
+    private async ValueTask<Factory> GetByExpressionAsync(Guid id)
+    {
+        var factories = await this.localizedUnitOfWork.FactoryRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        return await factories.FirstOrDefaultAsync();
+    }
+
+    public async ValueTask<FactoryDto> ModifyEntityAsync(ModifyFactoryDto entity)
+    {
+        var storageFactory = await GetByExpressionAsync(entity.id);
+
+        FactoryMap.MapToFactory(
+            factory: storageFactory,
+            modifyFactoryDto: entity);
+
+        var modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
+            .UpdateAsync(entity: storageFactory);
+
+        this.localizedUnitOfWork.SaveChangesAsync();
+
+        return FactoryMap.MapToFactoryDto(modifiedFactory);
     }
 }

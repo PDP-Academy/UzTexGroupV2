@@ -1,6 +1,4 @@
-﻿using UzTexGroupV2.Application.EntitiesDto;
-
-namespace UzTexGroupV2.Application.Services
+﻿namespace UzTexGroupV2.Application.Services
 {
     public interface IServiceBase<TEntryCreate,TReturn, TEntryModify>
         where TEntryCreate : class 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
@@ -17,6 +18,7 @@ public class UserService
     public async ValueTask<UserDto> CreateUserAsync(CreateUserDto createUserDto)
     {
         var user = UserMap.MapToUser(createUserDto);
+
         var storedUser = await unitOfWork
             .UserRepository.CreateAsync(user);
 
@@ -28,12 +30,7 @@ public class UserService
 
     public async ValueTask<UserDto> DeleteUserAsync(Guid Id)
     {
-        var users = await this.unitOfWork
-            .UserRepository
-            .GetByExpression(expression: user =>
-            user.Id == Id);
-
-        var storedUser = await users.FirstOrDefaultAsync();
+        var storedUser = await GetByExpressionAsync(Id);
 
         var deletedUser = await this.unitOfWork
             .UserRepository.DeleteAsync(storedUser);
@@ -45,21 +42,16 @@ public class UserService
 
     public async ValueTask<UserDto> ModifyUserAsync(ModifyUserDto modifyUserDto)
     {
-        var users = await this.unitOfWork
-            .UserRepository
-            .GetByExpression(expression: user =>
-            user.Id == modifyUserDto.id);
+        var storedUser = await GetByExpressionAsync(modifyUserDto.id);
 
-        var user = await users.FirstOrDefaultAsync();
-
-        UserMap.MapToUser(modifyUserDto, user);
+        UserMap.MapToUser(modifyUserDto, storedUser);
 
         var modifiedUser = await this.unitOfWork
-            .UserRepository.UpdateAsync(user);
+            .UserRepository.UpdateAsync(storedUser);
 
         await this.unitOfWork.SaveChangesAsync();
 
-        return UserMap.MapToUserDto(user);
+        return UserMap.MapToUserDto(modifiedUser);
     }
 
     public async ValueTask<IQueryable<UserDto>> RetrieveAllUsersAsync()
@@ -72,13 +64,15 @@ public class UserService
 
     public async ValueTask<UserDto> RetrieveByIdEntityAsync(Guid Id)
     {
-        var users = await this.unitOfWork
-            .UserRepository
-            .GetByExpression(expression: user =>
-            user.Id == Id);
-
-        var storedUser = await users.FirstOrDefaultAsync();
+        var storedUser = await GetByExpressionAsync(Id);
 
         return UserMap.MapToUserDto(storedUser);
+    }
+    private async ValueTask<User> GetByExpressionAsync(Guid id)
+    {
+        var users = await this.unitOfWork.UserRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        return await users.FirstOrDefaultAsync();
     }
 }

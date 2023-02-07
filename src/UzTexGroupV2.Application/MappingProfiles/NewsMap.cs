@@ -9,11 +9,11 @@ internal static class NewsMap
     {
         return new News
         {
-            Id = Guid.NewGuid(),
+            Id = createNewsDto.id ?? Guid.NewGuid(),
             Date = DateTime.UtcNow,
             Title = createNewsDto.title,
             Description= createNewsDto.description,
-            LanguageCode = createNewsDto.languageCode
+            LanguageCode = createNewsDto.LanguageCode
         };
     }
     internal static void MapToNews(ModifyNewsDto modifyNewsDto, News news)
@@ -29,6 +29,5 @@ internal static class NewsMap
             date: news.Date,
             title: news.Title,
             description: news.Description);
-      
     }
 }

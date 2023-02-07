@@ -1,6 +1,8 @@
 ﻿namespace UzTexGroupV2.Application.EntitiesDto.News;
 
-public record ModifyNewsDto(
-    Guid id,
-    string? title,
-    string? description);
+public record ModifyNewsDto
+{
+    public Guid id;
+    public string? title;
+    public string? description;
+}
