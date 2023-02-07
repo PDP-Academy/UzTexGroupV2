@@ -6,7 +6,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyAddressDto> 
+public class AddressService
 {
     private readonly UnitOfWork unitOfWork;
 
@@ -14,10 +14,10 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
     {
         this.unitOfWork = unitOfWork;
     }
-    public async ValueTask<AddressDto> CreateEntityAsync(
+    public async ValueTask<AddressDto> CreateAddressAsync(
         CreateAddressDto createAddressDto)
     {
-        var address = AddressMap.MapToAddress(createAddressDto, Guid.NewGuid());
+        var address = AddressMap.MapToAddress(createAddressDto);
 
         var storedAddress = await unitOfWork
             .AddressRepository.CreateAsync(address);
@@ -28,7 +28,7 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         return AddressMap.MapToAddressDto(storedAddress);
     }
 
-    public async ValueTask<AddressDto> DeleteEntityAsync(Guid id)
+    public async ValueTask<AddressDto> DeleteAddressAsync(Guid id)
     {
         var storedAddress = await GetByExpressionAsync(id);
 
@@ -38,11 +38,10 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         return AddressMap.MapToAddressDto(deletedAddress);
     }
 
-    public async ValueTask<AddressDto> ModifyEntityAsync(ModifyAddressDto modifyAddressDto)
+    public async ValueTask<AddressDto> ModifyAddressAsync(ModifyAddressDto modifyAddressDto)
     {
         var address = await GetByExpressionAsync(modifyAddressDto.addressId);
-
-
+        
         AddressMap.MapToAddress(modifyAddressDto, address);
 
         var modifiedAddress = await this.unitOfWork
@@ -53,7 +52,7 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         return AddressMap.MapToAddressDto(modifiedAddress);
     }
 
-    public async ValueTask<IQueryable<AddressDto>> RetrieveAllEntitiesAsync()
+    public async ValueTask<IQueryable<AddressDto>> RetrieveAllAdressesAsync()
     {
         var addresses = await this.unitOfWork
             .AddressRepository.GetAllAsync();
@@ -61,7 +60,7 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         return addresses.Select(address => AddressMap.MapToAddressDto(address));
     }
 
-    public async ValueTask<AddressDto> RetrieveByIdEntityAsync(Guid id)
+    public async ValueTask<AddressDto> RetrieveAddressByIdEntityAsync(Guid id)
     {
         var storedAddress = await GetByExpressionAsync(id);
 

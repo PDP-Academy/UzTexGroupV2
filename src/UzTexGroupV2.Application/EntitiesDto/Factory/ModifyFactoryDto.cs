@@ -6,6 +6,6 @@ namespace UzTexGroupV2.Application.EntitiesDto.Factory;
 public record ModifyFactoryDto(
     Guid id,
     string? name,
-    ModifyCompanyDTO? companyDto,
+    Guid? companyId,
     ModifyAddressDto? modifyAddressDto);
 
