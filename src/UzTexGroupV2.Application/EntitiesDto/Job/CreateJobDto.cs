@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UzTexGroupV2.Application.EntitiesDto.Company;
-using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Application.EntitiesDto;
 

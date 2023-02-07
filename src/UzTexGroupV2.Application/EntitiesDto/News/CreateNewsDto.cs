@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UzTexGroupV2.Application.EntitiesDto.Company;
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
