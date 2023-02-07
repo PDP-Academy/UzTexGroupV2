@@ -6,5 +6,6 @@ public record CreateFactoryDto(
     Guid? id,
     string name,
     Guid companyId,
+    string languageCode,
     CreateAddressDto createAddressDto);
 

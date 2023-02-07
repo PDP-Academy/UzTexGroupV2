@@ -15,7 +15,6 @@ internal static class ApplicationMap
             Email = createApplicationDto.email,
             PhoneNumber = createApplicationDto.phoneNumber,
             ApplicationMessage = createApplicationDto.applicationMassage,
-            AddressId = Guid.NewGuid(),
             JobId = createApplicationDto.jobId
         };
     }

@@ -1,82 +1,92 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto.Application;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class ApplicationService : IServiceBase<CreateApplicationDto, ApplicationDto,ModifyApplicationDto>
+public class ApplicationService
 {
-    private readonly UnitOfWork unitOfWork;
+    private readonly LocalizedUnitOfWork unitOfWork;
+    private readonly AddressService addressService;
 
-    public ApplicationService(UnitOfWork unitOfWork)
+    public ApplicationService(LocalizedUnitOfWork unitOfWork, AddressService addressService)
     {
         this.unitOfWork = unitOfWork;
+        this.addressService = addressService;
     }
 
-    public async ValueTask<ApplicationDto> CreateEntityAsync(
+    public async ValueTask<ApplicationDto> CreateApplicationAsync(
         CreateApplicationDto createApplicationDto)
     {
-        var storageApplication = ApplicationMap.MapToApplication(createApplicationDto);
+        var application = ApplicationMap.MapToApplication(createApplicationDto);
 
-        var storageAdress = AddressMap.MapToAddress(
-            createApplicationDto.createAddressDto,
-            storageApplication.AddressId);
+        var storedAddress = await this.addressService
+            .CreateAddressAsync(createApplicationDto.createAddressDto);
+        
+        application.AddressId = storedAddress.id;
+        var storedApplication = await this.unitOfWork
+            .ApplicationRepository.CreateAsync(application);
 
-        await unitOfWork.AddressRepository.CreateAsync(storageAdress);
-
-        var application = await this.unitOfWork.ApplicationRepository
-            .CreateAsync(storageApplication);
         await this.unitOfWork.SaveChangesAsync();
 
-        return ApplicationMap.MapToApplicationDto(application);
+        return ApplicationMap.MapToApplicationDto(storedApplication);
     }
 
-    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllEntitiesAsync()
+    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllApplicationsAsync()
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetAllAsync();
+        var storageApplications = await this
+            .unitOfWork.ApplicationRepository.GetAllAsync();
 
         return storageApplications.Select(
             application => ApplicationMap.MapToApplicationDto(application));
     }
 
-    public async ValueTask<ApplicationDto> RetrieveByIdEntityAsync(Guid id)
+    public async ValueTask<ApplicationDto> RetrieveApplicationByIdAsync(Guid id)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-            app => app.Id == id);
+        var storageApplication = await GetByExpressionAsync(id);
 
-        return ApplicationMap.MapToApplicationDto(await storageApplications.FirstOrDefaultAsync());
+        return ApplicationMap.MapToApplicationDto(storageApplication);
     }
 
-    public async ValueTask<ApplicationDto> ModifyEntityAsync(
+    public async ValueTask<ApplicationDto> ModifyApplicationAsync(
         ModifyApplicationDto modifyApplicationDto)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-                    app => app.Id == modifyApplicationDto.id);
+        var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
 
-        var selectedApplication = await storageApplications.FirstOrDefaultAsync();
-
-        ApplicationMap.MapToApplication(applications: selectedApplication,
+        if (modifyApplicationDto.modifyAddressDto is not null)
+            await this.addressService
+                .ModifyAddressAsync(modifyApplicationDto.modifyAddressDto);
+        
+        ApplicationMap.MapToApplication(applications: storageApplication,
             modifyApplicationDto: modifyApplicationDto);
 
-        var application = await this.unitOfWork.ApplicationRepository.UpdateAsync(
-            entity: selectedApplication);
+        var modifiedApplication = await this.unitOfWork.ApplicationRepository.UpdateAsync(
+            entity: storageApplication);
 
         await this.unitOfWork.SaveChangesAsync();
 
-        return ApplicationMap.MapToApplicationDto(application);
+        return ApplicationMap.MapToApplicationDto(modifiedApplication);
     }
 
-    public async ValueTask<ApplicationDto> DeleteEntityAsync(Guid id)
+    public async ValueTask<ApplicationDto> DeleteApplicationAsync(Guid id)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-                    app => app.Id == id);
-
-        var selectedApplication = await storageApplications.FirstOrDefaultAsync();
+        var storageApplication = await GetByExpressionAsync(id);
 
         var deletedApplication = await this.unitOfWork.ApplicationRepository
-            .DeleteAsync(selectedApplication);
+            .DeleteAsync(storageApplication);
+
+        await this.unitOfWork.SaveChangesAsync();
 
         return ApplicationMap.MapToApplicationDto(deletedApplication);
+    }
+
+    private async ValueTask<Applications> GetByExpressionAsync(Guid id)
+    {
+        var applications = await this.unitOfWork.ApplicationRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        return await applications.FirstOrDefaultAsync();
     }
 }

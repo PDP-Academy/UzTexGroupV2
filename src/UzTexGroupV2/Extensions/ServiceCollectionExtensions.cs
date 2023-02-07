@@ -21,8 +21,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection ConfigureRepositories(this IServiceCollection serviceCollection)
     {
+        //DO-NOT: Unit Of works can't to add to services as Transient
         serviceCollection.AddScoped<LocalizedUnitOfWork>();
         serviceCollection.AddScoped<UnitOfWork>();
+        
         return serviceCollection;
     }
 }

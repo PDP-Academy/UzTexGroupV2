@@ -1,4 +1,5 @@
 ﻿using UzTexGroupV2.Application.EntitiesDto.Addresses;
+using UzTexGroupV2.Application.EntitiesDto.Company;
 
 namespace UzTexGroupV2.Application.EntitiesDto.Factory;
 
