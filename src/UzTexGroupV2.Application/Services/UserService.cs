@@ -20,7 +20,8 @@ public class UserService
         var user = UserMap.MapToUser(createUserDto);
 
         var storedUser = await unitOfWork
-            .UserRepository.CreateAsync(user);
+            .UserRepository
+            .CreateAsync(user);
 
         await unitOfWork
             .SaveChangesAsync();
@@ -33,7 +34,8 @@ public class UserService
         var storedUser = await GetByExpressionAsync(Id);
 
         var deletedUser = await this.unitOfWork
-            .UserRepository.DeleteAsync(storedUser);
+            .UserRepository
+            .DeleteAsync(storedUser);
         
         await this.unitOfWork.SaveChangesAsync();
 
@@ -47,7 +49,8 @@ public class UserService
         UserMap.MapToUser(modifyUserDto, storedUser);
 
         var modifiedUser = await this.unitOfWork
-            .UserRepository.UpdateAsync(storedUser);
+            .UserRepository
+            .UpdateAsync(storedUser);
 
         await this.unitOfWork.SaveChangesAsync();
 
@@ -57,7 +60,8 @@ public class UserService
     public async ValueTask<IQueryable<UserDto>> RetrieveAllUsersAsync()
     {
         var users = await this.unitOfWork
-            .UserRepository.GetAllAsync();
+            .UserRepository
+            .GetAllAsync();
 
         return users.Select(user => UserMap.MapToUserDto(user));
     }

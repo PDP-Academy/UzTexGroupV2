@@ -6,7 +6,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyCompanyDTO>
+public class CompanyService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
 
@@ -15,22 +15,22 @@ public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyC
         this.unitOfWork = unitOfWork;
     }
 
-    public async ValueTask<CompanyDTO> CreateEntityAsync(
+    public async ValueTask<CompanyDTO> CreateCompanyAsync(
         CreateCompanyDTO createCompanyDTO)
     {
 
         var company = CompanyMapper
             .ToCompany(createCompanyDTO);
 
-        await unitOfWork.CompanyRepository
+        var storedCompany = await unitOfWork.CompanyRepository
             .CreateAsync(company);
 
         await unitOfWork.SaveChangesAsync();
 
         return CompanyMapper
-            .ToCompanyDTO(company);
+            .ToCompanyDTO(storedCompany);
     }
-    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllEntitiesAsync()
+    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompnaiesAsync()
     {
         var companies = await unitOfWork
             .CompanyRepository.GetAllAsync();
@@ -38,13 +38,13 @@ public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyC
         return companies.Select(company =>
         CompanyMapper.ToCompanyDTO(company));
     }
-    public async ValueTask<CompanyDTO> RetrieveByIdEntityAsync(Guid id)
+    public async ValueTask<CompanyDTO> RetrieveCompanyByIdAsync(Guid id)
     {
         var storageCompany = await GetByExpressionAsync(id);
 
         return CompanyMapper.ToCompanyDTO(storageCompany);
     }
-    public async ValueTask<CompanyDTO> ModifyEntityAsync(
+    public async ValueTask<CompanyDTO> ModifyCompanyAsync(
         ModifyCompanyDTO modifyCompanyDTO)
     {
         var storageCompany = await GetByExpressionAsync(modifyCompanyDTO.Id);
@@ -59,7 +59,7 @@ public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyC
 
         return CompanyMapper.ToCompanyDTO(modifiedCompany);
     }
-    public async ValueTask<CompanyDTO> DeleteEntityAsync(Guid id)
+    public async ValueTask<CompanyDTO> DeleteCompanyAsync(Guid id)
     {
         var storageCompany = await GetByExpressionAsync(id);
 
@@ -71,7 +71,7 @@ public class CompanyService : IServiceBase<CreateCompanyDTO, CompanyDTO, ModifyC
         return CompanyMapper.ToCompanyDTO(company);
     }
 
-    private async ValueTask<Company> GetByExpressionAsync(Guid id)
+    private async ValueTask<Company?> GetByExpressionAsync(Guid id)
     {
         var companies = await this.unitOfWork.CompanyRepository
            .GetByExpression(expression => expression.Id == id);
