@@ -5,8 +5,9 @@ public record AddressDto(
     [Required] 
      Guid id,
 
-    [Required]
+    [Required()]
     [MaxLength(50)]
+    
     string country,
 
     [Required]

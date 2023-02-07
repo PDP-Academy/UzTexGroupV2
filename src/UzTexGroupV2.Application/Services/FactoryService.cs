@@ -9,13 +9,11 @@ namespace UzTexGroupV2.Application.Services;
 public class FactoryService
 {
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
-    private readonly UnitOfWork unitOfWork;
     private readonly AddressService addressService;
 
-    public FactoryService(LocalizedUnitOfWork localizedUnitOfWork, UnitOfWork unitOfWork, AddressService addressService)
+    public FactoryService(LocalizedUnitOfWork localizedUnitOfWork, AddressService addressService)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
-        this.unitOfWork = unitOfWork;
         this.addressService = addressService;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
@@ -45,20 +43,14 @@ public class FactoryService
 
     public async ValueTask<FactoryDto> RetrieveFactoryByIdAsync(Guid id)
     {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-            .GetByExpression(expression: factory => factory.Id == id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
+        var storageFactory = await GetByExpressionAsync(id);
 
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
 
     public async ValueTask<FactoryDto> ModifyFactoryAsync(ModifyFactoryDto modifyFactoryDto)
     {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-            .GetByExpression(expression: factory => factory.Id == modifyFactoryDto.id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
+        var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
 
         FactoryMap.MapToFactory(
             factory : storageFactory,
@@ -76,10 +68,7 @@ public class FactoryService
     }
     public async ValueTask<FactoryDto> DeleteEntityAsync(Guid id)
     {
-        var factories = await this.localizedUnitOfWork.FactoryRepository
-           .GetByExpression(expression: factory => factory.Id == id);
-
-        var storageFactory = await factories.FirstOrDefaultAsync();
+        var storageFactory = await GetByExpressionAsync(id);
 
         var deletedFactory = await this.localizedUnitOfWork.FactoryRepository
             .DeleteAsync(entity: storageFactory);
@@ -87,5 +76,16 @@ public class FactoryService
         await this.localizedUnitOfWork.SaveChangesAsync();
 
         return FactoryMap.MapToFactoryDto(factory : deletedFactory);
+    }
+    private async ValueTask<Factory> GetByExpressionAsync(Guid id)
+    {
+        Validations.ValidateId(id);
+
+        var factories = await this.localizedUnitOfWork.FactoryRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(factories);
+
+        return await factories.FirstOrDefaultAsync();
     }
 }

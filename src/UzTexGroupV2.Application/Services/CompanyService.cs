@@ -73,8 +73,12 @@ public class CompanyService
 
     private async ValueTask<Company?> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var companies = await this.unitOfWork.CompanyRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(companies);
 
         return await companies.FirstOrDefaultAsync();
     }
