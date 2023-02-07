@@ -69,8 +69,12 @@ public class NewsService
     }
     private async ValueTask<News> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var news = await this.lacalizedUnitOfWork.NewsRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(news);
 
         return await news.FirstOrDefaultAsync();
     }

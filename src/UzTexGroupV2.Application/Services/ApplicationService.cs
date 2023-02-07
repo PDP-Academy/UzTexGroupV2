@@ -84,8 +84,12 @@ public class ApplicationService
 
     private async ValueTask<Applications> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var applications = await this.unitOfWork.ApplicationRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(applications);
 
         return await applications.FirstOrDefaultAsync();
     }
