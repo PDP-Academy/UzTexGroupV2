@@ -67,8 +67,12 @@ public class JobService
     }
     private async ValueTask<Job> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var jobs = await this.localizedUnitOfWork.JobRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(jobs);
 
         return await jobs.FirstOrDefaultAsync();
     }
