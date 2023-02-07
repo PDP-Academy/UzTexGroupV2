@@ -2,7 +2,7 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.Application;
 
-public record ApplicationDto(
+public record ApplicationDto( 
     Guid id,
     string firstName,
     string? lastName,

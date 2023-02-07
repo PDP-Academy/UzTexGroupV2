@@ -82,7 +82,7 @@ public class FactoryService : IServiceBase<CreateFactoryDto, FactoryDto, ModifyF
         var modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
             .UpdateAsync(entity: storageFactory);
 
-        this.localizedUnitOfWork.SaveChangesAsync();
+        await this.localizedUnitOfWork.SaveChangesAsync();
 
         return FactoryMap.MapToFactoryDto(modifiedFactory);
     }
