@@ -9,7 +9,7 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     public void Configure(EntityTypeBuilder<Company> builder)
     {
         builder.ToTable(nameof(Company))
-            .HasKey(company => company.Id);
+            .HasKey(company => new{ company.Id, company.LanguageCode });
 
         builder.Property(company => company.Name)
             .IsRequired()

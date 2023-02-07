@@ -9,19 +9,16 @@ public class FactoryConfiguration : IEntityTypeConfiguration<Factory>
     public void Configure(EntityTypeBuilder<Factory> builder)
     {
         builder.ToTable(nameof(Factory))
-            .HasKey(factory => factory.Id);
+            .HasKey(factory => new { factory.Id, factory.LanguageCode });
 
-        builder.Property(factory => factory.Name)
-            .IsRequired()
-            .HasMaxLength(100);
-
-        builder.HasOne(factory => factory.Company)
+        builder
+            .HasOne(factory => factory.Company)
             .WithMany(company => company.Factories)
-            .HasForeignKey(factory => factory.CompanyId);
+            .HasForeignKey(factory => new { factory.CompanyId, factory.LanguageCode });
 
-        builder.HasOne(factory => factory.Address)
+        builder
+            .HasOne(factory => factory.Address)
             .WithOne()
             .HasForeignKey<Factory>(factory => factory.AddressId);
-
     }
 }

@@ -8,32 +8,17 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
 {
     public void Configure(EntityTypeBuilder<News> builder)
     {
-        builder.ToTable(nameof(News));
+        builder
+            .ToTable(nameof(News));
 
-        builder.HasKey(news => news.Id);
+        builder
+            .HasKey(news => new { news.Id, news.LanguageCode });
 
         builder
             .Property(news => news.Date)
             .IsRequired();
-
-        builder
-            .Property(news => news.TitleId) 
-            .IsRequired();
-            
-        builder
-            .Property(news => news.DescriptionId)
-            .IsRequired();
-
-        builder
-            .Property(news => news.Titles)
-            .IsRequired();
-
-        builder
-            .Property(news => news.Descriptions)
-            .IsRequired();
-
-        builder
-            .Property(news => news.Images)
-            .IsRequired();
+        // builder
+        //     .Property(news => news.Images)
+        //     .IsRequired();
     }
 }
