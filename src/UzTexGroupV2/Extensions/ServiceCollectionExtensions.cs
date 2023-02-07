@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UzTexGroupV2.Filters;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 
@@ -24,6 +25,16 @@ public static class ServiceCollectionExtensions
         //DO-NOT: Unit Of works can't to add to services as Transient
         serviceCollection.AddScoped<LocalizedUnitOfWork>();
         serviceCollection.AddScoped<UnitOfWork>();
+        
+        return serviceCollection;
+    }
+    
+    public static IServiceCollection ConfigureFilters(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddControllers(configure =>
+        {
+            configure.Filters.Add<ResponeFilter>();
+        });
         
         return serviceCollection;
     }

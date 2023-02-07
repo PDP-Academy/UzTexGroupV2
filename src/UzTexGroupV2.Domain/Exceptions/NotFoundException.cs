@@ -1,4 +1,4 @@
-﻿namespace UzTexGroupV2.Domain.Exceptions;
+﻿namespace UzTexGroupV2.Domain;
 
 public class NotFoundException : Exception
 {
