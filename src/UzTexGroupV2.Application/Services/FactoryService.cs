@@ -48,6 +48,8 @@ public class FactoryService
         var factories = await this.localizedUnitOfWork.FactoryRepository
             .GetByExpression(expression: factory => factory.Id == id);
 
+        var storageFactory = await factories.FirstOrDefaultAsync();
+
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
 
@@ -55,6 +57,8 @@ public class FactoryService
     {
         var factories = await this.localizedUnitOfWork.FactoryRepository
             .GetByExpression(expression: factory => factory.Id == modifyFactoryDto.id);
+
+        var storageFactory = await factories.FirstOrDefaultAsync();
 
         FactoryMap.MapToFactory(
             factory : storageFactory,
@@ -74,6 +78,8 @@ public class FactoryService
     {
         var factories = await this.localizedUnitOfWork.FactoryRepository
            .GetByExpression(expression: factory => factory.Id == id);
+
+        var storageFactory = await factories.FirstOrDefaultAsync();
 
         var deletedFactory = await this.localizedUnitOfWork.FactoryRepository
             .DeleteAsync(entity: storageFactory);
