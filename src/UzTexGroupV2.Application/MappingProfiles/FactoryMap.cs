@@ -13,11 +13,13 @@ internal static class FactoryMap
             companyDTO: factory.Company is not null ? CompanyMapper.ToCompanyDTO(factory.Company) : null,
             addressDto: factory.Address is not null ? AddressMap.MapToAddressDto(factory.Address) : null);
     }
-    internal static void MapToFactory(Factory factory,ModifyFactoryDto modifyFactoryDto)
+    internal static void MapToFactory(Factory factory, ModifyFactoryDto modifyFactoryDto)
     {
         factory.Name = modifyFactoryDto.name ?? factory.Name;
-        factory.CompanyId = modifyFactoryDto.companyId ?? factory.CompanyId;
-        factory.AddressId = modifyFactoryDto.modifyAddressDto.addressId;
+        if (modifyFactoryDto.companyDto is not null)
+            CompanyMapper.ToCompany(modifyFactoryDto.companyDto, factory.Company);
+        if (modifyFactoryDto.modifyAddressDto is not null)
+            AddressMap.MapToAddress(modifyFactoryDto.modifyAddressDto, factory.Address);
     }
 
     internal static Factory MapToFactory(CreateFactoryDto createFactoryDto)
