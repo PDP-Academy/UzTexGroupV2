@@ -6,7 +6,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class JobService : IServiceBase<CreateJobDto, JobDto, ModifyJobDto>
+public class JobService
 {
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
 
@@ -15,19 +15,19 @@ public class JobService : IServiceBase<CreateJobDto, JobDto, ModifyJobDto>
         this.localizedUnitOfWork = localizedUnitOfWork;
     }
 
-    public async ValueTask<JobDto> CreateEntityAsync(CreateJobDto createJobDto)
+    public async ValueTask<JobDto> CreateJobAsync(CreateJobDto createJobDto)
     {
         var job = JobMap.MapToJob(createJobDto);
 
-        var storageJob = await this.localizedUnitOfWork
+        var storedJob = await this.localizedUnitOfWork
             .JobRepository.CreateAsync(job);
 
         await this.localizedUnitOfWork.SaveChangesAsync();
 
-        return JobMap.MapToJobDto(storageJob);
+        return JobMap.MapToJobDto(storedJob);
     }
 
-    public async ValueTask<IQueryable<JobDto>> RetrieveAllEntitiesAsync()
+    public async ValueTask<IQueryable<JobDto>> RetrieveAllJobsAsync()
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetAllAsync();
@@ -35,29 +35,31 @@ public class JobService : IServiceBase<CreateJobDto, JobDto, ModifyJobDto>
         return jobs.Select(job => JobMap.MapToJobDto(job));
     }
 
-    public async ValueTask<JobDto> RetrieveByIdEntityAsync(Guid id)
+    public async ValueTask<JobDto> RetrieveJobByIdEntityAsync(Guid id)
     {
         var storageJob = await GetByExpressionAsync(id);
 
         return JobMap.MapToJobDto(storageJob);
     }
 
-    public async ValueTask<JobDto> ModifyEntityAsync(ModifyJobDto modifyJobDto)
+    public async ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
     {
         var storageJob = await GetByExpressionAsync(modifyJobDto.Id);
 
-        var job = await this.localizedUnitOfWork.JobRepository.UpdateAsync(storageJob);
+        var job = await this.localizedUnitOfWork.JobRepository
+            .UpdateAsync(storageJob);
 
         await this.localizedUnitOfWork.SaveChangesAsync();
 
         return JobMap.MapToJobDto(job : job);
     }
 
-    public async ValueTask<JobDto> DeleteEntityAsync(Guid id)
+    public async ValueTask<JobDto> DeleteJobAsync(Guid id)
     {
         var storageJob = await GetByExpressionAsync(id);
 
-        var deletedJob = await this.localizedUnitOfWork.JobRepository.DeleteAsync(storageJob);
+        var deletedJob = await this.localizedUnitOfWork.JobRepository
+            .DeleteAsync(storageJob);
 
         await this.localizedUnitOfWork.SaveChangesAsync();
 
