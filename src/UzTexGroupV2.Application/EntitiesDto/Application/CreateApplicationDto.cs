@@ -4,27 +4,27 @@ using UzTexGroupV2.Application.EntitiesDto.Addresses;
 namespace UzTexGroupV2.Application.EntitiesDto.Application;
 
 public record CreateApplicationDto(
-    [Required]
-    [MaxLength(30)]
+    [Required(ErrorMessage =$"{ nameof(CreateApplicationDto.firstName)}  berilishi majburiy")]
+    [StringLength(15,ErrorMessage ="Ism 15 ta belgida oshmasligi kerak")]
     string firstName,
 
-    [MaxLength(50)]
+    [StringLength(15,ErrorMessage ="Familiya 15 ta belgida oshmasligi kerak")]
     string? lastName,
 
-    [Required]
-    [MaxLength(15)]
+    [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+    ErrorMessage = "noto'g'ri raqam kirittingiz")]
     string phoneNumber,
 
-    [Required]
-    [MaxLength(300)]
+    [Required(ErrorMessage =$"{ nameof(CreateApplicationDto.applicationMassage)}  berilishi majburiy")]
+    [StringLength(300,ErrorMessage ="Ism 300 ta belgida oshmasligi kerak")]
     string applicationMassage,
 
-    [Required]
-    [EmailAddress]
+    [Required(ErrorMessage =$"{nameof(CreateApplicationDto.email)} berilishi majburiy")]
+    [EmailAddress(ErrorMessage ="noto'g'ri email berildi ")]
     string email,
 
-    [Required]
+    [Required(ErrorMessage =$"{nameof(CreateApplicationDto.jobId)} berilishi majburiy")]
     Guid jobId,
 
-    [Required]
+    [Required(ErrorMessage =$"{nameof(CreateApplicationDto.createAddressDto)} berilishi majburiy")]
     CreateAddressDto createAddressDto);

@@ -2,19 +2,19 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.Addresses;
 public record ModifyAddressDto(
-    [Required]
+    [Required(ErrorMessage =$"{nameof(ModifyAddressDto.addressId)} berilishi majburiy")]
     Guid addressId,
 
-    [MaxLength(50)]
+    [StringLength(50,ErrorMessage =$"Davlat nomi uzunligi 50 ta belgidan oshmasligi kerak")]
     string? country,
 
-    [MaxLength(100)]
+    [StringLength(100,ErrorMessage =$"Viloyat nomi uzunligi 100 ta belgidan oshmasligi kerak")]
     string? region,
 
-    [MaxLength(100)]
+    [StringLength(100,ErrorMessage =$"Tuman nomi uzunligi 100 ta belgidan oshmasligi kerak")]
     string? district,
 
-    [MaxLength(100)]
+    [StringLength(100,ErrorMessage =$"Kocha nomi uzunligi 100 ta belgidan oshmasligi kerak")]
     string? street,
 
     short? postalCode);

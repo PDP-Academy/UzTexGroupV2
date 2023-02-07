@@ -74,8 +74,12 @@ public class UserService
     }
     private async ValueTask<User> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var users = await this.unitOfWork.UserRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(users);
 
         return await users.FirstOrDefaultAsync();
     }

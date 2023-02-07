@@ -30,6 +30,7 @@ public class AddressService
 
     public async ValueTask<AddressDto> DeleteAddressAsync(Guid id)
     {
+
         var storedAddress = await GetByExpressionAsync(id);
 
         var deletedAddress = await this.unitOfWork
@@ -68,8 +69,12 @@ public class AddressService
     }
     private async ValueTask<Address> GetByExpressionAsync(Guid id)
     {
+        Validations.ValidateId(id);
+
         var addresses = await this.unitOfWork.AddressRepository
            .GetByExpression(expression => expression.Id == id);
+
+        Validations.ValidateObject(addresses);
 
         return await addresses.FirstOrDefaultAsync();
     }
