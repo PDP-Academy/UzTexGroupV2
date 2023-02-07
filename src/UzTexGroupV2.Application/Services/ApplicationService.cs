@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto.Application;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
@@ -25,8 +26,9 @@ public class ApplicationService : IServiceBase<CreateApplicationDto, Application
 
         await unitOfWork.AddressRepository.CreateAsync(storageAdress);
 
-        var application = await this.unitOfWork.ApplicationRepository
-            .CreateAsync(storageApplication);
+        var application = await this.unitOfWork
+            .ApplicationRepository.CreateAsync(storageApplication);
+
         await this.unitOfWork.SaveChangesAsync();
 
         return ApplicationMap.MapToApplicationDto(application);
@@ -34,7 +36,8 @@ public class ApplicationService : IServiceBase<CreateApplicationDto, Application
 
     public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllEntitiesAsync()
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetAllAsync();
+        var storageApplications = await this
+            .unitOfWork.ApplicationRepository.GetAllAsync();
 
         return storageApplications.Select(
             application => ApplicationMap.MapToApplicationDto(application));
@@ -42,25 +45,22 @@ public class ApplicationService : IServiceBase<CreateApplicationDto, Application
 
     public async ValueTask<ApplicationDto> RetrieveByIdEntityAsync(Guid id)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-            app => app.Id == id);
+        var storageApplication = await GetByExpressionAsync(id);
 
-        return ApplicationMap.MapToApplicationDto(await storageApplications.FirstOrDefaultAsync());
+        return ApplicationMap.MapToApplicationDto(storageApplication);
     }
 
     public async ValueTask<ApplicationDto> ModifyEntityAsync(
         ModifyApplicationDto modifyApplicationDto)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-                    app => app.Id == modifyApplicationDto.id);
+        var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
 
-        var selectedApplication = await storageApplications.FirstOrDefaultAsync();
 
-        ApplicationMap.MapToApplication(applications: selectedApplication,
+        ApplicationMap.MapToApplication(applications: storageApplication,
             modifyApplicationDto: modifyApplicationDto);
 
         var application = await this.unitOfWork.ApplicationRepository.UpdateAsync(
-            entity: selectedApplication);
+            entity: storageApplication);
 
         await this.unitOfWork.SaveChangesAsync();
 
@@ -69,14 +69,21 @@ public class ApplicationService : IServiceBase<CreateApplicationDto, Application
 
     public async ValueTask<ApplicationDto> DeleteEntityAsync(Guid id)
     {
-        var storageApplications = await this.unitOfWork.ApplicationRepository.GetByExpression(
-                    app => app.Id == id);
-
-        var selectedApplication = await storageApplications.FirstOrDefaultAsync();
+        var storageApplication = await GetByExpressionAsync(id);
 
         var deletedApplication = await this.unitOfWork.ApplicationRepository
-            .DeleteAsync(selectedApplication);
+            .DeleteAsync(storageApplication);
+
+        await this.unitOfWork.SaveChangesAsync();
 
         return ApplicationMap.MapToApplicationDto(deletedApplication);
+    }
+
+    private async ValueTask<Applications> GetByExpressionAsync(Guid id)
+    {
+        var applications = await this.unitOfWork.ApplicationRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        return await applications.FirstOrDefaultAsync();
     }
 }

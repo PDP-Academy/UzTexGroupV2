@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Net;
-using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
@@ -20,23 +18,19 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         CreateAddressDto createAddressDto)
     {
         var address = AddressMap.MapToAddress(createAddressDto, Guid.NewGuid());
+
         var storedAddress = await unitOfWork
             .AddressRepository.CreateAsync(address);
 
         await unitOfWork
             .SaveChangesAsync();
 
-        return AddressMap.MapToAddressDto(address);
+        return AddressMap.MapToAddressDto(storedAddress);
     }
 
-    public async ValueTask<AddressDto> DeleteEntityAsync(Guid Id)
+    public async ValueTask<AddressDto> DeleteEntityAsync(Guid id)
     {
-        var addresses = await this.unitOfWork
-            .AddressRepository
-            .GetByExpression(expression: address =>
-            address.Id == Id);
-
-        var storedAddress = await addresses.FirstOrDefaultAsync();
+        var storedAddress = await GetByExpressionAsync(id);
 
         var deletedAddress = await this.unitOfWork
             .AddressRepository.DeleteAsync(storedAddress);
@@ -46,12 +40,8 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
 
     public async ValueTask<AddressDto> ModifyEntityAsync(ModifyAddressDto modifyAddressDto)
     {
-        var addresses = await this.unitOfWork
-            .AddressRepository
-            .GetByExpression(expression: address =>
-            address.Id == modifyAddressDto.addressId);
+        var address = await GetByExpressionAsync(modifyAddressDto.addressId);
 
-        var address = await addresses.FirstOrDefaultAsync();
 
         AddressMap.MapToAddress(modifyAddressDto, address);
 
@@ -60,7 +50,7 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
 
         await this.unitOfWork.SaveChangesAsync();
 
-        return AddressMap.MapToAddressDto(address);
+        return AddressMap.MapToAddressDto(modifiedAddress);
     }
 
     public async ValueTask<IQueryable<AddressDto>> RetrieveAllEntitiesAsync()
@@ -71,15 +61,17 @@ public class AddressService : IServiceBase<CreateAddressDto, AddressDto, ModifyA
         return addresses.Select(address => AddressMap.MapToAddressDto(address));
     }
 
-    public async ValueTask<AddressDto> RetrieveByIdEntityAsync(Guid Id)
+    public async ValueTask<AddressDto> RetrieveByIdEntityAsync(Guid id)
     {
-        var addresses = await this.unitOfWork
-            .AddressRepository
-            .GetByExpression(expression: address =>
-            address.Id == Id);
-
-        var storedAddress = await addresses.FirstOrDefaultAsync();
+        var storedAddress = await GetByExpressionAsync(id);
 
         return AddressMap.MapToAddressDto(storedAddress);
+    }
+    private async ValueTask<Address> GetByExpressionAsync(Guid id)
+    {
+        var addresses = await this.unitOfWork.AddressRepository
+           .GetByExpression(expression => expression.Id == id);
+
+        return await addresses.FirstOrDefaultAsync();
     }
 }

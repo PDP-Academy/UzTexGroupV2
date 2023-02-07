@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto.News;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
@@ -23,7 +24,7 @@ public class NewsService : IServiceBase<CreateNewsDto, NewsDto, ModifyNewsDto>
 
         await this.lacalizedUnitOfWork.SaveChangesAsync();
 
-        return NewsMap.MapToNewsDto(news);
+        return NewsMap.MapToNewsDto(storageNews);
     }
 
     public async ValueTask<IQueryable<NewsDto>> RetrieveAllEntitiesAsync()
@@ -35,20 +36,14 @@ public class NewsService : IServiceBase<CreateNewsDto, NewsDto, ModifyNewsDto>
 
     public async ValueTask<NewsDto> RetrieveByIdEntityAsync(Guid Id)
     {
-        var news = await this.lacalizedUnitOfWork.NewsRepository
-            .GetByExpression(expression => expression.Id == Id);
-
-        var storageNews = await news.FirstOrDefaultAsync();
+        var storageNews = await GetByExpressionAsync(Id);
 
         return NewsMap.MapToNewsDto(storageNews);
     }
 
     public async ValueTask<NewsDto> ModifyEntityAsync(ModifyNewsDto modifyNewsDto)
     {
-        var news = await this.lacalizedUnitOfWork.NewsRepository
-            .GetByExpression(expression => expression.Id == modifyNewsDto.id);
-
-        var storageNews = await news.FirstOrDefaultAsync();
+        var storageNews = await GetByExpressionAsync(modifyNewsDto.id);
 
         NewsMap.MapToNews(
             modifyNewsDto: modifyNewsDto,
@@ -56,16 +51,14 @@ public class NewsService : IServiceBase<CreateNewsDto, NewsDto, ModifyNewsDto>
 
         var modeifiedNews = await this.lacalizedUnitOfWork.NewsRepository
             .UpdateAsync(storageNews);
+
         await this.lacalizedUnitOfWork.SaveChangesAsync();
 
         return NewsMap.MapToNewsDto(modeifiedNews);
     }
     public async ValueTask<NewsDto> DeleteEntityAsync(Guid Id)
     {
-        var news = await this.lacalizedUnitOfWork.NewsRepository
-            .GetByExpression(expression => expression.Id == Id);
-
-        var storageNews = await news.FirstOrDefaultAsync();
+        var storageNews = await GetByExpressionAsync(Id);
 
         var deletedNews = await this.lacalizedUnitOfWork.NewsRepository
             .DeleteAsync(storageNews);
@@ -74,5 +67,11 @@ public class NewsService : IServiceBase<CreateNewsDto, NewsDto, ModifyNewsDto>
 
         return NewsMap.MapToNewsDto(deletedNews);
     }
+    private async ValueTask<News> GetByExpressionAsync(Guid id)
+    {
+        var news = await this.lacalizedUnitOfWork.NewsRepository
+           .GetByExpression(expression => expression.Id == id);
 
+        return await news.FirstOrDefaultAsync();
+    }
 }
