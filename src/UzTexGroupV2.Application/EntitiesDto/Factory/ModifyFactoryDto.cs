@@ -2,7 +2,7 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.Factory;
 
-internal record ModifyFactoryDto(
+public record ModifyFactoryDto(
     Guid id,
     string? name,
     Guid? companyId,

@@ -53,7 +53,8 @@ public class FactoryService : IServiceBase<CreateFactoryDto, FactoryDto, ModifyF
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
 
-    public async ValueTask<FactoryDto> ModifyEntityAsync(ModifyFactoryDto modifyFactoryDto)
+    public async ValueTask<FactoryDto> ModifyEntityAsync(
+        ModifyFactoryDto modifyFactoryDto)
     {
         var factories = await this.localizedUnitOfWork.FactoryRepository
             .GetByExpression(expression: factory => factory.Id == modifyFactoryDto.id);
