@@ -1,8 +1,21 @@
-﻿namespace UzTexGroupV2.Application.EntitiesDto;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UzTexGroupV2.Application.EntitiesDto;
 
 public record CreateUserDto(
     Guid? id,
+
+    [Required(ErrorMessage =$"{nameof(CreateUserDto.firstName)} berilishi majburiy ")]
+    [MaxLength(15,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string firstName,
+
+    [MaxLength(15,ErrorMessage =$"Familiyaning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string? lastName,
+
+    [Required(ErrorMessage =$"{nameof(CreateUserDto.email)} berilishi majburiy ")]
+    [EmailAddress(ErrorMessage =$"Email noto'g'ri kiritildi")]
     string email,
+
+    [Required(ErrorMessage =$"parol berilishi majburiy ")]
+    [MinLength(6,ErrorMessage ="uzunligi 6 tabelgidan kam bo'lmasligi kerak"),MaxLength(255)]
     string password);
