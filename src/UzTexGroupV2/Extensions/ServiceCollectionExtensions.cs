@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 
@@ -25,6 +26,18 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<LocalizedUnitOfWork>();
         serviceCollection.AddScoped<UnitOfWork>();
         
+        return serviceCollection;
+    }
+    public static IServiceCollection AddApplication(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddScoped<AddressService>();
+        serviceCollection.AddScoped<ApplicationService>();
+        serviceCollection.AddScoped<CompanyService>();
+        serviceCollection.AddScoped<FactoryService>();
+        serviceCollection.AddScoped<JobService>();
+        serviceCollection.AddScoped<NewsService>();
+        serviceCollection.AddScoped<UserService>();
+
         return serviceCollection;
     }
 }
