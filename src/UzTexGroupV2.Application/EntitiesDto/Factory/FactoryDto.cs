@@ -11,4 +11,4 @@ public record FactoryDto(
     [StringLength(15, ErrorMessage = "Ism 15 ta belgida oshmasligi kerak")]
     string name,
     CompanyDTO? companyDTO,
-    AddressDto? addressDto);
+    Addresses.AddressDto? addressDto);

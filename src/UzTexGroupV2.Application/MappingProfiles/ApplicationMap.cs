@@ -1,4 +1,4 @@
-﻿using UzTexGroupV2.Application.EntitiesDto.Application;
+﻿using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Application.MappingProfiles;

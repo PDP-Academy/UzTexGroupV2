@@ -36,6 +36,8 @@ public class AddressService
         var deletedAddress = await this.unitOfWork
             .AddressRepository.DeleteAsync(storedAddress);
 
+        await this.unitOfWork.SaveChangesAsync();
+
         return AddressMap.MapToAddressDto(deletedAddress);
     }
 
@@ -61,7 +63,7 @@ public class AddressService
         return addresses.Select(address => AddressMap.MapToAddressDto(address));
     }
 
-    public async ValueTask<AddressDto> RetrieveAddressByIdEntityAsync(Guid id)
+    public async ValueTask<AddressDto> RetrieveAddressByIdAsync(Guid id)
     {
         var storedAddress = await GetByExpressionAsync(id);
 

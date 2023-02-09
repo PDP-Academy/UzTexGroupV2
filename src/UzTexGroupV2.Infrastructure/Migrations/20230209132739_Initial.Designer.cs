@@ -12,7 +12,7 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230209110303_Initial")]
+    [Migration("20230209132739_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

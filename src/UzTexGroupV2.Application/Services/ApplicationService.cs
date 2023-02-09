@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UzTexGroupV2.Application.EntitiesDto.Application;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;

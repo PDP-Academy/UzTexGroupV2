@@ -15,9 +15,10 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     
     public virtual async ValueTask<IQueryable<T>> GetAllAsync()
     {
-        return context
+        var a = context
             .Set<T>()
             .AsNoTracking();
+        return a;
     }
 
     public virtual async ValueTask<IQueryable<T>> GetByExpression(Expression<Func<T, bool>> expression)

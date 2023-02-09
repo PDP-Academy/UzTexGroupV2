@@ -66,7 +66,7 @@ public class FactoryService
 
         return FactoryMap.MapToFactoryDto(modifiedFactory);
     }
-    public async ValueTask<FactoryDto> DeleteEntityAsync(Guid id)
+    public async ValueTask<FactoryDto> DeleteFactoryAsync(Guid id)
     {
         var storageFactory = await GetByExpressionAsync(id);
 
