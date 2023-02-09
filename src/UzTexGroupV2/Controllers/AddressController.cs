@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("/{api}/[controller]")]
+[Route("/{api}/address")]
 [ApiController]
 public class AddressController : LocalizedControllerBase
 {
