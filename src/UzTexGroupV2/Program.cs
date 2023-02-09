@@ -9,12 +9,13 @@ namespace UzTexGroupV2
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContexts(builder.Configuration);
+            builder.Services
+                .AddDbContexts(builder.Configuration)
+                .ConfigureRepositories()
+                .AddApplication();
+
 
             builder.Services.AddControllers();
-
-            builder.Services.ConfigureRepositories();
-            builder.Services.ConfigureFilters();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
