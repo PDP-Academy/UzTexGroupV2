@@ -11,6 +11,7 @@ public class Applications
     public string ApplicationMessage { get; set; }
     
     public Guid JobId { get; set; }
+    public string JobLanguageCode { get; set; }
     public Job Job { get; set; }
     
     public Address? Address { get; set; }
