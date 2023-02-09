@@ -66,7 +66,7 @@ public class UserService
         return users.Select(user => UserMap.MapToUserDto(user));
     }
 
-    public async ValueTask<UserDto> RetrieveByIdEntityAsync(Guid Id)
+    public async ValueTask<UserDto> RetrieveByIdUserAsync(Guid Id)
     {
         var storedUser = await GetByExpressionAsync(Id);
 

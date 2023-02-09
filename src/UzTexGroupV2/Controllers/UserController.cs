@@ -1,10 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.Services;
-using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Filters;
 using UzTexGroupV2.Infrastructure.Repositories;
-using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -12,16 +11,68 @@ namespace UzTexGroupV2.Controllers;
 [Route("/{langCode}/[controller]")]
 public class UserController : LocalizedControllerBase
 {
-    public UserController(LocalizedUnitOfWork localizedUnitOfWork, UserService service) : base(localizedUnitOfWork)
+    private readonly UserService userService;
+    public UserController(LocalizedUnitOfWork localizedUnitOfWork, UserService userService) : base(localizedUnitOfWork)
     {
+        this.userService = userService;
     }
 
-    [HttpGet]
-    [ResponeFilter]
-    public List<int> GetData()
-    {
-        Console.WriteLine(base.Request.RouteValues["langCode"]);
+    //[HttpGet]
+    //[ResponeFilter]
+    //public List<int> GetData()
+    //{
+    //    Console.WriteLine(base.Request.RouteValues["langCode"]);
 
-        return new List<int>() { 1, 2, 3 };
+    //    return new List<int>() { 1, 2, 3 };
+    //}
+    [AllowAnonymous]
+    [HttpPost]
+    public async ValueTask<ActionResult<UserDto>> PostUserAsync(
+        CreateUserDto createUserDto)
+    {
+        var createdUser = await this.userService
+            .CreateUserAsync(createUserDto);
+
+        return Created("", createdUser);
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    public async ValueTask<ActionResult<UserDto>> GetAllUsers()
+    {
+        var users = await this.userService
+            .RetrieveAllUsersAsync();
+
+        return Ok(users);
+    }
+
+    [HttpGet("{userId:guid}")]
+    public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
+        Guid userId)
+    {
+        var user = await this.userService
+            .RetrieveByIdUserAsync(userId);
+
+        return Ok(user);
+    }
+
+    [HttpPut]
+    public async ValueTask<ActionResult<UserDto>> PutUserAsync(
+        ModifyUserDto modifyUserDto)
+    {
+        var modifiedUser = await this.userService
+            .ModifyUserAsync(modifyUserDto);
+
+        return Ok(modifiedUser);
+    }
+
+    [HttpDelete("{userId:guid}")]
+    public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
+        Guid userId)
+    {
+        var removed = await this
+            .DeleteUserAsync(userId);
+
+        return Ok(removed);
     }
 }
