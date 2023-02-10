@@ -6,7 +6,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("api/job")]
+[Route("{langCode}/api/[controller]")]
 [ApiController]
 public class JobController : LocalizedControllerBase
 {
@@ -29,10 +29,10 @@ public class JobController : LocalizedControllerBase
 
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<JobDto>> GetJobByIdAsync(
-        Guid id)
+        Guid jobId)
     {
         var Job = await this.jobService
-            .RetrieveJobByIdEntityAsync(id);
+            .RetrieveJobByIdAsync(jobId);
 
         return Ok(Job);
     }
@@ -47,7 +47,7 @@ public class JobController : LocalizedControllerBase
     }
 
     [HttpPut]
-    public async ValueTask<ActionResult<JobDto>> UpdateJobAsync(
+    public async ValueTask<ActionResult<JobDto>> PutJobAsync(
         ModifyJobDto modifyJobDto)
     {
         var updatedJob = await this.jobService
@@ -57,10 +57,10 @@ public class JobController : LocalizedControllerBase
     }
 
     [HttpDelete("id : Guid")]
-    public async ValueTask<ActionResult<JobDto>> DeleteAdressAsync(Guid id)
+    public async ValueTask<ActionResult<JobDto>> DeleteAdressAsync(Guid jobId)
     {
         var deletedAdress = await this.jobService
-            .DeleteJobAsync(id);
+            .DeleteJobAsync(jobId);
         return Ok(deletedAdress);
     }
 }

@@ -13,7 +13,6 @@ internal static class NewsMap
             Date = DateTime.UtcNow,
             Title = createNewsDto.title,
             Description= createNewsDto.description,
-            LanguageCode = createNewsDto.LanguageCode
         };
     }
     internal static void MapToNews(ModifyNewsDto modifyNewsDto, News news)

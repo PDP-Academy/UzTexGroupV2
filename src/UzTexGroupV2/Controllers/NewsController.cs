@@ -6,7 +6,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("api/news")]
+[Route("{langCode}/api/[controller]")]
 [ApiController]
 public class NewsController : LocalizedControllerBase
 {
@@ -28,10 +28,10 @@ public class NewsController : LocalizedControllerBase
 
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<NewsDto>> GetNewsByIdAsync(
-        Guid id)
+        Guid newsId)
     {
         var News = await this.newsService
-            .RetrieveNewsByIdAsync(id);
+            .RetrieveNewsByIdAsync(newsId);
 
         return Ok(News);
     }
@@ -46,7 +46,7 @@ public class NewsController : LocalizedControllerBase
     }
 
     [HttpPut]
-    public async ValueTask<ActionResult<NewsDto>> UpdateNewsAsync(
+    public async ValueTask<ActionResult<NewsDto>> PutNewsAsync(
         ModifyNewsDto modifyNewsDto)
     {
         var updatedNews = await this.newsService
@@ -56,10 +56,10 @@ public class NewsController : LocalizedControllerBase
     }
 
     [HttpDelete("id : Guid")]
-    public async ValueTask<ActionResult<NewsDto>> DeleteAdressAsync(Guid id)
+    public async ValueTask<ActionResult<NewsDto>> DeleteAdressAsync(Guid newsId)
     {
         var deletedAdress = await this.newsService
-            .DeleteNewsAsync(id);
+            .DeleteNewsAsync(newsId);
         return Ok(deletedAdress);
     }
 }

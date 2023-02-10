@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("api/application")]
+[Route("{langCode}/api/[controller]")]
 [ApiController]
 public class ApplicationController : LocalizedControllerBase
 {
@@ -28,10 +28,10 @@ public class ApplicationController : LocalizedControllerBase
 
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<ApplicationDto>> GetApplicationByIdAsync(
-        Guid id)
+        Guid applicationId)
     {
         var Application = await this.applicationService
-            .RetrieveApplicationByIdAsync(id);
+            .RetrieveApplicationByIdAsync(applicationId);
 
         return Ok(Application);
     }
@@ -46,7 +46,7 @@ public class ApplicationController : LocalizedControllerBase
     }
 
     [HttpPut]
-    public async ValueTask<ActionResult<ApplicationDto>> UpdateApplicationAsync(
+    public async ValueTask<ActionResult<ApplicationDto>> PutApplicationAsync(
         ModifyApplicationDto modifyApplicationDto)
     {
         var updatedApplication = await this.applicationService

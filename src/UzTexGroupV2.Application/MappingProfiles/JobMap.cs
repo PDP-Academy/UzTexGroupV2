@@ -16,7 +16,6 @@ internal static class JobMap
             Desription = createJobDto.Desription,
             Salary = createJobDto.Salary,
             WorkTime = createJobDto.WorkTime,
-            LanguageCode = createJobDto.LanguageCode,
             FactoryId = createJobDto.FactoryId
         };
     }

@@ -2,7 +2,7 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
-public record CreateNewsDto : LocalizedDTO
+public record CreateNewsDto
 {
     public Guid? id;
 

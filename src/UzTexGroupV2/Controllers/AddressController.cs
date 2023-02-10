@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("/{api}/address")]
+[Route("/{langCode}/[controller]")]
 [ApiController]
 public class AddressController : LocalizedControllerBase
 {
@@ -46,8 +46,8 @@ public class AddressController : LocalizedControllerBase
     }
 
     [HttpPut]
-    public async ValueTask<ActionResult<AddressDto>> UpdateAddressAsync(
-        ModifyAddressDto modifyAddressDto)
+    public async ValueTask<ActionResult<AddressDto>> PutAddressAsync(
+        [FromBody] ModifyAddressDto modifyAddressDto)
     {
         var updatedAddress = await this.addressService
             .ModifyAddressAsync(modifyAddressDto);
@@ -56,10 +56,11 @@ public class AddressController : LocalizedControllerBase
     }
 
     [HttpDelete("id : Guid")]
-    public async ValueTask<ActionResult<AddressDto>> DeleteAdressAsync(Guid id)
+    public async ValueTask<ActionResult<AddressDto>> DeleteAdressAsync(Guid addressId)
     {
         var deletedAdress = await this.addressService
-            .DeleteAddressAsync(id);
+            .DeleteAddressAsync(addressId);
+
         return Ok(deletedAdress);
     }
 }

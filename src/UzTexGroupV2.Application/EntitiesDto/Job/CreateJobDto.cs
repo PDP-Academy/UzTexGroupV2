@@ -2,7 +2,7 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto;
 
-public record CreateJobDto : LocalizedDTO
+public record CreateJobDto
 {
     public Guid? Id { get; set; }
 

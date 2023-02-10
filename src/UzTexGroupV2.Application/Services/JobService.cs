@@ -35,7 +35,7 @@ public class JobService
         return jobs.Select(job => JobMap.MapToJobDto(job));
     }
 
-    public async ValueTask<JobDto> RetrieveJobByIdEntityAsync(Guid id)
+    public async ValueTask<JobDto> RetrieveJobByIdAsync(Guid id)
     {
         var storageJob = await GetByExpressionAsync(id);
 

@@ -44,7 +44,7 @@ public class UserController : LocalizedControllerBase
         return Ok(users);
     }
 
-    [HttpGet("{userId:guid}")]
+    [HttpGet("{id:guid}")]
     public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
         Guid userId)
     {
