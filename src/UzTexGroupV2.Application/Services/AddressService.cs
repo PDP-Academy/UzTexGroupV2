@@ -76,7 +76,7 @@ public class AddressService
         var addresses = await this.unitOfWork.AddressRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(addresses);
+        Validations.ValidateObjectForNullable(addresses);
 
         return await addresses.FirstOrDefaultAsync();
     }

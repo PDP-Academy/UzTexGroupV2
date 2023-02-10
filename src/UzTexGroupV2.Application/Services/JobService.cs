@@ -72,7 +72,7 @@ public class JobService
         var jobs = await this.localizedUnitOfWork.JobRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(jobs);
+        Validations.ValidateObjectForNullable(jobs);
 
         return await jobs.FirstOrDefaultAsync();
     }

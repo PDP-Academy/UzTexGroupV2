@@ -74,7 +74,7 @@ public class NewsService
         var news = await this.lacalizedUnitOfWork.NewsRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(news);
+        Validations.ValidateObjectForNullable(news);
 
         return await news.FirstOrDefaultAsync();
     }

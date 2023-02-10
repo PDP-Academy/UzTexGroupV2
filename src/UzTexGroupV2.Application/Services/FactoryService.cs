@@ -18,6 +18,7 @@ public class FactoryService
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {
+        
         var factory = FactoryMap.MapToFactory(createFactoryDto);
         
         var storedAddress = await this.addressService
@@ -67,7 +68,7 @@ public class FactoryService
     public async ValueTask<FactoryDto> DeleteFactoryAsync(Guid id)
     {
         var storageFactory = await GetByExpressionAsync(id);
-
+        
         var deletedFactory = await this.localizedUnitOfWork.FactoryRepository
             .DeleteAsync(entity: storageFactory);
 
@@ -82,7 +83,7 @@ public class FactoryService
         var factories = await this.localizedUnitOfWork.FactoryRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(factories);
+        Validations.ValidateObjectForNullable(factories);
 
         return await factories.FirstOrDefaultAsync();
     }

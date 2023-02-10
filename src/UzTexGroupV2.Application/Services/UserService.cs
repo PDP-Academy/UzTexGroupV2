@@ -79,7 +79,7 @@ public class UserService
         var users = await this.unitOfWork.UserRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(users);
+        Validations.ValidateObjectForNullable(users);
 
         return await users.FirstOrDefaultAsync();
     }

@@ -89,7 +89,7 @@ public class ApplicationService
         var applications = await this.unitOfWork.ApplicationRepository
            .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(applications);
+        Validations.ValidateObjectForNullable(applications);
 
         return await applications.FirstOrDefaultAsync();
     }

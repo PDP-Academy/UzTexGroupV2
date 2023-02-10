@@ -6,10 +6,10 @@ public static class Validations
 {
     public static void ValidateId(Guid id)
     {
-        if (id == default)
-            throw new InvalidIdException("Bu id yaroqli emas!");
+        // if (id == default)
+        //     throw new InvalidIdException("Bu id yaroqli emas!");
     }
-    public static void ValidateObject<T>(T entity)
+    public static void ValidateObjectForNullable<T>(T entity)
     {
         if (entity is null)
             throw new NotFoundException($"{nameof(entity)} ob'ekt topilmadi");

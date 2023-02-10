@@ -81,7 +81,7 @@ public class CompanyService
         var companies = await this.unitOfWork.CompanyRepository
             .GetByExpression(expression => expression.Id == id);
 
-        Validations.ValidateObject(companies);
+        Validations.ValidateObjectForNullable(companies);
 
         return await companies.FirstOrDefaultAsync();
     }
