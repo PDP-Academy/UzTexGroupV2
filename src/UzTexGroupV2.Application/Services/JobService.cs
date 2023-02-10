@@ -70,10 +70,15 @@ public class JobService
         Validations.ValidateId(id);
 
         var jobs = await this.localizedUnitOfWork.JobRepository
-           .GetByExpression(expression => expression.Id == id);
+           .GetByExpression(
+            expression => expression.Id == id,
+            new string[] { "Factory"});
 
-        Validations.ValidateObjectForNullable(jobs);
+        var job = await jobs.FirstOrDefaultAsync();
 
-        return await jobs.FirstOrDefaultAsync();
+        Validations.ValidateObjectForNullable(job);
+
+        return job;
+
     }
 }

@@ -71,11 +71,14 @@ public class NewsService
     {
         Validations.ValidateId(id);
 
-        var news = await this.lacalizedUnitOfWork.NewsRepository
-           .GetByExpression(expression => expression.Id == id);
+        var newss = await this.lacalizedUnitOfWork.NewsRepository
+           .GetByExpression(expression => expression.Id == id, new string[] { });
+
+        var news = await newss.FirstOrDefaultAsync();
 
         Validations.ValidateObjectForNullable(news);
 
-        return await news.FirstOrDefaultAsync();
+        return news;
+
     }
 }

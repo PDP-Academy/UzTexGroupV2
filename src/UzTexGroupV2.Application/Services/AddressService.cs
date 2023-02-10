@@ -75,7 +75,7 @@ public class AddressService
 
         var addresses = await this.unitOfWork.AddressRepository.GetByExpression(
             expression => expression.Id == id,
-            null);
+            new string[] {});
 
         var address = await addresses.FirstOrDefaultAsync();
 

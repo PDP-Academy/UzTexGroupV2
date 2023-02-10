@@ -28,7 +28,7 @@ internal static class JobMap
             description : job.Desription,
             salary : job.Salary,
             workTime : job.WorkTime,
-            factoryDto : FactoryMap.MapToFactoryDto(job.Factory)
+            FactoryDto = null
         );
     }
 

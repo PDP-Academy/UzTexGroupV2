@@ -81,10 +81,15 @@ public class FactoryService
         Validations.ValidateId(id);
 
         var factories = await this.localizedUnitOfWork.FactoryRepository
-           .GetByExpression(expression => expression.Id == id);
+           .GetByExpression(
+            expression => expression.Id == id,
+            new string[] {"Address", "Company"});
 
-        Validations.ValidateObjectForNullable(factories);
+        var factory = await factories.FirstOrDefaultAsync();
 
-        return await factories.FirstOrDefaultAsync();
+        Validations.ValidateObjectForNullable(factory);
+
+        return factory;
+
     }
 }

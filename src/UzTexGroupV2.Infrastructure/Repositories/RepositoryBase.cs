@@ -32,7 +32,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
         foreach(var item in includes )
         {
-            entities.Include(item);
+            entities = entities.Include(item);
         }
 
         return entities;

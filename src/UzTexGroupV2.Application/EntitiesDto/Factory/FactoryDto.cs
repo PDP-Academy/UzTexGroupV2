@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 
@@ -12,4 +11,4 @@ public record FactoryDto(
     [StringLength(15, ErrorMessage = "Ism 15 ta belgida oshmasligi kerak")]
     string name,
     CompanyDTO? companyDTO,
-    Addresses.AddressDto? addressDto);
+    AddressDto? addressDto);
