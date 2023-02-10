@@ -46,7 +46,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
             .Entity;
     }
 
-    public async ValueTask<T> DeleteAsync(T entity)
+    public virtual async ValueTask<T> DeleteAsync(T entity)
     {
         return context
             .Set<T>()
