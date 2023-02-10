@@ -7,8 +7,8 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Controller]
 [Route("/{langCode}/[controller]")]
+[ApiController]
 public class UserController : LocalizedControllerBase
 {
     private readonly UserService userService;
@@ -25,10 +25,9 @@ public class UserController : LocalizedControllerBase
 
     //    return new List<int>() { 1, 2, 3 };
     //}
-    [AllowAnonymous]
     [HttpPost]
     public async ValueTask<ActionResult<UserDto>> PostUserAsync(
-        CreateUserDto createUserDto)
+        [FromBody] CreateUserDto createUserDto)
     {
         var createdUser = await this.userService
             .CreateUserAsync(createUserDto);
@@ -36,7 +35,6 @@ public class UserController : LocalizedControllerBase
         return Created("", createdUser);
     }
 
-    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<ActionResult<UserDto>> GetAllUsers()
     {
@@ -58,7 +56,7 @@ public class UserController : LocalizedControllerBase
 
     [HttpPut]
     public async ValueTask<ActionResult<UserDto>> PutUserAsync(
-        ModifyUserDto modifyUserDto)
+        [FromBody] ModifyUserDto modifyUserDto)
     {
         var modifiedUser = await this.userService
             .ModifyUserAsync(modifyUserDto);
@@ -70,7 +68,7 @@ public class UserController : LocalizedControllerBase
     public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
         Guid userId)
     {
-        var removed = await this
+        var removed = await this.userService
             .DeleteUserAsync(userId);
 
         return Ok(removed);
