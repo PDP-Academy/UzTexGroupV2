@@ -12,7 +12,7 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230209132739_Initial")]
+    [Migration("20230210045807_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.Property<Guid>("JobId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("JobLanguageCode")
+                    b.Property<string>("LanguageCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -102,7 +102,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("JobId", "JobLanguageCode");
+                    b.HasIndex("JobId", "LanguageCode");
 
                     b.ToTable("Applications", (string)null);
                 });
@@ -291,7 +291,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
 
                     b.HasOne("UzTexGroupV2.Domain.Entities.Job", "Job")
                         .WithMany("Applications")
-                        .HasForeignKey("JobId", "JobLanguageCode")
+                        .HasForeignKey("JobId", "LanguageCode")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 

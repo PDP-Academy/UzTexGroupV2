@@ -164,7 +164,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ApplicationMessage = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     JobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    JobLanguageCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LanguageCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,8 +176,8 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Applications_Job_JobId_JobLanguageCode",
-                        columns: x => new { x.JobId, x.JobLanguageCode },
+                        name: "FK_Applications_Job_JobId_LanguageCode",
+                        columns: x => new { x.JobId, x.LanguageCode },
                         principalTable: "Job",
                         principalColumns: new[] { "Id", "LanguageCode" });
                 });
@@ -188,9 +188,9 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applications_JobId_JobLanguageCode",
+                name: "IX_Applications_JobId_LanguageCode",
                 table: "Applications",
-                columns: new[] { "JobId", "JobLanguageCode" });
+                columns: new[] { "JobId", "LanguageCode" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Factory_AddressId",
