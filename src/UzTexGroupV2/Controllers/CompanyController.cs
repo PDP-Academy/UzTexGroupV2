@@ -5,7 +5,7 @@ using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("api/company")]
+[Route("{langCode}/api/[controller]")]
 [ApiController]
 public class CompanyController : LocalizedControllerBase
 {

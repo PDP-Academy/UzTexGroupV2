@@ -19,7 +19,6 @@ public static class CompanyMapper
         return new Company
         {
             Id = createCompanyDTO.Id ?? Guid.NewGuid(),
-            LanguageCode = createCompanyDTO.LanguageCode,
             Name = createCompanyDTO.Name,
         };
     }

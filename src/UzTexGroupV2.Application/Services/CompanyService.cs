@@ -9,7 +9,6 @@ namespace UzTexGroupV2.Application.Services;
 public class CompanyService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
-
     public CompanyService(LocalizedUnitOfWork unitOfWork)
     {
         this.unitOfWork = unitOfWork;
@@ -21,6 +20,8 @@ public class CompanyService
 
         var company = CompanyMapper
             .ToCompany(createCompanyDTO);
+
+        company.LanguageCode = unitOfWork.CompanyRepository.Language.Code;
 
         var storedCompany = await unitOfWork.CompanyRepository
             .CreateAsync(company);

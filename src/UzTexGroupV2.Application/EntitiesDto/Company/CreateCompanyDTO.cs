@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace UzTexGroupV2.Application.EntitiesDto.Company;
 
-public record CreateCompanyDTO : LocalizedDTO
+public record CreateCompanyDTO
 {
     public Guid? Id { get; set; }
 
