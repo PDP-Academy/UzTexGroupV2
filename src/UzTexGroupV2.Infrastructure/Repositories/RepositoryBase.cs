@@ -21,12 +21,21 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
         return a;
     }
 
-    public virtual async ValueTask<IQueryable<T>> GetByExpression(Expression<Func<T, bool>> expression)
+    public virtual async ValueTask<IQueryable<T>> GetByExpression(
+        Expression<Func<T, bool>> expression,
+        string[] includes)
     {
-        return context
+        var entities = context
             .Set<T>()
             .Where(expression)
             .AsNoTracking();
+
+        foreach(var item in includes )
+        {
+            entities.Include(item);
+        }
+
+        return entities;
     }
 
     public virtual async ValueTask<T> CreateAsync(T entity)

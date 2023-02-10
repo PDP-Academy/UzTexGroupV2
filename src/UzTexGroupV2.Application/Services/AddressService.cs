@@ -73,11 +73,14 @@ public class AddressService
     {
         Validations.ValidateId(id);
 
-        var addresses = await this.unitOfWork.AddressRepository
-           .GetByExpression(expression => expression.Id == id);
+        var addresses = await this.unitOfWork.AddressRepository.GetByExpression(
+            expression => expression.Id == id,
+            null);
 
-        Validations.ValidateObjectForNullable(addresses);
+        var address = await addresses.FirstOrDefaultAsync();
 
-        return await addresses.FirstOrDefaultAsync();
+        Validations.ValidateObjectForNullable<Address>(address);
+
+        return address;
     }
 }

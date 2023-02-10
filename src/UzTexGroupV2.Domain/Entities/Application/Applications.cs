@@ -9,7 +9,6 @@ public class Applications : LocalizedObject
     public string Email { get; set; }
     public Guid AddressId { get; set; }
     public string ApplicationMessage { get; set; }
-    
     public Guid JobId { get; set; }
     public Job Job { get; set; }
     

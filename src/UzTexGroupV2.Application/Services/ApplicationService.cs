@@ -87,10 +87,15 @@ public class ApplicationService
         Validations.ValidateId(id);
 
         var applications = await this.unitOfWork.ApplicationRepository
-           .GetByExpression(expression => expression.Id == id);
+           .GetByExpression(
+            expression => expression.Id == id,
+            new string[] {"Job", "Address"});
 
-        Validations.ValidateObjectForNullable(applications);
+        var application = await applications.FirstOrDefaultAsync();
 
-        return await applications.FirstOrDefaultAsync();
+        Validations.ValidateObjectForNullable<Applications>(application);
+
+        return application;
+
     }
 }

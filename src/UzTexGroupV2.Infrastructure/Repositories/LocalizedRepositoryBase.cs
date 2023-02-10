@@ -18,10 +18,12 @@ public class LocalizedRepositoryBase<T> : RepositoryBase<T> where T : LocalizedO
             .Where(entity => entity.LanguageCode == Language.Code);
     }
 
-    public override async ValueTask<IQueryable<T>> GetByExpression(Expression<Func<T, bool>> expression)
+    public override async ValueTask<IQueryable<T>> GetByExpression(
+        Expression<Func<T, bool>> expression,
+        string[] includes)
     {
         return (await base
-                .GetByExpression(expression))
+                .GetByExpression(expression, includes))
             .Where(entity => entity.LanguageCode == Language.Code);
     }
 

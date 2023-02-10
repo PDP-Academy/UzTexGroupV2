@@ -79,10 +79,14 @@ public class CompanyService
         Validations.ValidateId(id);
 
         var companies = await this.unitOfWork.CompanyRepository
-            .GetByExpression(expression => expression.Id == id);
+            .GetByExpression(
+            expression => expression.Id == id,
+            new string[] {"Factories"});
+
+        var company = await companies.FirstOrDefaultAsync();
 
         Validations.ValidateObjectForNullable(companies);
 
-        return await companies.FirstOrDefaultAsync();
+        return company;
     }
 }

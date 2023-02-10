@@ -54,6 +54,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
             migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
+
                 {
                     LanguageCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
