@@ -2,10 +2,8 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto;
 
-public record CreateJobDto
+public record CreateJobDto : LocalizedDTO
 {
-    public Guid? Id { get; set; }
-
     [Required(ErrorMessage = $"{nameof(CreateJobDto.Name)}  berilishi majburiy")]
     [StringLength(15, ErrorMessage = "Ism 15 ta belgida oshmasligi kerak")]
     public string Name { get; set; }

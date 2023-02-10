@@ -10,7 +10,6 @@ public static class UserMap
     {
         return new User
         {
-            Id = createUserDto.id ?? Guid.NewGuid(),
             FirstName = createUserDto.firstName,
             LastName = createUserDto.lastName,
             Email = createUserDto.email,

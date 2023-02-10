@@ -3,8 +3,6 @@
 namespace UzTexGroupV2.Application.EntitiesDto;
 
 public record CreateUserDto(
-    Guid? id,
-
     [Required(ErrorMessage =$"{nameof(CreateUserDto.firstName)} berilishi majburiy ")]
     [MaxLength(15,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string firstName,

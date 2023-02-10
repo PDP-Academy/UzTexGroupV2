@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 

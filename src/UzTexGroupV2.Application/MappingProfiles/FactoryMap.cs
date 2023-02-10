@@ -23,7 +23,7 @@ internal static class FactoryMap
     {
         return new Factory
         {
-            Id = createFactoryDto.id ?? Guid.NewGuid(),
+            Id = createFactoryDto.Id ?? Guid.NewGuid(),
             Name = createFactoryDto.name,
             CompanyId = createFactoryDto.companyId
         };

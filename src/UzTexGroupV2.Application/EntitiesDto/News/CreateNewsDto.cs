@@ -2,10 +2,8 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
-public record CreateNewsDto
+public record CreateNewsDto : LocalizedDTO
 {
-    public Guid? id;
-
     [Required(ErrorMessage = $"{nameof(CreateNewsDto.title)}  berilishi majburiy")]
     public string title;
 

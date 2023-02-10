@@ -24,8 +24,6 @@ public class FactoryService
             .CreateAddressAsync(createFactoryDto.createAddressDto);
         
         factory.AddressId = storedAddress.id;
-        factory.LanguageCode = this.localizedUnitOfWork.FactoryRepository.Language.Code;
-        
         var storageFactory = await this.localizedUnitOfWork
             .FactoryRepository.CreateAsync(factory);
 
