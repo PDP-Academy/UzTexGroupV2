@@ -6,11 +6,7 @@ namespace UzTexGroupV2.Infrastructure.Repositories;
 
 public class LocalizedRepositoryBase<T> : RepositoryBase<T> where T : LocalizedObject
 {
-    public Language Language { get; set; } = new Language()
-    {
-        Code = "uz",
-        Name = "Uzbek"
-    };
+    public Language Language { get; set; }
 
     public LocalizedRepositoryBase(UzTexGroupDbContext context) : base(context)
     {
@@ -27,5 +23,23 @@ public class LocalizedRepositoryBase<T> : RepositoryBase<T> where T : LocalizedO
         return (await base
                 .GetByExpression(expression))
             .Where(entity => entity.LanguageCode == Language.Code);
+    }
+
+    public override async ValueTask<T> CreateAsync(T entity)
+    {
+        entity.LanguageCode = this.Language.Code;
+        return await base.CreateAsync(entity);
+    }
+
+    public override async ValueTask<T> UpdateAsync(T entity)
+    {
+        entity.LanguageCode = this.Language.Code;
+        return await base.UpdateAsync(entity);
+    }
+
+    public override async ValueTask<T> DeleteAsync(T entity)
+    {
+        entity.LanguageCode = this.Language.Code;
+        return await base.DeleteAsync(entity);
     }
 }
