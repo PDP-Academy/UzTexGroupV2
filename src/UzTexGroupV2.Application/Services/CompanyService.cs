@@ -9,6 +9,7 @@ namespace UzTexGroupV2.Application.Services;
 public class CompanyService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
+
     public CompanyService(LocalizedUnitOfWork unitOfWork)
     {
         this.unitOfWork = unitOfWork;
@@ -17,11 +18,8 @@ public class CompanyService
     public async ValueTask<CompanyDTO> CreateCompanyAsync(
         CreateCompanyDTO createCompanyDTO)
     {
-
         var company = CompanyMapper
             .ToCompany(createCompanyDTO);
-
-        company.LanguageCode = unitOfWork.CompanyRepository.Language.Code;
 
         var storedCompany = await unitOfWork.CompanyRepository
             .CreateAsync(company);
@@ -31,20 +29,23 @@ public class CompanyService
         return CompanyMapper
             .ToCompanyDTO(storedCompany);
     }
+
     public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompnaiesAsync()
     {
         var companies = await unitOfWork
             .CompanyRepository.GetAllAsync();
 
         return companies.Select(company =>
-        CompanyMapper.ToCompanyDTO(company));
+            CompanyMapper.ToCompanyDTO(company));
     }
+
     public async ValueTask<CompanyDTO> RetrieveCompanyByIdAsync(Guid id)
     {
         var storageCompany = await GetByExpressionAsync(id);
 
         return CompanyMapper.ToCompanyDTO(storageCompany);
     }
+
     public async ValueTask<CompanyDTO> ModifyCompanyAsync(
         ModifyCompanyDTO modifyCompanyDTO)
     {
@@ -60,6 +61,7 @@ public class CompanyService
 
         return CompanyMapper.ToCompanyDTO(modifiedCompany);
     }
+
     public async ValueTask<CompanyDTO> DeleteCompanyAsync(Guid id)
     {
         var storageCompany = await GetByExpressionAsync(id);
@@ -77,7 +79,7 @@ public class CompanyService
         Validations.ValidateId(id);
 
         var companies = await this.unitOfWork.CompanyRepository
-           .GetByExpression(expression => expression.Id == id);
+            .GetByExpression(expression => expression.Id == id);
 
         Validations.ValidateObject(companies);
 
