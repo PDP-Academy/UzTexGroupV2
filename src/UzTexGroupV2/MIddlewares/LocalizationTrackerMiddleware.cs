@@ -19,11 +19,15 @@ public class LocalizationTrackerMiddleware : IMiddleware
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        var languageCode = context.Request.RouteValues["langCode"] as string ?? "uz";
+        var languageCode = context.Request.RouteValues["langCode"] as string;
+        if (languageCode is null)
+            throw new Exception("Language code must be required");
         var storedLanguage = await GetStoredLanguage(languageCode);
         if (storedLanguage is not null)
             await this._localizedUnitOfWork
                 .ChangeLocalization(storedLanguage);
+        else
+            throw new Exception("Language not found");
         await next(context);
     }
 
