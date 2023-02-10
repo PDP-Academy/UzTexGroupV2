@@ -2,7 +2,7 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.Company;
 
-public record ModifyCompanyDTO : LocalizedDTO
+public record ModifyCompanyDTO
 {
     [Required(ErrorMessage = $"{nameof(ModifyCompanyDTO.Id)}  berilishi majburiy")]
     public Guid Id { get; set; }
