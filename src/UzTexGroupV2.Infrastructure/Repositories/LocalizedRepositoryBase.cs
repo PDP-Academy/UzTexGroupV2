@@ -6,10 +6,16 @@ namespace UzTexGroupV2.Infrastructure.Repositories;
 
 public class LocalizedRepositoryBase<T> : RepositoryBase<T> where T : LocalizedObject
 {
-    public Language Language { get; set; }
+    public Language Language { get; set; } = new Language()
+    {
+        Code = "uz",
+        Name = "Uzbek"
+    };
+
     public LocalizedRepositoryBase(UzTexGroupDbContext context) : base(context)
     {
     }
+
     public override async ValueTask<IQueryable<T>> GetAllAsync()
     {
         return (await base.GetAllAsync())

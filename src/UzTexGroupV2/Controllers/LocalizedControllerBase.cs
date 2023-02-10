@@ -15,9 +15,9 @@ public class LocalizedControllerBase : Controller
     public override async void OnActionExecuting(ActionExecutingContext context)
     {
         base.OnActionExecuting(context);
-        await this.localizedUnitOfWork.ChangeLocalization(new Language()
-        {
-            Code = context.RouteData.Values["langCode"] as String ?? "uz"
-        });
+        // await this.localizedUnitOfWork.ChangeLocalization(new Language()
+        // {
+        //     Code = context.RouteData.Values["langCode"] as String ?? "uz"
+        // });
     }
 }

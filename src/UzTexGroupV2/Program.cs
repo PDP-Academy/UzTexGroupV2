@@ -1,5 +1,6 @@
 using Swashbuckle.AspNetCore.SwaggerUI;
 using UzTexGroupV2.Extensions;
+using UzTexGroupV2.MIddlewares;
 
 namespace UzTexGroupV2
 {
@@ -12,6 +13,7 @@ namespace UzTexGroupV2
             builder.Services
                 .AddDbContexts(builder.Configuration)
                 .ConfigureRepositories()
+                .AddMiddlewares()
                 .AddApplication();
 
 
@@ -30,7 +32,7 @@ namespace UzTexGroupV2
             }
 
             app.UseHttpsRedirection();
-
+            app.UseMiddleware<LocalizationTrackerMiddleware>();
             app.UseAuthorization();
 
             app.MapControllerRoute("default",

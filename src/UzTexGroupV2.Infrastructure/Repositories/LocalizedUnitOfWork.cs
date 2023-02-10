@@ -10,6 +10,7 @@ public class LocalizedUnitOfWork : UnitOfWorkBase
     public readonly CompanyRepository CompanyRepository;
     public readonly FactoryRepository FactoryRepository;
     public readonly ApplicationRepository ApplicationRepository;
+
     public LocalizedUnitOfWork(UzTexGroupDbContext uzTexGroupDbContext) : base(uzTexGroupDbContext)
     {
         this.NewsRepository = new NewsRepository(this.uzTexGroupDbContext);
@@ -25,15 +26,16 @@ public class LocalizedUnitOfWork : UnitOfWorkBase
             language = new Language();
         var properties = this
             .GetType()
-            .GetProperties();
+            .GetFields();
         foreach (var property in properties)
         {
             if (property is null)
                 continue;
-            property?
-               .GetType()?
-               .GetProperty("language")?
-               .SetValue(property.GetType(), language);
+            var obj = property.GetValue(this);
+            obj?
+                .GetType()?
+                .GetProperty("Language")?
+                .SetValue(obj, language);
         }
     }
 }
