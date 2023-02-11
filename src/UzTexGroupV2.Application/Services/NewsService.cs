@@ -79,6 +79,5 @@ public class NewsService
         Validations.ValidateObjectForNullable(news);
 
         return news;
-
     }
 }
