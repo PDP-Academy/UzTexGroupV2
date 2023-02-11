@@ -33,6 +33,7 @@ namespace UzTexGroupV2
 
             app.UseHttpsRedirection();
             app.UseMiddleware<LocalizationTrackerMiddleware>();
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseAuthorization();
 
             app.MapControllerRoute("default",
