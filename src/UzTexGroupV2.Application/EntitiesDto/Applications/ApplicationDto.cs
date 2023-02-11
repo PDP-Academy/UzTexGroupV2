@@ -27,8 +27,8 @@ public record ApplicationDto(
     [EmailAddress(ErrorMessage ="noto'g'ri email berildi ")]
     string email,
 
-    [Required(ErrorMessage =$"{nameof(ApplicationDto.job)} berilishi majburiy")]
-    JobDto job,
 
-    [Required(ErrorMessage =$"{nameof(ApplicationDto.addressDto)} berilishi majburiy")]
+    JobDto? job,
+
+    //[Required(ErrorMessage =$"{nameof(ApplicationDto.addressDto)} berilishi majburiy")]
     AddressDto addressDto);

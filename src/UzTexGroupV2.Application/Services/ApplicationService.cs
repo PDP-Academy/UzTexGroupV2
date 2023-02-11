@@ -28,7 +28,6 @@ public class ApplicationService
         application.AddressId = storedAddress.id;
         var storedApplication = await this.unitOfWork
             .ApplicationRepository.CreateAsync(application);
-
         await this.unitOfWork.SaveChangesAsync();
 
         return ApplicationMap.MapToApplicationDto(storedApplication);

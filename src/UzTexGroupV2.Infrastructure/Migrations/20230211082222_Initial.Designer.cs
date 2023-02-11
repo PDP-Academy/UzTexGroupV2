@@ -12,7 +12,7 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230210045807_Initial")]
+    [Migration("20230211082222_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -188,6 +188,10 @@ namespace UzTexGroupV2.Infrastructure.Migrations
 
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.Language", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -196,7 +200,29 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
                     b.ToTable("Languages", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("599b98d5-efc5-45e3-98ba-3266595b63c3"),
+                            Code = "uz",
+                            Name = "Uzbek"
+                        },
+                        new
+                        {
+                            Id = new Guid("a89aebf7-3e11-4c49-882e-5058bf175e7b"),
+                            Code = "en",
+                            Name = "English"
+                        },
+                        new
+                        {
+                            Id = new Guid("18c3ea35-53de-4ef2-919a-c493a4cb7f4c"),
+                            Code = "ru",
+                            Name = "Russian"
+                        });
                 });
 
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.News", b =>
@@ -257,8 +283,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -277,6 +302,9 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });

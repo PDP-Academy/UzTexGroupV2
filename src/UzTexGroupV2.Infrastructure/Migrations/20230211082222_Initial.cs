@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -44,17 +46,18 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 name: "Languages",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "News",
                 columns: table => new
-
                 {
                     LanguageCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -74,7 +77,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserRole = table.Column<int>(type: "int", nullable: false)
                 },
@@ -183,6 +186,16 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         principalColumns: new[] { "Id", "LanguageCode" });
                 });
 
+            migrationBuilder.InsertData(
+                table: "Languages",
+                columns: new[] { "Id", "Code", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("18c3ea35-53de-4ef2-919a-c493a4cb7f4c"), "ru", "Russian" },
+                    { new Guid("599b98d5-efc5-45e3-98ba-3266595b63c3"), "uz", "Uzbek" },
+                    { new Guid("a89aebf7-3e11-4c49-882e-5058bf175e7b"), "en", "English" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AddressId",
                 table: "Applications",
@@ -213,6 +226,12 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 name: "IX_NewsImages_NewsId_NewsLanguageCode",
                 table: "NewsImages",
                 columns: new[] { "NewsId", "NewsLanguageCode" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />

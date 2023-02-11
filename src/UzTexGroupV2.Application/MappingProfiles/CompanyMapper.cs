@@ -10,7 +10,7 @@ public static class CompanyMapper
         return new CompanyDTO
         {
             Id = company.Id,
-            Name = company.Name,
+            Name = company.Name
         };
     }
 

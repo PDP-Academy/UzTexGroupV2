@@ -81,7 +81,7 @@ public class CompanyService
         var companies = await this.unitOfWork.CompanyRepository
             .GetByExpression(
             expression => expression.Id == id,
-            new string[] { });
+            new string[] {});
 
         var company = await companies.FirstOrDefaultAsync();
 

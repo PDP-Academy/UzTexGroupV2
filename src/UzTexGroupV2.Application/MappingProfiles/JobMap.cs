@@ -1,6 +1,4 @@
 ﻿using UzTexGroupV2.Application.EntitiesDto;
-using UzTexGroupV2.Application.EntitiesDto.Factory;
-using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Domain.Entities;
 
 namespace UzTexGroupV2.Application.MappingProfiles;
@@ -28,7 +26,7 @@ internal static class JobMap
             description : job.Desription,
             salary : job.Salary,
             workTime : job.WorkTime,
-            FactoryDto = null
+            factoryDto : job.Factory is not null ? FactoryMap.MapToFactoryDto(job.Factory) : null
         );
     }
 
@@ -40,5 +38,19 @@ internal static class JobMap
         job.FactoryId = modifyJobDto.FactoryId ?? job.FactoryId;
         job.WorkTime = modifyJobDto.WorkTime ?? job.WorkTime;
     }
-    
+    //private static Factory GetFactory(Guid id)
+    //{
+    //    Validations.ValidateId(id);
+
+    //    var factories = this.localizedUnitOfWork.FactoryRepository
+    //       .GetByExpression(
+    //        expression => expression.Id == id,
+    //        new string[] { "Address", "Company" });
+
+    //    var factory = factories.FirstOrDefaultAsync();
+
+    //    Validations.ValidateObjectForNullable(factory);
+
+    //    return factory;
+    //}
 }

@@ -83,7 +83,7 @@ public class FactoryService
         var factories = await this.localizedUnitOfWork.FactoryRepository
            .GetByExpression(
             expression => expression.Id == id,
-            new string[] {"Address", "Company"});
+            new string[] { "Address", "Company"});
 
         var factory = await factories.FirstOrDefaultAsync();
 

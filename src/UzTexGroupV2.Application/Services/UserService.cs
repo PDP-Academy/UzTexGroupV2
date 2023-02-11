@@ -86,4 +86,10 @@ public class UserService
         return user;
 
     }
+
+    /*private async Task ValidateEmailForRequired(User user)
+    {
+        var users = await this.unitOfWork.UserRepository
+            .GetByExpression(expression => expression.Email == user.Email)
+    }*/
 }

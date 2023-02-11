@@ -28,8 +28,8 @@ internal static class ApplicationMap
             email: applications.Email,
             applicationMassage: applications.ApplicationMessage,
             phoneNumber: applications.PhoneNumber,
-            job: JobMap.MapToJobDto(applications.Job),
-            addressDto : AddressMap.MapToAddressDto(applications.Address)
+            job: applications.Job is not null ? JobMap.MapToJobDto(applications.Job) : null,
+            addressDto : applications.Job is not null ? AddressMap.MapToAddressDto(applications.Address) : null
        ); 
     }
 
