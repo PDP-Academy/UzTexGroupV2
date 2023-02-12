@@ -27,8 +27,8 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         var entities = context
             .Set<T>()
-            .Where(expression)
-            .AsNoTracking();
+            .Where(expression);
+
 
         foreach(var item in includes )
         {
