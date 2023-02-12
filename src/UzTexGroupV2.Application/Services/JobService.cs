@@ -46,6 +46,8 @@ public class JobService
     {
         var storageJob = await GetByExpressionAsync(modifyJobDto.Id);
 
+        JobMap.MapToJob(storageJob, modifyJobDto);
+
         var job = await this.localizedUnitOfWork.JobRepository
             .UpdateAsync(storageJob);
 

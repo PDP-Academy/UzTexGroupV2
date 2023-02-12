@@ -2,11 +2,10 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
-public record ModifyNewsDto
-{
+public record ModifyNewsDto(
     [Required(ErrorMessage = $"{nameof(ModifyNewsDto.id)}  berilishi majburiy")]
-    public Guid id;
+    Guid id,
 
-    public string? title;
-    public string? description;
-}
+    string? title,
+    string? description
+);

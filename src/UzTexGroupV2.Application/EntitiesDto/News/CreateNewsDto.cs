@@ -2,11 +2,10 @@
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
-public record CreateNewsDto : LocalizedDTO
-{
+public record CreateNewsDto(
     [Required(ErrorMessage = $"{nameof(CreateNewsDto.title)}  berilishi majburiy")]
-    public string title;
+    string title,
 
     [Required(ErrorMessage = $"{nameof(CreateNewsDto.description)}  berilishi majburiy")]
-    public string description;
-}
+    string description
+) : LocalizedDTO; 
