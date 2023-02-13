@@ -8,11 +8,11 @@ public record UserDto(
     Guid id,
 
     [Required(ErrorMessage =$"{nameof(UserDto.firstName)} berilishi majburiy ")]
-    [MaxLength(15,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
+    [MaxLength(30,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string firstName,
 
     [Required(ErrorMessage =$"{nameof(UserDto.lastName)} berilishi majburiy ")]
-    [MaxLength(15,ErrorMessage =$"Familiyaning uzunligi 15 tabelgidan kam bo'lishi kerak")]
+    [MaxLength(50,ErrorMessage =$"Familiyaning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string lastName,
 
     [Required(ErrorMessage =$"{nameof(UserDto.email)} berilishi majburiy ")]

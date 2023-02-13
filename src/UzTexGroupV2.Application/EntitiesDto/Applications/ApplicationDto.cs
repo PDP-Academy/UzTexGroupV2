@@ -16,7 +16,7 @@ public record ApplicationDto(
     string? lastName,
 
     [Required(ErrorMessage =$"{nameof(ApplicationDto.phoneNumber)} berilishi majburiy")]
-    [RegularExpression(@"^[\d]+$",
+    [RegularExpression( @"^\+?\d{1,3}[\s-]?\d{2,}[\s-]?\d{3,}[\s-]?\d{2,}[\s-]?\d{2,}$",
     ErrorMessage = "noto'g'ri raqam kiritdingiz")]
     string phoneNumber,
 

@@ -4,10 +4,10 @@ namespace UzTexGroupV2.Application.EntitiesDto;
 
 public record CreateUserDto(
     [Required(ErrorMessage =$"{nameof(CreateUserDto.firstName)} berilishi majburiy ")]
-    [MaxLength(15,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
+    [MaxLength(30,ErrorMessage =$"Ismning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string firstName,
 
-    [MaxLength(15,ErrorMessage =$"Familiyaning uzunligi 15 tabelgidan kam bo'lishi kerak")]
+    [MaxLength(50,ErrorMessage =$"Familiyaning uzunligi 15 tabelgidan kam bo'lishi kerak")]
     string? lastName,
 
     [Required(ErrorMessage =$"{nameof(CreateUserDto.email)} berilishi majburiy ")]

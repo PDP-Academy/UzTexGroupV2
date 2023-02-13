@@ -11,7 +11,7 @@ public record CreateApplicationDto(
     [StringLength(15,ErrorMessage ="Familiya 15 ta belgida oshmasligi kerak")]
     string? lastName,
 
-    [RegularExpression(@"^[\d]+$",
+    [RegularExpression( @"^\+?\d{1,3}[\s-]?\d{2,}[\s-]?\d{3,}[\s-]?\d{2,}[\s-]?\d{2,}$",
     ErrorMessage = "noto'g'ri raqam kirittingiz")]
     [StringLength(9,ErrorMessage ="9 belgidan oshmasligi kerak")]
     string phoneNumber,

@@ -14,7 +14,7 @@ public record ModifyApplicationDto(
     [StringLength(15,ErrorMessage ="Familiya 15 ta belgida oshmasligi kerak")]
     string? lastName,
 
-    [RegularExpression(@"^[\d]+$",
+    [RegularExpression( @"^\+?\d{1,3}[\s-]?\d{2,}[\s-]?\d{3,}[\s-]?\d{2,}[\s-]?\d{2,}$",
     ErrorMessage = "noto'g'ri raqam kirittingiz")]
     string? phoneNumber,
 
