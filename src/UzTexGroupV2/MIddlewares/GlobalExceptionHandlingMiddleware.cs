@@ -41,6 +41,7 @@ public class GlobalExceptionHandlingMiddleware
 
             await HandleExceptionAsync(context, serializedObject);
         }
+
         catch(Exception exception)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;

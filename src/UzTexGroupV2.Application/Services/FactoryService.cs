@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
+using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
@@ -10,26 +13,47 @@ public class FactoryService
 {
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
     private readonly AddressService addressService;
+    private readonly UzTexGroupDbContext uzTexGroupDbContext;
 
-    public FactoryService(LocalizedUnitOfWork localizedUnitOfWork, AddressService addressService)
+    public FactoryService(
+        LocalizedUnitOfWork localizedUnitOfWork,
+        AddressService addressService,
+        UzTexGroupDbContext uzTexGroupDbContext)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
+        this.uzTexGroupDbContext = uzTexGroupDbContext;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {
-        
-        var factory = FactoryMap.MapToFactory(createFactoryDto);
-        
-        var storedAddress = await this.addressService
-            .CreateAddressAsync(createFactoryDto.createAddressDto);
-        
-        factory.AddressId = storedAddress.id;
-        var storageFactory = await this.localizedUnitOfWork
-            .FactoryRepository.CreateAsync(factory);
+        var storageFactory = new Factory();
+        var executionStrategy = uzTexGroupDbContext.Database.CreateExecutionStrategy();
 
-        await this.localizedUnitOfWork.SaveChangesAsync();
+        await executionStrategy.ExecuteAsync(async () =>
+        {
+            using (var transaction = uzTexGroupDbContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var factory = FactoryMap.MapToFactory(createFactoryDto);
 
+                    var storedAddress = await this.addressService
+                        .CreateAddressAsync(createFactoryDto.createAddressDto);
+
+                    factory.AddressId = storedAddress.id;
+                    storageFactory = await this.localizedUnitOfWork
+                        .FactoryRepository.CreateAsync(factory);
+
+                    await this.localizedUnitOfWork.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        });
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
     
@@ -49,20 +73,38 @@ public class FactoryService
 
     public async ValueTask<FactoryDto> ModifyFactoryAsync(ModifyFactoryDto modifyFactoryDto)
     {
-        var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
+        var modifiedFactory = new Factory();
+        var executionStrategy = uzTexGroupDbContext.Database.CreateExecutionStrategy();
 
-        FactoryMap.MapToFactory(
-            factory : storageFactory,
-            modifyFactoryDto : modifyFactoryDto);
-        
-        if (modifyFactoryDto.modifyAddressDto is not null)
-            await this.addressService.ModifyAddressAsync(modifyFactoryDto.modifyAddressDto);
-       
-        var modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
-            .UpdateAsync(entity: storageFactory);
-        
-        await this.localizedUnitOfWork.SaveChangesAsync();
+        await executionStrategy.ExecuteAsync(async () =>
+        {
+            using (var transaction = uzTexGroupDbContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
 
+                    FactoryMap.MapToFactory(
+                        factory: storageFactory,
+                        modifyFactoryDto: modifyFactoryDto);
+
+                    if (modifyFactoryDto.modifyAddressDto is not null)
+                        await this.addressService.ModifyAddressAsync(modifyFactoryDto.modifyAddressDto);
+
+                    modifiedFactory = await this.localizedUnitOfWork.FactoryRepository
+                        .UpdateAsync(entity: storageFactory);
+
+                    await this.localizedUnitOfWork.SaveChangesAsync();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        });
         return FactoryMap.MapToFactoryDto(modifiedFactory);
     }
     public async ValueTask<FactoryDto> DeleteFactoryAsync(Guid id)

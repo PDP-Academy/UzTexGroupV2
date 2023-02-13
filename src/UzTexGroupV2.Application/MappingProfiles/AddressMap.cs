@@ -10,6 +10,7 @@ namespace UzTexGroupV2.Application.MappingProfiles
         {
             return new Address
             {
+                Id = Guid.NewGuid(),
                 Country = createAddressDto.country,
                 Region= createAddressDto.region,
                 District= createAddressDto.district,

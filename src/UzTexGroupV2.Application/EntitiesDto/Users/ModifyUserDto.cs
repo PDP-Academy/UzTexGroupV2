@@ -13,4 +13,5 @@ public record ModifyUserDto(
     string? lastName,
 
     [MaxLength(15 ,ErrorMessage ="15 ta belgidan oshmasligi kerak")]
+    [EmailAddress(ErrorMessage =$"Email noto'g'ri kiritildi")]
     string? email);

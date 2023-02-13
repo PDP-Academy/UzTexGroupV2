@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Data;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
@@ -10,26 +12,49 @@ public class ApplicationService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
     private readonly AddressService addressService;
+    private readonly UzTexGroupDbContext uzTexGroupDbContext;
 
-    public ApplicationService(LocalizedUnitOfWork unitOfWork, AddressService addressService)
+    public ApplicationService(
+        LocalizedUnitOfWork unitOfWork,
+        AddressService addressService,
+        UzTexGroupDbContext uzTexGroupDbContext)
     {
         this.unitOfWork = unitOfWork;
         this.addressService = addressService;
+        this.uzTexGroupDbContext = uzTexGroupDbContext;
     }
 
     public async ValueTask<ApplicationDto> CreateApplicationAsync(
         CreateApplicationDto createApplicationDto)
     {
-        var application = ApplicationMap.MapToApplication(createApplicationDto);
+        Applications storedApplication = new Applications();
 
-        var storedAddress = await this.addressService
-            .CreateAddressAsync(createApplicationDto.createAddressDto);
-        
-        application.AddressId = storedAddress.id;
-        var storedApplication = await this.unitOfWork
-            .ApplicationRepository.CreateAsync(application);
-        await this.unitOfWork.SaveChangesAsync();
+        var executionStrategy = uzTexGroupDbContext.Database.CreateExecutionStrategy();
+        await executionStrategy.ExecuteAsync(async () =>
+        {
+            using (var transaction = uzTexGroupDbContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var application = ApplicationMap.MapToApplication(createApplicationDto);
+                    var storedAddress = await this.addressService
+                        .CreateAddressAsync(createApplicationDto.createAddressDto);
 
+                    application.AddressId = storedAddress.id;
+
+                    storedApplication = await this.unitOfWork
+                        .ApplicationRepository.CreateAsync(application);
+
+                    await this.unitOfWork.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        });
         return ApplicationMap.MapToApplicationDto(storedApplication);
     }
 
@@ -52,19 +77,38 @@ public class ApplicationService
     public async ValueTask<ApplicationDto> ModifyApplicationAsync(
         ModifyApplicationDto modifyApplicationDto)
     {
-        var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
+        Applications modifiedApplication = new Applications();
 
-        if (modifyApplicationDto.modifyAddressDto is not null)
-            await this.addressService
-                .ModifyAddressAsync(modifyApplicationDto.modifyAddressDto);
-        
-        ApplicationMap.MapToApplication(applications: storageApplication,
-            modifyApplicationDto: modifyApplicationDto);
+        var executionStrategy = uzTexGroupDbContext.Database.CreateExecutionStrategy();
+        await executionStrategy.ExecuteAsync(async () =>
+        {
+            using (var transaction = uzTexGroupDbContext.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
 
-        var modifiedApplication = await this.unitOfWork.ApplicationRepository.UpdateAsync(
-            entity: storageApplication);
+                    if (modifyApplicationDto.modifyAddressDto is not null)
+                        await this.addressService
+                            .ModifyAddressAsync(modifyApplicationDto.modifyAddressDto);
 
-        await this.unitOfWork.SaveChangesAsync();
+                    ApplicationMap.MapToApplication(applications: storageApplication,
+                        modifyApplicationDto: modifyApplicationDto);
+
+                    modifiedApplication = await this.unitOfWork.ApplicationRepository.UpdateAsync(
+                        entity: storageApplication);
+
+                    await this.unitOfWork.SaveChangesAsync();
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+            }
+        });
 
         return ApplicationMap.MapToApplicationDto(modifiedApplication);
     }
