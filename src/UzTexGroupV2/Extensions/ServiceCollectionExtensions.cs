@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Serilog;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -48,5 +49,20 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<LocalizationTrackerMiddleware>();
 
         return serviceCollection;
+    }
+
+    public static WebApplicationBuilder AdSeridLogg(
+           this WebApplicationBuilder builder,
+           IConfiguration configuration)
+    {
+        var logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog(logger);
+
+        return builder;
     }
 }

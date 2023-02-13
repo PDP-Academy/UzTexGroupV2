@@ -13,7 +13,9 @@ public class GlobalExceptionHandlingMiddleware
         this.next = next;
     }
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(
+        HttpContext context,
+        ILogger<GlobalExceptionHandlingMiddleware> logger)
     {
         try
         {
@@ -21,6 +23,8 @@ public class GlobalExceptionHandlingMiddleware
         }
         catch (InvalidIdException invalidIdException)
         {
+            logger.LogError(invalidIdException, invalidIdException.Message);
+
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             var serializedObject = JsonSerializer.Serialize(new
@@ -32,6 +36,8 @@ public class GlobalExceptionHandlingMiddleware
         }
         catch(NotFoundException notFoundException)
         {
+            logger.LogError(notFoundException, notFoundException.Message);
+
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             var serializedObject = JsonSerializer.Serialize(new
@@ -44,6 +50,8 @@ public class GlobalExceptionHandlingMiddleware
 
         catch(Exception exception)
         {
+            logger.LogError(exception, exception.Message);
+
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             var serializedObject = JsonSerializer.Serialize(new

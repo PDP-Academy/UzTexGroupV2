@@ -16,6 +16,7 @@ namespace UzTexGroupV2
                 .AddMiddlewares()
                 .AddApplication();
 
+            builder.AdSeridLogg(builder.Configuration);
 
             builder.Services.AddControllers();
 
