@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -15,7 +16,7 @@ public class AddressController : LocalizedControllerBase
     {
         this.addressService = addressService;
     }
-
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<AddressDto>> PostAddressAsync(
         CreateAddressDto createAddressDto)
@@ -26,6 +27,7 @@ public class AddressController : LocalizedControllerBase
         return Created("", createdAddress);
     }
 
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<AddressDto>> GetAddressByIdAsync(
         Guid id)
@@ -36,6 +38,7 @@ public class AddressController : LocalizedControllerBase
         return Ok(address);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetallAddressesAsync()
     {
@@ -45,6 +48,7 @@ public class AddressController : LocalizedControllerBase
         return Ok(addresses);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<AddressDto>> PutAddressAsync(
         [FromBody] ModifyAddressDto modifyAddressDto)
@@ -55,6 +59,7 @@ public class AddressController : LocalizedControllerBase
         return Ok(updatedAddress);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<AddressDto>> DeleteAdressAsync(Guid addressId)
     {

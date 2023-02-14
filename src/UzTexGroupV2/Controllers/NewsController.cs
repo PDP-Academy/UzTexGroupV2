@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.EntitiesDto.News;
 using UzTexGroupV2.Application.Services;
@@ -16,6 +17,8 @@ public class NewsController : LocalizedControllerBase
     {
         this.newsService = newsService;
     }
+
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<NewsDto>> PostNewsAsync(
         CreateNewsDto createNewsDto)
@@ -26,6 +29,7 @@ public class NewsController : LocalizedControllerBase
         return Created("", createdNews);
     }
 
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<NewsDto>> GetNewsByIdAsync(
         Guid newsId)
@@ -36,6 +40,7 @@ public class NewsController : LocalizedControllerBase
         return Ok(News);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetallNewsesAsync()
     {
@@ -45,6 +50,7 @@ public class NewsController : LocalizedControllerBase
         return Ok(Newses);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<NewsDto>> PutNewsAsync(
         ModifyNewsDto modifyNewsDto)
@@ -55,6 +61,7 @@ public class NewsController : LocalizedControllerBase
         return Ok(updatedNews);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<NewsDto>> DeleteAdressAsync(Guid newsId)
     {

@@ -12,8 +12,8 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230211082222_Initial")]
-    partial class Initial
+    [Migration("20230214191114_InitialNew")]
+    partial class InitialNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,19 +207,19 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("599b98d5-efc5-45e3-98ba-3266595b63c3"),
+                            Id = new Guid("d4d48490-9cf4-41ba-86ad-077e95ec3ffa"),
                             Code = "uz",
                             Name = "Uzbek"
                         },
                         new
                         {
-                            Id = new Guid("a89aebf7-3e11-4c49-882e-5058bf175e7b"),
+                            Id = new Guid("835ab5a2-4415-481a-a6a8-38e450faaab9"),
                             Code = "en",
                             Name = "English"
                         },
                         new
                         {
-                            Id = new Guid("18c3ea35-53de-4ef2-919a-c493a4cb7f4c"),
+                            Id = new Guid("9fd1036d-6a41-4ffe-b535-9336cbdf4644"),
                             Code = "ru",
                             Name = "Russian"
                         });
@@ -285,6 +285,9 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("ExpiredRefreshToken")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -298,6 +301,13 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserRole")
                         .HasColumnType("int");
 
@@ -307,6 +317,18 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3055a8a8-8f2c-4c6f-b0ca-739ce39821bc"),
+                            Email = "elchinuralov07@gmail.com",
+                            FirstName = "Elchin",
+                            LastName = "Uralov",
+                            PasswordHash = "GfGNdGF8/cdv04Y5wN9nogMvKxoen3dj27qHg9qe/FM=",
+                            Salt = "a142d7de-5fcd-41cc-b9de-c175c1e33f40",
+                            UserRole = 1
+                        });
                 });
 
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.Applications", b =>

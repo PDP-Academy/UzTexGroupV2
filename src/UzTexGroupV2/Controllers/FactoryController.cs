@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ public class FactoryController : LocalizedControllerBase
         this.factoryService = factoryService;
     }
 
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<FactoryDto>> PostFactoryAsync(
         CreateFactoryDto createFactoryDto)
@@ -25,7 +27,7 @@ public class FactoryController : LocalizedControllerBase
 
         return Created("", createdFactory);
     }
-
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<FactoryDto>> GetFactoryByIdAsync(
         Guid factoryId)
@@ -36,6 +38,7 @@ public class FactoryController : LocalizedControllerBase
         return Ok(factory);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetallFactoryesAsync()
     {
@@ -45,6 +48,7 @@ public class FactoryController : LocalizedControllerBase
         return Ok(factories);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<FactoryDto>> PutFactoryAsync(
         ModifyFactoryDto modifyfactoryDto)
@@ -55,6 +59,7 @@ public class FactoryController : LocalizedControllerBase
         return Ok(updatedfactory);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<FactoryDto>> DeleteFactoryAsync(Guid id)
     {

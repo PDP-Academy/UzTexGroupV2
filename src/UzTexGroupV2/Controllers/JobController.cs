@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.Services;
@@ -17,6 +18,7 @@ public class JobController : LocalizedControllerBase
         this.jobService = jobService;
     }
 
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<JobDto>> PostJobAsync(
         CreateJobDto createJobDto)
@@ -27,6 +29,7 @@ public class JobController : LocalizedControllerBase
         return Created("", createdJob);
     }
 
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<JobDto>> GetJobByIdAsync(
         Guid jobId)
@@ -37,6 +40,7 @@ public class JobController : LocalizedControllerBase
         return Ok(Job);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetallJobesAsync()
     {
@@ -46,6 +50,7 @@ public class JobController : LocalizedControllerBase
         return Ok(jobs);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<JobDto>> PutJobAsync(
         ModifyJobDto modifyJobDto)
@@ -56,6 +61,7 @@ public class JobController : LocalizedControllerBase
         return Ok(updatedJob);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<JobDto>> DeleteAdressAsync(Guid jobId)
     {

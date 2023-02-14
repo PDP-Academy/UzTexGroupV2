@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialNew : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,6 +79,9 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpiredRefreshToken = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserRole = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -191,10 +194,15 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 columns: new[] { "Id", "Code", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("18c3ea35-53de-4ef2-919a-c493a4cb7f4c"), "ru", "Russian" },
-                    { new Guid("599b98d5-efc5-45e3-98ba-3266595b63c3"), "uz", "Uzbek" },
-                    { new Guid("a89aebf7-3e11-4c49-882e-5058bf175e7b"), "en", "English" }
+                    { new Guid("835ab5a2-4415-481a-a6a8-38e450faaab9"), "en", "English" },
+                    { new Guid("9fd1036d-6a41-4ffe-b535-9336cbdf4644"), "ru", "Russian" },
+                    { new Guid("d4d48490-9cf4-41ba-86ad-077e95ec3ffa"), "uz", "Uzbek" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Email", "ExpiredRefreshToken", "FirstName", "LastName", "PasswordHash", "RefreshToken", "Salt", "UserRole" },
+                values: new object[] { new Guid("3055a8a8-8f2c-4c6f-b0ca-739ce39821bc"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "GfGNdGF8/cdv04Y5wN9nogMvKxoen3dj27qHg9qe/FM=", null, "a142d7de-5fcd-41cc-b9de-c175c1e33f40", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AddressId",

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ public class ApplicationController : LocalizedControllerBase
         this.applicationService = applicationService;
     }
 
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<ApplicationDto>> PostApplicationAsync(
         CreateApplicationDto createApplicationDto)
@@ -26,6 +28,7 @@ public class ApplicationController : LocalizedControllerBase
         return Created("", createdApplication);
     }
 
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<ApplicationDto>> GetApplicationByIdAsync(
         Guid applicationId)
@@ -36,6 +39,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(Application);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetAllApplicationesAsync()
     {
@@ -45,6 +49,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(Applicationes);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<ApplicationDto>> PutApplicationAsync(
         ModifyApplicationDto modifyApplicationDto)
@@ -55,6 +60,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(updatedApplication);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<ApplicationDto>> DeleteApplicationAsync(Guid id)
     {

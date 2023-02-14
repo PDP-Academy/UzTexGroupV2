@@ -33,4 +33,11 @@ public partial class AuthenticationService
         if (user.ExpiredRefreshToken <= DateTime.Now)
             throw new InvalidRefreshTokenException("Refresh token muddati o'tib ketgan");
     }
+    private void ValidateUser(User user)
+    {
+        if(user is null)
+        {
+            throw new NotFoundException("Bu token yaroqsiz.");
+        }
+    }
 }

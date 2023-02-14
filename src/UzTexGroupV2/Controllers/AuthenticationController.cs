@@ -4,7 +4,7 @@ using UzTexGroupV2.Application.EntitiesDto.AuthenticationDtos;
 
 namespace UzTexGroupV2.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/{langCode}/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace UzTexGroupV2.Controllers
             this.authenticationService = authenticationService;
         }
 
-        [HttpPost("RefreshToken")]
+        [HttpPost("Login")]
         public async ValueTask<IActionResult> LoginAsync(LoginDto loginDto)
         {
             var authenticationDto = this.authenticationService
@@ -25,7 +25,7 @@ namespace UzTexGroupV2.Controllers
             return Ok(authenticationDto);
         }
 
-        [HttpPost]
+        [HttpPost("RefreshToken")]
         public async ValueTask<IActionResult> RefreshTokenAsync(
             RefreshTokenDto refreshTokenDto)
         {

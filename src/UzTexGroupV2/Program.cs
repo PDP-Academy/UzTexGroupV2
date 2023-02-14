@@ -14,7 +14,8 @@ namespace UzTexGroupV2
                 .AddDbContexts(builder.Configuration)
                 .ConfigureRepositories()
                 .AddMiddlewares()
-                .AddApplication();
+                .AddApplication()
+                .AutentificationService(builder.Configuration);
 
             builder.AdSeridLogg(builder.Configuration);
 

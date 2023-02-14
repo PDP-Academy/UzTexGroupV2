@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ public class CompanyController : LocalizedControllerBase
         this.companyService = companyService;
     }
 
+    [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<CompanyDTO>> PostCompanyAsync(
         CreateCompanyDTO createCompanyDTO)
@@ -25,7 +27,7 @@ public class CompanyController : LocalizedControllerBase
 
         return Created("", createdCompany);
     }
-
+    [AllowAnonymous]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<CompanyDTO>> GetCompanyByIdAsync(
         Guid id)
@@ -36,6 +38,7 @@ public class CompanyController : LocalizedControllerBase
         return Ok(company);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<IActionResult> GetallCompaniesAsync()
     {
@@ -45,6 +48,7 @@ public class CompanyController : LocalizedControllerBase
         return Ok(companies);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<CompanyDTO>> UpdateCompanyAsync(
         ModifyCompanyDTO modifyCompanyDTO)
@@ -55,6 +59,7 @@ public class CompanyController : LocalizedControllerBase
         return Ok(updatedCompany);
     }
 
+    [Authorize]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<CompanyDTO>> DeleteAdressAsync(Guid id)
     {

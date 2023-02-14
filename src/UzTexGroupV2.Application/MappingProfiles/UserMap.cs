@@ -16,9 +16,9 @@ public static class UserMap
         return new User
         {
             FirstName = createUserDto.firstName,
-            LastName = createUserDto.lastName,
+            LastName = createUserDto.lastName,  
             Email = createUserDto.email,
-            UserRole = Role.User,
+            UserRole = Role.Admin,
             Salt = randomsalt,
             PasswordHash = passwordHasher.GeneratePassword(
                 createUserDto.password,

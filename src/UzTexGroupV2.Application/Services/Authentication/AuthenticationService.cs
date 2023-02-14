@@ -74,7 +74,7 @@ public partial class AuthenticationService : IAuthenticationService
 
         var storageUser = await users.FirstOrDefaultAsync();
 
-        ValidateStorageUser(storageUser);
+        ValidateUser(storageUser);
 
         ValidateRefreshToken(
             refreshTokenDto: refreshTokenDto,

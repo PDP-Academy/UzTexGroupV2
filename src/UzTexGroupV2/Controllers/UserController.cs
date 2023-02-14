@@ -17,14 +17,7 @@ public class UserController : LocalizedControllerBase
         this.userService = userService;
     }
 
-    //[HttpGet]
-    //[ResponeFilter]
-    //public List<int> GetData()
-    //{
-    //    Console.WriteLine(base.Request.RouteValues["langCode"]);
-
-    //    return new List<int>() { 1, 2, 3 };
-    //}
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPost]
     public async ValueTask<ActionResult<UserDto>> PostUserAsync(
         [FromBody] CreateUserDto createUserDto)
@@ -35,6 +28,7 @@ public class UserController : LocalizedControllerBase
         return Created("", createdUser);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async ValueTask<ActionResult<UserDto>> GetAllUsers()
     {
@@ -44,6 +38,7 @@ public class UserController : LocalizedControllerBase
         return Ok(users);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
         Guid userId)
@@ -54,6 +49,7 @@ public class UserController : LocalizedControllerBase
         return Ok(user);
     }
 
+    [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<UserDto>> PutUserAsync(
         [FromBody] ModifyUserDto modifyUserDto)
@@ -64,6 +60,7 @@ public class UserController : LocalizedControllerBase
         return Ok(modifiedUser);
     }
 
+    [Authorize]
     [HttpDelete("{userId:guid}")]
     public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
         Guid userId)

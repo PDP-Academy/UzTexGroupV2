@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Domain.Enums;
 
 namespace UzTexGroupV2.Infrastructure.Configurations;
 
@@ -34,5 +35,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .Property(user => user.UserRole)
             .IsRequired();
 
+        builder.HasData(new User()
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Elchin",
+            LastName = "Uralov",
+            Email = "elchinuralov07@gmail.com",
+            Salt = Guid.NewGuid().ToString(),
+            UserRole = Role.SuperAdmin,
+            PasswordHash = "GfGNdGF8/cdv04Y5wN9nogMvKxoen3dj27qHg9qe/FM="
+        });
     }
 }
