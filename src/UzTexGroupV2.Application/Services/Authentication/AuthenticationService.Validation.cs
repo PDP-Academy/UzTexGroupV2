@@ -1,6 +1,7 @@
 ﻿using UzTexGroupV2.Application.EntitiesDto.AuthenticationDtos;
 using UzTexGroupV2.Domain;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Domain.Exceptions;
 
 namespace UzTexGroupV2.Application.Services;
 
@@ -20,5 +21,16 @@ public partial class AuthenticationService
         {
             throw new NotFoundException("Email yoki password xato");
         }
+    }
+    private void ValidateRefreshToken(
+        RefreshTokenDto refreshTokenDto, User user)
+    {
+        if (!user.RefreshToken.Equals(refreshTokenDto.refreshToken))
+            throw new InvalidRefreshTokenException("Refresh token yaroqsiz");
+    }
+    private void ValidateRefreshTokenExpiredDate(User user)
+    {
+        if (user.ExpiredRefreshToken <= DateTime.Now)
+            throw new InvalidRefreshTokenException("Refresh token muddati o'tib ketgan");
     }
 }

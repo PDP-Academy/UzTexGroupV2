@@ -7,6 +7,7 @@ using UzTexGroupV2.Application.EntitiesDto.AuthenticationDtos;
 using UzTexGroupV2.Infrastructure.Authentication;
 using UzTexGroupV2.Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace UzTexGroupV2.Application.Services;
 
@@ -59,14 +60,36 @@ public partial class AuthenticationService : IAuthenticationService
             refreshToken: createdRefreshToken,
             expireDate: createdAccessToken.ValidTo);
     }
-
         
-
-    public ValueTask<TokenDto> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+    public async ValueTask<TokenDto> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
     {
         var claimsPrincipls = GetPrincipalFromExpiredToken(refreshTokenDto.accessToken);
 
-        var userId = claimsPrincipls.FindFirstValue(ClaimNames.Id);
+        string userId = claimsPrincipls.FindFirst(ClaimNames.Id).Value;
+
+        var users = await this.unitOfWork.UserRepository
+            .GetByExpression(expression:
+            user => user.Id == Guid.Parse(userId),
+            includes: new string[] { });
+
+        var storageUser = await users.FirstOrDefaultAsync();
+
+        ValidateStorageUser(storageUser);
+
+        ValidateRefreshToken(
+            refreshTokenDto: refreshTokenDto,
+            user: storageUser);
+
+        ValidateRefreshTokenExpiredDate(
+            user: storageUser);
+
+        var accessToken = this.generateToken.
+            GenerateAccessToken(storageUser);
+
+        return new TokenDto(
+            accessToken: new JwtSecurityTokenHandler().WriteToken(accessToken),
+            refreshToken: storageUser.RefreshToken,
+            expireDate: accessToken.ValidTo);
         
     }
     private ClaimsPrincipal GetPrincipalFromExpiredToken(
