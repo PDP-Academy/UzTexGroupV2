@@ -2,22 +2,27 @@
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Infrastructure.Authentication;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Application.Services;
 
 public class UserService
 {
+    private readonly IPasswordHasher passwordHasher;
     private readonly UnitOfWork unitOfWork;
 
-    public UserService(UnitOfWork unitOfWork)
+    public UserService(UnitOfWork unitOfWork, IPasswordHasher passwordHasher)
     {
         this.unitOfWork = unitOfWork;
+        this.passwordHasher = passwordHasher;
     }
 
     public async ValueTask<UserDto> CreateUserAsync(CreateUserDto createUserDto)
     {
-        var user = UserMap.MapToUser(createUserDto);
+        var user = UserMap.MapToUser(
+            createUserDto,
+            passwordHasher);
 
         var storedUser = await unitOfWork
             .UserRepository
