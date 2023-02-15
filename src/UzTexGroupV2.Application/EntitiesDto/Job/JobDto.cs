@@ -8,4 +8,5 @@ public record JobDto(
     string name,
     string workTime,
     decimal salary,
+    string description,
     FactoryDto? factoryDto);

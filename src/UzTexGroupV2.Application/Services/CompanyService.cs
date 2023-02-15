@@ -49,7 +49,7 @@ public class CompanyService
     public async ValueTask<CompanyDTO> ModifyCompanyAsync(
         ModifyCompanyDTO modifyCompanyDTO)
     {
-        var storageCompany = await GetByExpressionAsync(modifyCompanyDTO.Id);
+        var storageCompany = await GetByExpressionAsync(modifyCompanyDTO.id);
 
         CompanyMapper.ToCompany(modifyCompanyDTO, storageCompany);
 
