@@ -27,7 +27,6 @@ public class UserController : LocalizedControllerBase
         return Created("", createdUser);
     }
 
-    //[Authorize(Roles = "SuperAdmin")]
     [Authorize]
     [HttpGet]
     public async ValueTask<ActionResult<UserDto>> GetAllUsers()
@@ -49,7 +48,7 @@ public class UserController : LocalizedControllerBase
         return Ok(user);
     }
 
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<UserDto>> PutUserAsync(
         [FromBody] ModifyUserDto modifyUserDto)

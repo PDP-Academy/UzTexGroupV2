@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialNew : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -194,15 +194,15 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 columns: new[] { "Id", "Code", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("835ab5a2-4415-481a-a6a8-38e450faaab9"), "en", "English" },
-                    { new Guid("9fd1036d-6a41-4ffe-b535-9336cbdf4644"), "ru", "Russian" },
-                    { new Guid("d4d48490-9cf4-41ba-86ad-077e95ec3ffa"), "uz", "Uzbek" }
+                    { new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"), "ru", "Russian" },
+                    { new Guid("89f0c55e-de39-41ab-9dee-147616880a17"), "uz", "Uzbek" },
+                    { new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"), "en", "English" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Email", "ExpiredRefreshToken", "FirstName", "LastName", "PasswordHash", "RefreshToken", "Salt", "UserRole" },
-                values: new object[] { new Guid("3055a8a8-8f2c-4c6f-b0ca-739ce39821bc"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "GfGNdGF8/cdv04Y5wN9nogMvKxoen3dj27qHg9qe/FM=", null, "a142d7de-5fcd-41cc-b9de-c175c1e33f40", 1 });
+                values: new object[] { new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=", null, "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AddressId",

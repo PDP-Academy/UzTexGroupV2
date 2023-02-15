@@ -12,8 +12,8 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230214191114_InitialNew")]
-    partial class InitialNew
+    [Migration("20230215124235_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,19 +207,19 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d4d48490-9cf4-41ba-86ad-077e95ec3ffa"),
+                            Id = new Guid("89f0c55e-de39-41ab-9dee-147616880a17"),
                             Code = "uz",
                             Name = "Uzbek"
                         },
                         new
                         {
-                            Id = new Guid("835ab5a2-4415-481a-a6a8-38e450faaab9"),
+                            Id = new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"),
                             Code = "en",
                             Name = "English"
                         },
                         new
                         {
-                            Id = new Guid("9fd1036d-6a41-4ffe-b535-9336cbdf4644"),
+                            Id = new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"),
                             Code = "ru",
                             Name = "Russian"
                         });
@@ -321,12 +321,12 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3055a8a8-8f2c-4c6f-b0ca-739ce39821bc"),
+                            Id = new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"),
                             Email = "elchinuralov07@gmail.com",
                             FirstName = "Elchin",
                             LastName = "Uralov",
-                            PasswordHash = "GfGNdGF8/cdv04Y5wN9nogMvKxoen3dj27qHg9qe/FM=",
-                            Salt = "a142d7de-5fcd-41cc-b9de-c175c1e33f40",
+                            PasswordHash = "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=",
+                            Salt = "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b",
                             UserRole = 1
                         });
                 });

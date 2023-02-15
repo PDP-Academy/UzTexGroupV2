@@ -22,7 +22,9 @@ public class PasswordHasher : IPasswordHasher
     public bool VerifyPassword(string password, string salt, string hash)
     {
         var a = GeneratePassword(password, salt);
-        Console.WriteLine(a);
-        return GeneratePassword(password, salt).SequenceEqual(hash);
+
+        return a.SequenceEqual(hash);
+
+
     }
 }

@@ -3,9 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace UzTexGroupV2.Application.EntitiesDto.Company;
 
-public record CreateCompanyDTO: LocalizedDTO
-{
-    [Required(ErrorMessage = $"{nameof(CreateCompanyDTO.Name)}  berilishi majburiy")]
+public record CreateCompanyDTO(
+    [Required(ErrorMessage = $"{nameof(CreateCompanyDTO.name)}  berilishi majburiy")]
     [StringLength(15, ErrorMessage = "Ism 15 ta belgida oshmasligi kerak")]
-    public string Name { get; set; }
-}
+    string name
+) : LocalizedDTO;

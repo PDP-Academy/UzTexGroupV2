@@ -41,9 +41,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             FirstName = "Elchin",
             LastName = "Uralov",
             Email = "elchinuralov07@gmail.com",
-            Salt = Guid.NewGuid().ToString(),
+            Salt = "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b",
             UserRole = Role.SuperAdmin,
-            PasswordHash = "pwkXzWIXfy8r4uUqEXWHaa7PKHprFiHW7zsNTeilfLI="
+            PasswordHash = "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI="
+
         });
     }
 }

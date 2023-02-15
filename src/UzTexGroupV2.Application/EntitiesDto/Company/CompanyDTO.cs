@@ -4,12 +4,7 @@ using UzTexGroupV2.Application.EntitiesDto.Factory;
 
 namespace UzTexGroupV2.Application.EntitiesDto.Company;
 
-public record CompanyDTO
-{
-    [Required(ErrorMessage = $"{nameof(CompanyDTO.Id)}  berilishi majburiy")]
-    public Guid Id { get; set; }
+public record CompanyDTO(
+    Guid id,
+    string name);
 
-    [Required(ErrorMessage = $"{nameof(CompanyDTO.Name)}  berilishi majburiy")]
-    [StringLength(15, ErrorMessage = "Ism 15 ta belgida oshmasligi kerak")]
-    public string Name { get; set; }
-}
