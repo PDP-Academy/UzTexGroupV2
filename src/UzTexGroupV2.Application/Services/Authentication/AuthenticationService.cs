@@ -52,6 +52,8 @@ public partial class AuthenticationService : IAuthenticationService
         var updateUser = await this.unitOfWork.UserRepository
             .UpdateAsync(storageUser);
 
+        await this.unitOfWork.SaveChangesAsync();
+
         var createdAccessToken = generateToken
             .GenerateAccessToken(updateUser);
 
@@ -100,7 +102,7 @@ public partial class AuthenticationService : IAuthenticationService
             ValidateAudience = true,
             ValidAudience = this.jwtOptions.Audience,
             ValidateIssuer = true,
-            ValidIssuer = this.jwtOptions.Issure,
+            ValidIssuer = this.jwtOptions.Issuer,
             ValidateLifetime = false,
             ValidateIssuerSigningKey = true,
 

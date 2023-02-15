@@ -25,6 +25,8 @@ public static class ServiceCollectionExtensions
                 obj => obj.EnableRetryOnFailure());
         });
 
+        services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
+
         services.AddSwaggerService();
         return services;
     }
@@ -112,7 +114,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "AloShop.Api", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "UzTexGroup.Api", Version = "v1" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

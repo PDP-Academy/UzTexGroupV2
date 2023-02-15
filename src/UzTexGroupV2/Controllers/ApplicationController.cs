@@ -17,7 +17,7 @@ public class ApplicationController : LocalizedControllerBase
         this.applicationService = applicationService;
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpPost]
     public async ValueTask<ActionResult<ApplicationDto>> PostApplicationAsync(
         CreateApplicationDto createApplicationDto)
@@ -39,7 +39,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(Application);
     }
 
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet]
     public async ValueTask<IActionResult> GetAllApplicationesAsync()
     {
@@ -49,7 +49,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(Applicationes);
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpPut]
     public async ValueTask<ActionResult<ApplicationDto>> PutApplicationAsync(
         ModifyApplicationDto modifyApplicationDto)
@@ -60,7 +60,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(updatedApplication);
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<ApplicationDto>> DeleteApplicationAsync(Guid id)
     {

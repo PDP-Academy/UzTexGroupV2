@@ -10,7 +10,7 @@ internal static class NewsMap
         return new News
         {
             Id = createNewsDto.Id ?? Guid.NewGuid(),
-            Date = DateTime.UtcNow,
+            Date = DateTime.Now,
             Title = createNewsDto.title,
             Description= createNewsDto.description,
         };

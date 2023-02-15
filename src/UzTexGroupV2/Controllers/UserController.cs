@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.Services;
-using UzTexGroupV2.Filters;
 using UzTexGroupV2.Infrastructure.Repositories;
 
 namespace UzTexGroupV2.Controllers;
@@ -28,7 +27,8 @@ public class UserController : LocalizedControllerBase
         return Created("", createdUser);
     }
 
-    [AllowAnonymous]
+    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize]
     [HttpGet]
     public async ValueTask<ActionResult<UserDto>> GetAllUsers()
     {
@@ -38,7 +38,7 @@ public class UserController : LocalizedControllerBase
         return Ok(users);
     }
 
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet("{id:guid}")]
     public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
         Guid userId)
@@ -49,7 +49,7 @@ public class UserController : LocalizedControllerBase
         return Ok(user);
     }
 
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [HttpPut]
     public async ValueTask<ActionResult<UserDto>> PutUserAsync(
         [FromBody] ModifyUserDto modifyUserDto)
@@ -60,7 +60,7 @@ public class UserController : LocalizedControllerBase
         return Ok(modifiedUser);
     }
 
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [HttpDelete("{userId:guid}")]
     public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
         Guid userId)

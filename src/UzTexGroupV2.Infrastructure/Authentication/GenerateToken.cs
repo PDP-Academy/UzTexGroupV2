@@ -31,10 +31,10 @@ public class GenerateToken : IGenerateToken
             Encoding.UTF8.GetBytes(this.jwtOptions.SecretKey));
 
         var accessToken = new JwtSecurityToken(
-            issuer: jwtOptions.Issure,
+            issuer: jwtOptions.Issuer,
             audience: jwtOptions.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(jwtOptions.ExprationInMinutes),
+            expires: DateTime.Now.AddMinutes(jwtOptions.ExpirationInMinutes),
             signingCredentials: new SigningCredentials(
                 key: symmetricSecurityKey,
                 algorithm: SecurityAlgorithms.HmacSha256));

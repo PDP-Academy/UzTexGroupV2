@@ -15,9 +15,6 @@ public record ApplicationDto(
     [StringLength(15,ErrorMessage ="Familiya 15 ta belgida oshmasligi kerak")]
     string? lastName,
 
-    [Required(ErrorMessage =$"{nameof(ApplicationDto.phoneNumber)} berilishi majburiy")]
-    [RegularExpression( @"^\+?\d{1,3}[\s-]?\d{2,}[\s-]?\d{3,}[\s-]?\d{2,}[\s-]?\d{2,}$",
-    ErrorMessage = "noto'g'ri raqam kiritdingiz")]
     string phoneNumber,
 
     [Required(ErrorMessage =$"{nameof(ApplicationDto.applicationMassage)} berilishi majburiy")]
