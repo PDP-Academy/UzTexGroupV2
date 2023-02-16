@@ -6,4 +6,5 @@ public record NewsDto(
     Guid id,
     DateTime date,
     string title,
-    string description);
+    string description,
+    string imageUrl);

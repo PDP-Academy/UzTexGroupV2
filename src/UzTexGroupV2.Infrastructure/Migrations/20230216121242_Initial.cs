@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,8 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,26 +115,6 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         principalTable: "Company",
                         principalColumns: new[] { "Id", "LanguageCode" },
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NewsImages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NewId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NewsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NewsLanguageCode = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NewsImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_NewsImages_News_NewsId_NewsLanguageCode",
-                        columns: x => new { x.NewsId, x.NewsLanguageCode },
-                        principalTable: "News",
-                        principalColumns: new[] { "Id", "LanguageCode" });
                 });
 
             migrationBuilder.CreateTable(
@@ -194,15 +175,15 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 columns: new[] { "Id", "Code", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"), "ru", "Russian" },
-                    { new Guid("89f0c55e-de39-41ab-9dee-147616880a17"), "uz", "Uzbek" },
-                    { new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"), "en", "English" }
+                    { new Guid("1e2814e3-e711-4755-885b-ff9ae9e3ee7f"), "ru", "Russian" },
+                    { new Guid("686ba1ca-c0c2-456e-aaec-1a0ef5f6c2c7"), "en", "English" },
+                    { new Guid("c3a676b7-fe57-47b9-9f75-4ec2908d61ad"), "uz", "Uzbek" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Email", "ExpiredRefreshToken", "FirstName", "LastName", "PasswordHash", "RefreshToken", "Salt", "UserRole" },
-                values: new object[] { new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=", null, "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b", 1 });
+                values: new object[] { new Guid("7276ea78-6351-4403-b322-7edae6330825"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=", null, "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AddressId",
@@ -231,11 +212,6 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 columns: new[] { "FactoryId", "LanguageCode" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_NewsImages_NewsId_NewsLanguageCode",
-                table: "NewsImages",
-                columns: new[] { "NewsId", "NewsLanguageCode" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",
@@ -252,16 +228,13 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 name: "Languages");
 
             migrationBuilder.DropTable(
-                name: "NewsImages");
+                name: "News");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
                 name: "Job");
-
-            migrationBuilder.DropTable(
-                name: "News");
 
             migrationBuilder.DropTable(
                 name: "Factory");

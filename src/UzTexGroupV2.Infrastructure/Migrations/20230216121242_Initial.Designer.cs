@@ -12,8 +12,8 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230215124235_init")]
-    partial class init
+    [Migration("20230216121242_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,19 +207,19 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("89f0c55e-de39-41ab-9dee-147616880a17"),
+                            Id = new Guid("c3a676b7-fe57-47b9-9f75-4ec2908d61ad"),
                             Code = "uz",
                             Name = "Uzbek"
                         },
                         new
                         {
-                            Id = new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"),
+                            Id = new Guid("686ba1ca-c0c2-456e-aaec-1a0ef5f6c2c7"),
                             Code = "en",
                             Name = "English"
                         },
                         new
                         {
-                            Id = new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"),
+                            Id = new Guid("1e2814e3-e711-4755-885b-ff9ae9e3ee7f"),
                             Code = "ru",
                             Name = "Russian"
                         });
@@ -240,6 +240,10 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -247,32 +251,6 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasKey("Id", "LanguageCode");
 
                     b.ToTable("News", (string)null);
-                });
-
-            modelBuilder.Entity("UzTexGroupV2.Domain.Entities.NewsImages", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("NewId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("NewsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("NewsLanguageCode")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NewsId", "NewsLanguageCode");
-
-                    b.ToTable("NewsImages");
                 });
 
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.User", b =>
@@ -321,7 +299,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"),
+                            Id = new Guid("7276ea78-6351-4403-b322-7edae6330825"),
                             Email = "elchinuralov07@gmail.com",
                             FirstName = "Elchin",
                             LastName = "Uralov",
@@ -380,15 +358,6 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.Navigation("Factory");
                 });
 
-            modelBuilder.Entity("UzTexGroupV2.Domain.Entities.NewsImages", b =>
-                {
-                    b.HasOne("UzTexGroupV2.Domain.Entities.News", "News")
-                        .WithMany("Images")
-                        .HasForeignKey("NewsId", "NewsLanguageCode");
-
-                    b.Navigation("News");
-                });
-
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Factories");
@@ -402,11 +371,6 @@ namespace UzTexGroupV2.Infrastructure.Migrations
             modelBuilder.Entity("UzTexGroupV2.Domain.Entities.Job", b =>
                 {
                     b.Navigation("Applications");
-                });
-
-            modelBuilder.Entity("UzTexGroupV2.Domain.Entities.News", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,14 +5,15 @@ namespace UzTexGroupV2.Application.MappingProfiles;
 
 internal static class NewsMap
 {
-    internal static News MapToNews(CreateNewsDto createNewsDto)
+    internal static News MapToNews(CreateNewsDto createNewsDto, string imageUrl)
     {
         return new News
         {
             Id = createNewsDto.Id ?? Guid.NewGuid(),
             Date = DateTime.Now,
             Title = createNewsDto.title,
-            Description= createNewsDto.description,
+            Description = createNewsDto.description,
+            ImageUrl = imageUrl
         };
     }
     internal static void MapToNews(ModifyNewsDto modifyNewsDto, News news)
@@ -27,6 +28,7 @@ internal static class NewsMap
             id: news.Id,
             date: news.Date,
             title: news.Title,
-            description: news.Description);
+            description: news.Description,
+            imageUrl: news.ImageUrl);
     }
 }

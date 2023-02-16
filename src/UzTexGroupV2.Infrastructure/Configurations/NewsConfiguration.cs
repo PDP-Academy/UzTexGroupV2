@@ -17,5 +17,9 @@ public class NewsConfiguration : IEntityTypeConfiguration<News>
         builder
             .Property(news => news.Date)
             .IsRequired();
+
+        builder
+            .Property(news => news.ImageUrl)
+            .IsRequired();
     }
 }

@@ -36,6 +36,7 @@ public static class ServiceCollectionExtensions
         //DO-NOT: Unit Of works can't to add to services as Transient
         serviceCollection.AddScoped<LocalizedUnitOfWork>();
         serviceCollection.AddScoped<UnitOfWork>();
+        serviceCollection.AddScoped<ImageRepository>();
         serviceCollection.AddTransient<IGenerateToken, GenerateToken>();
         serviceCollection.AddSingleton<IPasswordHasher, PasswordHasher>();
         return serviceCollection;
