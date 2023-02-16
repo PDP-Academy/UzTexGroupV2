@@ -4,6 +4,7 @@ using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.EntitiesDto.News;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -42,10 +43,11 @@ public class NewsController : LocalizedControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async ValueTask<IActionResult> GetallNewsesAsync()
+    public async ValueTask<IActionResult> GetallNewsesAsync(
+        [FromQuery] QueryParameter queryParameter)
     {
         var Newses = await this.newsService
-            .RetrieveAllNewssAsync();
+            .RetrieveAllNewssAsync(queryParameter);
 
         return Ok(Newses);
     }

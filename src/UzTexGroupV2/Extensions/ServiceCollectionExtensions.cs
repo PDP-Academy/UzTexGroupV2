@@ -51,6 +51,8 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<NewsService>();
         serviceCollection.AddScoped<UserService>();
 
+        serviceCollection.AddHttpContextAccessor();
+
         serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
         return serviceCollection;
     }

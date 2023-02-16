@@ -12,7 +12,7 @@ using UzTexGroupV2.Infrastructure.DbContexts;
 namespace UzTexGroupV2.Infrastructure.Migrations
 {
     [DbContext(typeof(UzTexGroupDbContext))]
-    [Migration("20230215124235_init")]
+    [Migration("20230215141213_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -207,19 +207,19 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("89f0c55e-de39-41ab-9dee-147616880a17"),
+                            Id = new Guid("d4f71095-a598-4712-8a60-bf758c11fe42"),
                             Code = "uz",
                             Name = "Uzbek"
                         },
                         new
                         {
-                            Id = new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"),
+                            Id = new Guid("c660e67b-1be2-4d8a-b4fb-196173049d54"),
                             Code = "en",
                             Name = "English"
                         },
                         new
                         {
-                            Id = new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"),
+                            Id = new Guid("0a491b98-3410-478d-9a57-9d1a3a2af713"),
                             Code = "ru",
                             Name = "Russian"
                         });
@@ -321,7 +321,7 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"),
+                            Id = new Guid("d2a92954-0177-473f-afe4-7d7fe80a272a"),
                             Email = "elchinuralov07@gmail.com",
                             FirstName = "Elchin",
                             LastName = "Uralov",

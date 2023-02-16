@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -40,10 +41,11 @@ public class CompanyController : LocalizedControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async ValueTask<IActionResult> GetallCompaniesAsync()
+    public async ValueTask<IActionResult> GetallCompaniesAsync(
+        [FromQuery] QueryParameter queryParameter)
     {
         var companies = await this.companyService
-            .RetrieveAllCompnaiesAsync();
+            .RetrieveAllCompnaiesAsync(queryParameter);
 
         return Ok(companies);
     }

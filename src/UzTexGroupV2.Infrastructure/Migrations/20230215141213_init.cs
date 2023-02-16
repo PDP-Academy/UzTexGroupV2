@@ -194,15 +194,15 @@ namespace UzTexGroupV2.Infrastructure.Migrations
                 columns: new[] { "Id", "Code", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("1f1f86d6-cf0f-497d-bd11-5d2557144814"), "ru", "Russian" },
-                    { new Guid("89f0c55e-de39-41ab-9dee-147616880a17"), "uz", "Uzbek" },
-                    { new Guid("cb37e6c5-3044-4d90-bc50-80a6fe6058e1"), "en", "English" }
+                    { new Guid("0a491b98-3410-478d-9a57-9d1a3a2af713"), "ru", "Russian" },
+                    { new Guid("c660e67b-1be2-4d8a-b4fb-196173049d54"), "en", "English" },
+                    { new Guid("d4f71095-a598-4712-8a60-bf758c11fe42"), "uz", "Uzbek" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Email", "ExpiredRefreshToken", "FirstName", "LastName", "PasswordHash", "RefreshToken", "Salt", "UserRole" },
-                values: new object[] { new Guid("65d3d69a-0130-4a58-9407-8fd07f51b692"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=", null, "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b", 1 });
+                values: new object[] { new Guid("d2a92954-0177-473f-afe4-7d7fe80a272a"), "elchinuralov07@gmail.com", null, "Elchin", "Uralov", "v7DrXBP/nQ3sHmWUgp6nkmBkJCeKxVK4+iljRqJfgDI=", null, "a9feaa2d-8692-4d2e-bf64-3d8200ad8c8b", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_AddressId",

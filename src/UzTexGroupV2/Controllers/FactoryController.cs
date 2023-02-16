@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -40,10 +41,11 @@ public class FactoryController : LocalizedControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async ValueTask<IActionResult> GetallFactoryesAsync()
+    public async ValueTask<IActionResult> GetallFactoryesAsync(
+        [FromQuery] QueryParameter queryParameter)
     {
         var factories = await this.factoryService
-            .RetrieveAllFactoriesAsync();
+            .RetrieveAllFactoriesAsync(queryParameter);
 
         return Ok(factories);
     }

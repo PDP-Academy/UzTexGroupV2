@@ -1,18 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Application.Services;
 
 public class AddressService
 {
     private readonly UnitOfWork unitOfWork;
+    private readonly IHttpContextAccessor httpContextAccesssor;
 
-    public AddressService(UnitOfWork unitOfWork)
+    public AddressService(
+        UnitOfWork unitOfWork,
+        IHttpContextAccessor httpContextAccesssor)
     {
         this.unitOfWork = unitOfWork;
+        this.httpContextAccesssor = httpContextAccesssor;
     }
     public async ValueTask<AddressDto> CreateAddressAsync(
         CreateAddressDto createAddressDto)
@@ -55,12 +63,18 @@ public class AddressService
         return AddressMap.MapToAddressDto(modifiedAddress);
     }
 
-    public async ValueTask<IQueryable<AddressDto>> RetrieveAllAdressesAsync()
+    public async ValueTask<IQueryable<AddressDto>> RetrieveAllAdressesAsync(
+        QueryParameter queryParameter)
     {
         var addresses = await this.unitOfWork
-            .AddressRepository.GetAllAsync();
+            .AddressRepository
+            .GetAllAsync();
 
-        return addresses.Select(address => AddressMap.MapToAddressDto(address));
+        var paginatedAddresses = addresses.PagedList(
+            httpContext : httpContextAccesssor.HttpContext,
+            queryParameter : queryParameter);
+
+        return paginatedAddresses.Select(address => AddressMap.MapToAddressDto(address));
     }
 
     public async ValueTask<AddressDto> RetrieveAddressByIdAsync(Guid id)

@@ -1,18 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto.News;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Application.Services;
 
 public class NewsService
 {
     private readonly LocalizedUnitOfWork lacalizedUnitOfWork;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    public NewsService(LocalizedUnitOfWork lacalizedUnitOfWork)
+    public NewsService(
+        LocalizedUnitOfWork lacalizedUnitOfWork,
+        IHttpContextAccessor httpContextAccessor)
     {
         this.lacalizedUnitOfWork = lacalizedUnitOfWork;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public async ValueTask<NewsDto> CreateNewsAsync(CreateNewsDto entity)
@@ -27,11 +34,16 @@ public class NewsService
         return NewsMap.MapToNewsDto(storageNews);
     }
 
-    public async ValueTask<IQueryable<NewsDto>> RetrieveAllNewssAsync()
+    public async ValueTask<IQueryable<NewsDto>> RetrieveAllNewssAsync(
+        QueryParameter queryParameter)
     {
         var newss = await this.lacalizedUnitOfWork.NewsRepository.GetAllAsync();
 
-        return newss.Select(news => NewsMap.MapToNewsDto(news));
+        var paginationNews = newss.PagedList(
+            httpContext: httpContextAccessor.HttpContext,
+            queryParameter: queryParameter);
+
+        return paginationNews.Select(news => NewsMap.MapToNewsDto(news));
     }
 
     public async ValueTask<NewsDto> RetrieveNewsByIdAsync(Guid Id)
