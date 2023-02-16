@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Application.QueryExtentions;
@@ -18,17 +17,20 @@ public class FactoryService
     private readonly AddressService addressService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
     private readonly IHttpContextAccessor httpContextAccessor;
+    private readonly CompanyService companyService;
 
     public FactoryService(
         LocalizedUnitOfWork localizedUnitOfWork,
         AddressService addressService,
         UzTexGroupDbContext uzTexGroupDbContext,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        CompanyService companyService)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
         this.httpContextAccessor = httpContextAccessor;
+        this.companyService = companyService;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {

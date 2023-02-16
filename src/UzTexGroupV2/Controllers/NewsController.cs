@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.EntitiesDto.News;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
@@ -13,16 +12,19 @@ namespace UzTexGroupV2.Controllers;
 public class NewsController : LocalizedControllerBase
 {
     private readonly NewsService newsService;
+    private readonly IWebHostEnvironment webHostEnvironment;
     public NewsController(LocalizedUnitOfWork localizedUnitOfWork,
-        NewsService newsService) : base(localizedUnitOfWork)
+        NewsService newsService,
+        IWebHostEnvironment webHostEnvironment) : base(localizedUnitOfWork)
     {
         this.newsService = newsService;
+        this.webHostEnvironment = webHostEnvironment;
     }
 
     [Authorize]
     [HttpPost]
     public async ValueTask<ActionResult<NewsDto>> PostNewsAsync(
-        CreateNewsDto createNewsDto)
+        [FromForm] CreateNewsDto createNewsDto)
     {
         var createdNews = await this.newsService
             .CreateNewsAsync(createNewsDto);
@@ -55,7 +57,7 @@ public class NewsController : LocalizedControllerBase
     [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<NewsDto>> PutNewsAsync(
-        ModifyNewsDto modifyNewsDto)
+        [FromForm] ModifyNewsDto modifyNewsDto)
     {
         var updatedNews = await this.newsService
             .ModifyNewsAsync(modifyNewsDto);

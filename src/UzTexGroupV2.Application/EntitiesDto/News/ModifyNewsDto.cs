@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace UzTexGroupV2.Application.EntitiesDto.News;
 
@@ -7,5 +8,6 @@ public record ModifyNewsDto(
     Guid id,
 
     string? title,
-    string? description
+    string? description,
+    IFormFile? file
 );

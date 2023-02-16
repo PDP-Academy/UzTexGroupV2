@@ -14,17 +14,15 @@ public class NewsService
     private readonly LocalizedUnitOfWork lacalizedUnitOfWork;
     private readonly IHttpContextAccessor httpContextAccessor;
 
-    public NewsService(
-        LocalizedUnitOfWork lacalizedUnitOfWork,
-        IHttpContextAccessor httpContextAccessor)
+    public NewsService(LocalizedUnitOfWork lacalizedUnitOfWork)
     {
         this.lacalizedUnitOfWork = lacalizedUnitOfWork;
         this.httpContextAccessor = httpContextAccessor;
     }
 
-    public async ValueTask<NewsDto> CreateNewsAsync(CreateNewsDto entity)
+    public async ValueTask<NewsDto> CreateNewsAsync(CreateNewsDto createNews)
     {
-        var news = NewsMap.MapToNews(entity);
+        var news = NewsMap.MapToNews(createNews);
 
         var storageNews = await this.lacalizedUnitOfWork
             .NewsRepository.CreateAsync(news);
