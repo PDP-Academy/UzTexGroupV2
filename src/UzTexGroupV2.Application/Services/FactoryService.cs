@@ -43,6 +43,8 @@ public class FactoryService
                 {
                     var factory = FactoryMap.MapToFactory(createFactoryDto);
 
+                    await this.companyService.RetrieveCompanyByIdAsync(factory.CompanyId);
+
                     var storedAddress = await this.addressService
                         .CreateAddressAsync(createFactoryDto.createAddressDto);
 
@@ -94,6 +96,8 @@ public class FactoryService
                 try
                 {
                     var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
+
+                    await this.companyService.RetrieveCompanyByIdAsync(storageFactory.CompanyId);
 
                     FactoryMap.MapToFactory(
                         factory: storageFactory,

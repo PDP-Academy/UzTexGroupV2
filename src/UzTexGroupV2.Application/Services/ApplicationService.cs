@@ -15,6 +15,7 @@ public class ApplicationService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
     private readonly AddressService addressService;
+    private readonly JobService jobService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
     private readonly IHttpContextAccessor httpContextAccessor;
 
@@ -42,7 +43,10 @@ public class ApplicationService
             {
                 try
                 {
+                    await this.jobService.RetrieveJobByIdAsync(createApplicationDto.jobId);
+
                     var application = ApplicationMap.MapToApplication(createApplicationDto);
+
                     var storedAddress = await this.addressService
                         .CreateAddressAsync(createApplicationDto.createAddressDto);
 
@@ -98,6 +102,8 @@ public class ApplicationService
                 try
                 {
                     var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
+
+                    await this.jobService.RetrieveJobByIdAsync(storageApplication.JobId);
 
                     if (modifyApplicationDto.modifyAddressDto is not null)
                         await this.addressService

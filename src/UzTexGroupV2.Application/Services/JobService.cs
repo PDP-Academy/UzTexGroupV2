@@ -25,6 +25,9 @@ public class JobService
     {
         var job = JobMap.MapToJob(createJobDto);
 
+        await this.factoryService
+            .RetrieveFactoryByIdAsync(job.FactoryId);
+
         var storedJob = await this.localizedUnitOfWork
             .JobRepository.CreateAsync(job);
 
@@ -56,6 +59,9 @@ public class JobService
     public async ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
     {
         var storageJob = await GetByExpressionAsync(modifyJobDto.Id);
+
+        await this.factoryService
+            .RetrieveFactoryByIdAsync(storageJob.FactoryId);
 
         JobMap.MapToJob(storageJob, modifyJobDto);
 
