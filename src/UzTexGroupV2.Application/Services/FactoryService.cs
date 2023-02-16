@@ -14,15 +14,18 @@ public class FactoryService
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
     private readonly AddressService addressService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
+    private readonly CompanyService companyService;
 
     public FactoryService(
         LocalizedUnitOfWork localizedUnitOfWork,
         AddressService addressService,
-        UzTexGroupDbContext uzTexGroupDbContext)
+        UzTexGroupDbContext uzTexGroupDbContext,
+        CompanyService companyService)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
+        this.companyService = companyService;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {
@@ -36,6 +39,8 @@ public class FactoryService
                 try
                 {
                     var factory = FactoryMap.MapToFactory(createFactoryDto);
+
+                    await this.companyService.RetrieveCompanyByIdAsync(factory.CompanyId);
 
                     var storedAddress = await this.addressService
                         .CreateAddressAsync(createFactoryDto.createAddressDto);
@@ -83,6 +88,8 @@ public class FactoryService
                 try
                 {
                     var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
+
+                    await this.companyService.RetrieveCompanyByIdAsync(storageFactory.CompanyId);
 
                     FactoryMap.MapToFactory(
                         factory: storageFactory,

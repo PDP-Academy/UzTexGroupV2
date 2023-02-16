@@ -9,15 +9,21 @@ namespace UzTexGroupV2.Application.Services;
 public class JobService
 {
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
+    private readonly FactoryService factoryService;
 
-    public JobService(LocalizedUnitOfWork localizedUnitOfWork)
+    public JobService(LocalizedUnitOfWork localizedUnitOfWork,
+        FactoryService factoryService)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
+        this.factoryService = factoryService;
     }
 
     public async ValueTask<JobDto> CreateJobAsync(CreateJobDto createJobDto)
     {
         var job = JobMap.MapToJob(createJobDto);
+
+        await this.factoryService
+            .RetrieveFactoryByIdAsync(job.FactoryId);
 
         var storedJob = await this.localizedUnitOfWork
             .JobRepository.CreateAsync(job);
@@ -45,6 +51,9 @@ public class JobService
     public async ValueTask<JobDto> ModifyJobAsync(ModifyJobDto modifyJobDto)
     {
         var storageJob = await GetByExpressionAsync(modifyJobDto.Id);
+
+        await this.factoryService
+            .RetrieveFactoryByIdAsync(storageJob.FactoryId);
 
         JobMap.MapToJob(storageJob, modifyJobDto);
 

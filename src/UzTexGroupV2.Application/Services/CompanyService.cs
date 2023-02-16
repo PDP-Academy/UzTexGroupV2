@@ -85,7 +85,7 @@ public class CompanyService
 
         var company = await companies.FirstOrDefaultAsync();
 
-        Validations.ValidateObjectForNullable(companies);
+        Validations.ValidateObjectForNullable(company);
 
         return company;
     }
