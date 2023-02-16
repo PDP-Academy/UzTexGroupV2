@@ -55,7 +55,7 @@ public class NewsController : LocalizedControllerBase
     [Authorize]
     [HttpPut]
     public async ValueTask<ActionResult<NewsDto>> PutNewsAsync(
-        ModifyNewsDto modifyNewsDto)
+        [FromForm] ModifyNewsDto modifyNewsDto)
     {
         var updatedNews = await this.newsService
             .ModifyNewsAsync(modifyNewsDto);

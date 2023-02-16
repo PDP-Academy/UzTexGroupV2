@@ -22,4 +22,8 @@
     <ProjectReference Include="..\UzTexGroupV2.Application\UzTexGroupV2.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="uploads\" />
+  </ItemGroup>
+
 </Project>

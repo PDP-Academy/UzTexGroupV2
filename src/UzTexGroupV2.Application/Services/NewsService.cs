@@ -9,19 +9,14 @@ namespace UzTexGroupV2.Application.Services;
 public class NewsService
 {
     private readonly LocalizedUnitOfWork lacalizedUnitOfWork;
-    private readonly ImageRepository imageRepository;
-    public NewsService(LocalizedUnitOfWork lacalizedUnitOfWork,
-        ImageRepository imageRepository)
+    public NewsService(LocalizedUnitOfWork lacalizedUnitOfWork)
     {
         this.lacalizedUnitOfWork = lacalizedUnitOfWork;
-        this.imageRepository = imageRepository;
     }
 
     public async ValueTask<NewsDto> CreateNewsAsync(CreateNewsDto createNews)
     {
-        var imageUrl = await imageRepository.SaveImageAsync(createNews.file);
-
-        var news = NewsMap.MapToNews(createNews, imageUrl);
+        var news = NewsMap.MapToNews(createNews);
 
         var storageNews = await this.lacalizedUnitOfWork
             .NewsRepository.CreateAsync(news);

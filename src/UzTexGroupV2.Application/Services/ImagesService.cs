@@ -1,25 +1,23 @@
-﻿/*using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace UzTexGroupV2.Application.Services;
 
-public class ImagesService
+public static class ImagesService
 {
-    public async Task<string> Upload(IFormFile file)
+    private const string folderPath = "C:\\Users\\elchi\\OneDrive\\Desktop\\UzTexGroupV2\\src\\UzTexGroupV2\\uploads";
+    public static string SaveImage(IFormFile formFile, string newsGuid)
     {
-        string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
-
         string filePath = "";
 
-        if (file.Length > 0)
+        if (formFile.Length > 0)
         {
-            filePath = Path.Combine(uploads, file.FileName);
+            filePath = Path.Combine(folderPath, newsGuid + ".jpg");
+
             using (Stream fileStream = new FileStream(filePath, FileMode.Create))
             {
-                await file.CopyToAsync(fileStream);
+                formFile.CopyToAsync(fileStream);
             }
         }
-
         return filePath;
     }
 }
-*/
