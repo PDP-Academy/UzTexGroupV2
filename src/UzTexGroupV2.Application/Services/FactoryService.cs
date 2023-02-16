@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
-using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Application.Services;
 
@@ -14,17 +16,20 @@ public class FactoryService
     private readonly LocalizedUnitOfWork localizedUnitOfWork;
     private readonly AddressService addressService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
+    private readonly IHttpContextAccessor httpContextAccessor;
     private readonly CompanyService companyService;
 
     public FactoryService(
         LocalizedUnitOfWork localizedUnitOfWork,
         AddressService addressService,
         UzTexGroupDbContext uzTexGroupDbContext,
+        IHttpContextAccessor httpContextAccessor,
         CompanyService companyService)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
+        this.httpContextAccessor = httpContextAccessor;
         this.companyService = companyService;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
@@ -62,11 +67,16 @@ public class FactoryService
         return FactoryMap.MapToFactoryDto(storageFactory);
     }
     
-    public async ValueTask<IQueryable<FactoryDto>> RetrieveAllFactoriesAsync()
+    public async ValueTask<IQueryable<FactoryDto>> RetrieveAllFactoriesAsync(
+        QueryParameter queryParameter)
     {
         var factories = await this.localizedUnitOfWork.FactoryRepository.GetAllAsync();
 
-        return factories.Select(factory => FactoryMap.MapToFactoryDto(factory));    
+        var paginationFactory = factories.PagedList(
+            httpContext : httpContextAccessor.HttpContext,
+            queryParameter : queryParameter);
+
+        return paginationFactory.Select(factory => FactoryMap.MapToFactoryDto(factory));    
     }
 
     public async ValueTask<FactoryDto> RetrieveFactoryByIdAsync(Guid id)

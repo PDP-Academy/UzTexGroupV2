@@ -1,4 +1,5 @@
-﻿using UzTexGroupV2.Domain;
+﻿using System.Net.Http.Headers;
+using UzTexGroupV2.Domain;
 
 namespace UzTexGroupV2.Application.Services;
 
@@ -6,8 +7,8 @@ public static class Validations
 {
     public static void ValidateId(Guid id)
     {
-        // if (id == default)
-        //     throw new InvalidIdException("Bu id yaroqli emas!");
+        if (id == default)
+            throw new InvalidIdException("Bu id yaroqli emas!");
     }
     public static void ValidateObjectForNullable<T>(T entity)
     {

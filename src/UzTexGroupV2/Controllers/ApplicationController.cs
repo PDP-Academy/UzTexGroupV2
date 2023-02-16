@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -41,10 +42,11 @@ public class ApplicationController : LocalizedControllerBase
 
     [Authorize]
     [HttpGet]
-    public async ValueTask<IActionResult> GetAllApplicationesAsync()
+    public async ValueTask<IActionResult> GetAllApplicationesAsync(
+       [FromQuery] QueryParameter queryParameter)
     {
         var Applicationes = await this.applicationService
-            .RetrieveAllApplicationsAsync();
+            .RetrieveAllApplicationsAsync(queryParameter);
 
         return Ok(Applicationes);
     }

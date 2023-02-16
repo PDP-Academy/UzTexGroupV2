@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Application.Services;
 
@@ -14,17 +17,18 @@ public class ApplicationService
     private readonly AddressService addressService;
     private readonly JobService jobService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
     public ApplicationService(
         LocalizedUnitOfWork unitOfWork,
         AddressService addressService,
         UzTexGroupDbContext uzTexGroupDbContext,
-        JobService jobService)
+        IHttpContextAccessor httpContextAccessor)
     {
         this.unitOfWork = unitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
-        this.jobService = jobService;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public async ValueTask<ApplicationDto> CreateApplicationAsync(
@@ -64,12 +68,17 @@ public class ApplicationService
         return ApplicationMap.MapToApplicationDto(storedApplication);
     }
 
-    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllApplicationsAsync()
+    public async ValueTask<IQueryable<ApplicationDto>> RetrieveAllApplicationsAsync(
+        QueryParameter queryParameter)
     {
         var storageApplications = await this
             .unitOfWork.ApplicationRepository.GetAllAsync();
 
-        return storageApplications.Select(
+        var paginatedAplication = storageApplications.PagedList(
+           httpContext: httpContextAccessor.HttpContext,
+           queryParameter: queryParameter);
+
+        return paginatedAplication.Select(
             application => ApplicationMap.MapToApplicationDto(application));
     }
 

@@ -4,6 +4,7 @@ using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -42,10 +43,11 @@ public class JobController : LocalizedControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async ValueTask<IActionResult> GetallJobesAsync()
+    public async ValueTask<IActionResult> GetallJobesAsync(
+        [FromQuery] QueryParameter queryParameter)
     {
         var jobs = await this.jobService
-            .RetrieveAllJobsAsync();
+            .RetrieveAllJobsAsync(queryParameter);
 
         return Ok(jobs);
     }

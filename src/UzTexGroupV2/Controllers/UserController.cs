@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -29,10 +30,11 @@ public class UserController : LocalizedControllerBase
 
     [Authorize]
     [HttpGet]
-    public async ValueTask<ActionResult<UserDto>> GetAllUsers()
+    public async ValueTask<ActionResult<UserDto>> GetAllUsers(
+        [FromQuery] QueryParameter queryParameter)
     {
         var users = await this.userService
-            .RetrieveAllUsersAsync();
+            .RetrieveAllUsersAsync(queryParameter);
 
         return Ok(users);
     }

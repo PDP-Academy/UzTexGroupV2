@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using UzTexGroupV2.Application.EntitiesDto.Addresses;
 using UzTexGroupV2.Application.Services;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
@@ -40,10 +41,11 @@ public class AddressController : LocalizedControllerBase
 
     [AllowAnonymous]
     [HttpGet]
-    public async ValueTask<IActionResult> GetallAddressesAsync()
+    public async ValueTask<IActionResult> GetallAddressesAsync(
+      [FromQuery] QueryParameter queryParameter)
     {
         var addresses = await this.addressService
-            .RetrieveAllAdressesAsync();
+            .RetrieveAllAdressesAsync(queryParameter);
 
         return Ok(addresses);
     }

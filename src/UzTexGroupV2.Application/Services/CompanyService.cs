@@ -1,18 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto.Company;
 using UzTexGroupV2.Application.MappingProfiles;
+using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
 using UzTexGroupV2.Infrastructure.Repositories;
+using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Application.Services;
 
 public class CompanyService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    public CompanyService(LocalizedUnitOfWork unitOfWork)
+    public CompanyService(
+        LocalizedUnitOfWork unitOfWork,
+        IHttpContextAccessor httpContextAccessor)
     {
         this.unitOfWork = unitOfWork;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public async ValueTask<CompanyDTO> CreateCompanyAsync(
@@ -30,12 +37,17 @@ public class CompanyService
             .ToCompanyDTO(storedCompany);
     }
 
-    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompnaiesAsync()
+    public async ValueTask<IQueryable<CompanyDTO>> RetrieveAllCompnaiesAsync(
+        QueryParameter queryParameter)
     {
         var companies = await unitOfWork
             .CompanyRepository.GetAllAsync();
 
-        return companies.Select(company =>
+        var paginationCompany = companies.PagedList(
+            httpContext: httpContextAccessor.HttpContext,
+            queryParameter: queryParameter);
+
+        return paginationCompany.Select(company =>
             CompanyMapper.ToCompanyDTO(company));
     }
 
