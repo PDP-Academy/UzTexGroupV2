@@ -4,7 +4,7 @@ namespace UzTexGroupV2.Application.Services;
 
 public static class ImagesService
 {
-    private const string folderPath = "C:\\Users\\elchi\\OneDrive\\Desktop\\UzTexGroupV2\\src\\UzTexGroupV2\\uploads";
+    private static readonly string folderPath = $"{Directory.GetCurrentDirectory()}\\uploads";
     public static string SaveImage(IFormFile formFile, string newsGuid)
     {
         string filePath = "";

@@ -13,6 +13,6 @@ public static class Validations
     public static void ValidateObjectForNullable<T>(T entity)
     {
         if (entity is null)
-            throw new NotFoundException($"{nameof(entity)} ob'ekt topilmadi");
+            throw new NotFoundException($"{typeof(T)} ob'ekt topilmadi");
     }
 }

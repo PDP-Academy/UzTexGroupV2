@@ -29,7 +29,7 @@ public class FactoryService
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
-        this.httpContextAccessor = httpContextAccessor;;
+        this.httpContextAccessor = httpContextAccessor;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {
@@ -58,7 +58,7 @@ public class FactoryService
                 {
                     transaction.Rollback();
                     throw new InValidEntityException(
-                        "Application yoki address ma'lumotlarida xatolik sodir bo'ldi");
+                        "Factory yoki address ma'lumotlarida xatolik sodir bo'ldi");
                 }
             }
         });
@@ -114,7 +114,8 @@ public class FactoryService
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw ex;
+                    throw new InValidEntityException(
+                        "Factory yoki address ma'lumotlarida xatolik sodir bo'ldi");
                 }
             }
         });

@@ -16,7 +16,10 @@ public class UserService
     private readonly UnitOfWork unitOfWork;
     private readonly IHttpContextAccessor httpContextAccessor;
 
-    public UserService(UnitOfWork unitOfWork, IPasswordHasher passwordHasher, IHttpContextAccessor httpContextAccessor)
+    public UserService(
+        UnitOfWork unitOfWork,
+        IPasswordHasher passwordHasher,
+        IHttpContextAccessor httpContextAccessor)
     {
         this.unitOfWork = unitOfWork;
         this.passwordHasher = passwordHasher;
@@ -101,10 +104,4 @@ public class UserService
         return user;
 
     }
-
-    /*private async Task ValidateEmailForRequired(User user)
-    {
-        var users = await this.unitOfWork.UserRepository
-            .GetByExpression(expression => expression.Email == user.Email)
-    }*/
 }

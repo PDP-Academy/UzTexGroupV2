@@ -60,7 +60,7 @@ public class ApplicationService
                 {
                     transaction.Rollback();
                     throw new InValidEntityException(
-                        "Factory yoki address ma'lumotlarida xatolik sodir bo'ldi");
+                        "Application yoki address ma'lumotlarida xatolik sodir bo'ldi");
                 }
             }
         });
@@ -119,7 +119,7 @@ public class ApplicationService
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw ex;
+                    throw new InValidEntityException("Address yoki Application ma'lumotlarida xatolik bor");
                 }
             }
         });

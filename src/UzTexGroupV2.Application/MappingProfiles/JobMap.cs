@@ -38,19 +38,4 @@ internal static class JobMap
         job.FactoryId = modifyJobDto.FactoryId ?? job.FactoryId;
         job.WorkTime = modifyJobDto.WorkTime ?? job.WorkTime;
     }
-    //private static Factory GetFactory(Guid id)
-    //{
-    //    Validations.ValidateId(id);
-
-    //    var factories = this.localizedUnitOfWork.FactoryRepository
-    //       .GetByExpression(
-    //        expression => expression.Id == id,
-    //        new string[] { "Address", "Company" });
-
-    //    var factory = factories.FirstOrDefaultAsync();
-
-    //    Validations.ValidateObjectForNullable(factory);
-
-    //    return factory;
-    //}
 }
