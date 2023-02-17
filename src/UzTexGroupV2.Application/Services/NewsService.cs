@@ -26,6 +26,10 @@ public class NewsService
     {
         var news = NewsMap.MapToNews(createNews);
 
+        ImagesService.SaveImage(createNews.file, 
+            news.Id.ToString(), 
+            this.lacalizedUnitOfWork.NewsRepository.Language.Code);
+        
         var storageNews = await this.lacalizedUnitOfWork
             .NewsRepository.CreateAsync(news);
 

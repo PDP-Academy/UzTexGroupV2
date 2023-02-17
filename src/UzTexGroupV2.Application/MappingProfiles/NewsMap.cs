@@ -14,16 +14,13 @@ internal static class NewsMap
             Id = id,
             Date = DateTime.Now,
             Title = createNewsDto.title,
-            Description = createNewsDto.description,
-            ImageUrl = ImagesService.SaveImage(createNewsDto.file, id.ToString())
+            Description = createNewsDto.description
         };
     }
     internal static void MapToNews(ModifyNewsDto modifyNewsDto, News news)
     {
         news.Title = modifyNewsDto.title;
         news.Description = modifyNewsDto.description;
-        news.ImageUrl = ImagesService.SaveImage(modifyNewsDto.file,
-            news.Id.ToString()) ?? news.ImageUrl;
     }
 
     internal static NewsDto MapToNewsDto(News news)
