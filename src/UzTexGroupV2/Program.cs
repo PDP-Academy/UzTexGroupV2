@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 using UzTexGroupV2.Extensions;
 using UzTexGroupV2.MIddlewares;
 
@@ -7,6 +9,7 @@ namespace UzTexGroupV2
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot"));
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services
@@ -30,8 +33,12 @@ namespace UzTexGroupV2
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-            app.UseMiddleware<LocalizationTrackerMiddleware>();
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                HttpsCompression = HttpsCompressionMode.Compress
+            });
+            app.UseMiddleware<LocalizationTrackerMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 

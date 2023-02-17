@@ -29,7 +29,6 @@ internal static class NewsMap
             id: news.Id,
             date: news.Date,
             title: news.Title,
-            description: news.Description,
-            imageUrl: news.ImageUrl);
+            description: news.Description);
     }
 }

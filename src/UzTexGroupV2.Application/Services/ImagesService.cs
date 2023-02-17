@@ -5,7 +5,14 @@ namespace UzTexGroupV2.Application.Services;
 
 public static class ImagesService
 {
-    private static readonly string folderPath = $"{Directory.GetCurrentDirectory()}\\uploads";
+    private static readonly string folderPath;
+
+    static ImagesService()
+    {   
+        folderPath = Path.Join(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        if (!Directory.Exists(folderPath))
+            Directory.CreateDirectory(folderPath);
+    }
     public static string SaveImage(IFormFile formFile, string newsGuid, string langCode)
     {
         string filePath = "";
