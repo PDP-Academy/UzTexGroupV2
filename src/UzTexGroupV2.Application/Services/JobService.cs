@@ -46,27 +46,19 @@ public class JobService
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetAllAsync();
 
+        if (queryParameter.Search is not null)
+            jobs = jobs
+                .Where(job =>
+                    job.Name.Contains(queryParameter.Search, StringComparison.InvariantCulture)
+                    ||
+                    job.Desription.Contains(queryParameter.Search, StringComparison.InvariantCulture));
+        
         var paginationJojs = jobs.PagedList(
             httpContext: httpContextAccessor.HttpContext,
             queryParameter: queryParameter);
 
         return paginationJojs.Select(job => JobMap.MapToJobDto(job));
     }
-
-    public async ValueTask<IQueryable<JobDto>> SearchJobInJobDescriptionAndTitleAsync(string query)
-    {
-        var foundedJobs = (await this.localizedUnitOfWork
-                .JobRepository
-                .GetAllAsync())
-            .Where(job =>
-                job.Desription.Contains(query, StringComparison.InvariantCulture)
-                ||
-                job.Name.Contains(query, StringComparison.InvariantCulture)
-            );
-        return foundedJobs
-            .Select(job => JobMap.MapToJobDto(job));
-    }
-
     public async ValueTask<JobDto> RetrieveJobByIdAsync(Guid id)
     {
         var storageJob = await GetByExpressionAsync(id);
