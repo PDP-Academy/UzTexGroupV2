@@ -15,7 +15,7 @@ internal static class NewsMap
             Date = DateTime.Now,
             Title = createNewsDto.title,
             Description = createNewsDto.description,
-            ImageUrl = ImagesService.SaveImage(createNewsDto.file, id.ToString())
+            ImageUrl = ImagesService.SaveImage(createNewsDto.file, id.ToString(), createNewsDto.la)
         };
     }
     internal static void MapToNews(ModifyNewsDto modifyNewsDto, News news)
