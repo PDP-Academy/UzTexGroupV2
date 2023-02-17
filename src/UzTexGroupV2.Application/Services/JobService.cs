@@ -25,8 +25,12 @@ public class JobService
     {
         var job = JobMap.MapToJob(createJobDto);
 
-        await this.factoryService
-            .RetrieveFactoryByIdAsync(job.FactoryId);
+        var storagefactory = await this.localizedUnitOfWork.FactoryRepository
+            .GetByExpression(
+            factory => factory.Id == createJobDto.FactoryId,
+            new string[] {});
+
+        Validations.ValidateObjectForNullable(await storagefactory.FirstOrDefaultAsync());
 
         var storedJob = await this.localizedUnitOfWork
             .JobRepository.CreateAsync(job);
@@ -60,8 +64,12 @@ public class JobService
     {
         var storageJob = await GetByExpressionAsync(modifyJobDto.Id);
 
-        await this.factoryService
-            .RetrieveFactoryByIdAsync(storageJob.FactoryId);
+        var storagefactory = await this.localizedUnitOfWork.FactoryRepository
+           .GetByExpression(
+           factory => factory.Id == modifyJobDto.FactoryId,
+           new string[] { });
+
+        Validations.ValidateObjectForNullable(await storagefactory.FirstOrDefaultAsync());
 
         JobMap.MapToJob(storageJob, modifyJobDto);
 
