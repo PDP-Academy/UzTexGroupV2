@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using Microsoft.EntityFrameworkCore;
 using UzTexGroupV2.Application.EntitiesDto;
@@ -45,13 +46,10 @@ public class JobService
     {
         var jobs = await this.localizedUnitOfWork.JobRepository
             .GetAllAsync();
-
-        if (queryParameter.Search is not null)
-            jobs = jobs
-                .Where(job =>
-                    job.Name.Contains(queryParameter.Search, StringComparison.InvariantCulture)
-                    ||
-                    job.Desription.Contains(queryParameter.Search, StringComparison.InvariantCulture));
+        //
+        // if (queryParameter.Search is not null)
+        //     jobs = jobs
+        //         .Where();
         
         var paginationJojs = jobs.PagedList(
             httpContext: httpContextAccessor.HttpContext,
