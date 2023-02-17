@@ -14,7 +14,9 @@ public class NewsService
     private readonly LocalizedUnitOfWork lacalizedUnitOfWork;
     private readonly IHttpContextAccessor httpContextAccessor;
 
-    public NewsService(LocalizedUnitOfWork lacalizedUnitOfWork)
+    public NewsService(
+        LocalizedUnitOfWork lacalizedUnitOfWork,
+        IHttpContextAccessor httpContextAccessor)
     {
         this.lacalizedUnitOfWork = lacalizedUnitOfWork;
         this.httpContextAccessor = httpContextAccessor;

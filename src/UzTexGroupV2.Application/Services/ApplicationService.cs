@@ -5,6 +5,7 @@ using UzTexGroupV2.Application.EntitiesDto;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Application.QueryExtentions;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Domain.Exceptions;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 using UzTexGroupV2.Model;
@@ -15,7 +16,6 @@ public class ApplicationService
 {
     private readonly LocalizedUnitOfWork unitOfWork;
     private readonly AddressService addressService;
-    private readonly JobService jobService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
     private readonly IHttpContextAccessor httpContextAccessor;
 
@@ -43,8 +43,6 @@ public class ApplicationService
             {
                 try
                 {
-                    await this.jobService.RetrieveJobByIdAsync(createApplicationDto.jobId);
-
                     var application = ApplicationMap.MapToApplication(createApplicationDto);
 
                     var storedAddress = await this.addressService
@@ -61,7 +59,8 @@ public class ApplicationService
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw ex;
+                    throw new InValidEntityException(
+                        "Factory yoki address ma'lumotlarida xatolik sodir bo'ldi");
                 }
             }
         });
@@ -102,8 +101,6 @@ public class ApplicationService
                 try
                 {
                     var storageApplication = await GetByExpressionAsync(modifyApplicationDto.id);
-
-                    await this.jobService.RetrieveJobByIdAsync(storageApplication.JobId);
 
                     if (modifyApplicationDto.modifyAddressDto is not null)
                         await this.addressService

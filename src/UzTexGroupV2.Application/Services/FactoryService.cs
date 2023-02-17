@@ -4,7 +4,9 @@ using System.Data;
 using UzTexGroupV2.Application.EntitiesDto.Factory;
 using UzTexGroupV2.Application.MappingProfiles;
 using UzTexGroupV2.Application.QueryExtentions;
+using UzTexGroupV2.Domain;
 using UzTexGroupV2.Domain.Entities;
+using UzTexGroupV2.Domain.Exceptions;
 using UzTexGroupV2.Infrastructure.DbContexts;
 using UzTexGroupV2.Infrastructure.Repositories;
 using UzTexGroupV2.Model;
@@ -17,20 +19,17 @@ public class FactoryService
     private readonly AddressService addressService;
     private readonly UzTexGroupDbContext uzTexGroupDbContext;
     private readonly IHttpContextAccessor httpContextAccessor;
-    private readonly CompanyService companyService;
 
     public FactoryService(
         LocalizedUnitOfWork localizedUnitOfWork,
         AddressService addressService,
         UzTexGroupDbContext uzTexGroupDbContext,
-        IHttpContextAccessor httpContextAccessor,
-        CompanyService companyService)
+        IHttpContextAccessor httpContextAccessor)
     {
         this.localizedUnitOfWork = localizedUnitOfWork;
         this.addressService = addressService;
         this.uzTexGroupDbContext = uzTexGroupDbContext;
-        this.httpContextAccessor = httpContextAccessor;
-        this.companyService = companyService;
+        this.httpContextAccessor = httpContextAccessor;;
     }
     public async ValueTask<FactoryDto> CreateFactoryAsync(CreateFactoryDto createFactoryDto)
     {
@@ -45,8 +44,6 @@ public class FactoryService
                 {
                     var factory = FactoryMap.MapToFactory(createFactoryDto);
 
-                    await this.companyService.RetrieveCompanyByIdAsync(factory.CompanyId);
-
                     var storedAddress = await this.addressService
                         .CreateAddressAsync(createFactoryDto.createAddressDto);
 
@@ -60,7 +57,8 @@ public class FactoryService
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw ex;
+                    throw new InValidEntityException(
+                        "Application yoki address ma'lumotlarida xatolik sodir bo'ldi");
                 }
             }
         });
@@ -98,8 +96,6 @@ public class FactoryService
                 try
                 {
                     var storageFactory = await GetByExpressionAsync(modifyFactoryDto.id);
-
-                    await this.companyService.RetrieveCompanyByIdAsync(storageFactory.CompanyId);
 
                     FactoryMap.MapToFactory(
                         factory: storageFactory,
