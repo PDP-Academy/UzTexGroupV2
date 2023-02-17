@@ -19,7 +19,7 @@ public class JobController : LocalizedControllerBase
         this.jobService = jobService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async ValueTask<ActionResult<JobDto>> PostJobAsync(
         CreateJobDto createJobDto)
@@ -52,7 +52,7 @@ public class JobController : LocalizedControllerBase
         return Ok(jobs);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<JobDto>> PutJobAsync(
         ModifyJobDto modifyJobDto)
@@ -63,7 +63,7 @@ public class JobController : LocalizedControllerBase
         return Ok(updatedJob);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<JobDto>> DeleteAdressAsync(Guid jobId)
     {

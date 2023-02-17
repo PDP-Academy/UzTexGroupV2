@@ -17,7 +17,7 @@ public class AddressController : LocalizedControllerBase
     {
         this.addressService = addressService;
     }
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async ValueTask<ActionResult<AddressDto>> PostAddressAsync(
         CreateAddressDto createAddressDto)
@@ -50,7 +50,7 @@ public class AddressController : LocalizedControllerBase
         return Ok(addresses);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<AddressDto>> PutAddressAsync(
         [FromBody] ModifyAddressDto modifyAddressDto)
@@ -61,7 +61,7 @@ public class AddressController : LocalizedControllerBase
         return Ok(updatedAddress);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<AddressDto>> DeleteAdressAsync(Guid addressId)
     {

@@ -18,7 +18,7 @@ public class FactoryController : LocalizedControllerBase
         this.factoryService = factoryService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async ValueTask<ActionResult<FactoryDto>> PostFactoryAsync(
         CreateFactoryDto createFactoryDto)
@@ -50,7 +50,7 @@ public class FactoryController : LocalizedControllerBase
         return Ok(factories);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<FactoryDto>> PutFactoryAsync(
         ModifyFactoryDto modifyfactoryDto)
@@ -61,7 +61,7 @@ public class FactoryController : LocalizedControllerBase
         return Ok(updatedfactory);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<FactoryDto>> DeleteFactoryAsync(Guid id)
     {

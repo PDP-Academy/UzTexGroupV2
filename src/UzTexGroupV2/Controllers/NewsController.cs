@@ -21,7 +21,7 @@ public class NewsController : LocalizedControllerBase
         this.webHostEnvironment = webHostEnvironment;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async ValueTask<ActionResult<NewsDto>> PostNewsAsync(
         [FromForm] CreateNewsDto createNewsDto)
@@ -54,7 +54,7 @@ public class NewsController : LocalizedControllerBase
         return Ok(Newses);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<NewsDto>> PutNewsAsync(
         [FromForm] ModifyNewsDto modifyNewsDto)
@@ -65,7 +65,7 @@ public class NewsController : LocalizedControllerBase
         return Ok(updatedNews);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<NewsDto>> DeleteAdressAsync(Guid newsId)
     {

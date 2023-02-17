@@ -29,7 +29,7 @@ public class ApplicationController : LocalizedControllerBase
         return Created("", createdApplication);
     }
 
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     [HttpGet("id: Guid")]
     public async ValueTask<ActionResult<ApplicationDto>> GetApplicationByIdAsync(
         Guid applicationId)
@@ -40,7 +40,7 @@ public class ApplicationController : LocalizedControllerBase
         return Ok(Application);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async ValueTask<IActionResult> GetAllApplicationesAsync(
        [FromQuery] QueryParameter queryParameter)

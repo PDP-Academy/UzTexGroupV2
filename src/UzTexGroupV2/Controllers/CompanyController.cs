@@ -18,7 +18,7 @@ public class CompanyController : LocalizedControllerBase
         this.companyService = companyService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async ValueTask<ActionResult<CompanyDTO>> PostCompanyAsync(
         CreateCompanyDTO createCompanyDTO)
@@ -50,7 +50,7 @@ public class CompanyController : LocalizedControllerBase
         return Ok(companies);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async ValueTask<ActionResult<CompanyDTO>> UpdateCompanyAsync(
         ModifyCompanyDTO modifyCompanyDTO)
@@ -61,7 +61,7 @@ public class CompanyController : LocalizedControllerBase
         return Ok(updatedCompany);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("id : Guid")]
     public async ValueTask<ActionResult<CompanyDTO>> DeleteAdressAsync(Guid id)
     {
