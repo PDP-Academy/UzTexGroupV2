@@ -33,6 +33,12 @@ namespace UzTexGroupV2
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+            app.UseCors(policyBuilder =>
+            {
+                policyBuilder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseStaticFiles(new StaticFileOptions()
             {
