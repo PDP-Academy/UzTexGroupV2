@@ -7,7 +7,7 @@ using UzTexGroupV2.Model;
 
 namespace UzTexGroupV2.Controllers;
 
-[Route("/{langCode}/[controller]")]
+[Route("/{langCode}/api/User")]
 [ApiController]
 public class UserController : LocalizedControllerBase
 {

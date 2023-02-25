@@ -4,7 +4,7 @@ using UzTexGroupV2.Application.EntitiesDto.AuthenticationDtos;
 
 namespace UzTexGroupV2.Controllers
 {
-    [Route("api/{langCode}/auth")]
+    [Route("{langCode}/api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
