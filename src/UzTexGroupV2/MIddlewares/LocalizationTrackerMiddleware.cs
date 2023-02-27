@@ -22,7 +22,7 @@ public class LocalizationTrackerMiddleware : IMiddleware
         var languageCode = context.Request.RouteValues["langCode"] as string;
         if (languageCode is null)
             throw new Exception("Language code must be required");
-        var storedLanguage = await GetStoredLanguage(languageCode);
+        var storedLanguage = await GetStoredLanguage(languageCode) ?? await GetStoredDefaultLanguage();
         if (storedLanguage is not null)
             await this._localizedUnitOfWork
                 .ChangeLocalization(storedLanguage);
@@ -36,5 +36,11 @@ public class LocalizationTrackerMiddleware : IMiddleware
         return await this._uzTexGroupDbContext
             .Set<Language>()
             .FirstOrDefaultAsync(language => language.Code == languageCode);
+    }
+    private async Task<Language?> GetStoredDefaultLanguage()
+    {
+        return await this._uzTexGroupDbContext
+            .Set<Language>()
+            .FirstOrDefaultAsync();
     }
 }
