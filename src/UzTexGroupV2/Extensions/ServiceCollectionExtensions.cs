@@ -60,7 +60,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMiddlewares(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<LocalizationTrackerMiddleware>();
-
+        serviceCollection.AddScoped<CorsPolicy>();
+        serviceCollection.AddScoped<GlobalExceptionHandlingMiddleware>();
         return serviceCollection;
     }
 

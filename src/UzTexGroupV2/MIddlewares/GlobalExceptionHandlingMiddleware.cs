@@ -4,18 +4,17 @@ using UzTexGroupV2.Domain;
 
 namespace UzTexGroupV2.MIddlewares;
 
-public class GlobalExceptionHandlingMiddleware
+public class GlobalExceptionHandlingMiddleware : IMiddleware
 {
-    private readonly RequestDelegate next;
+    private readonly ILogger<GlobalExceptionHandlingMiddleware> logger;
 
-    public GlobalExceptionHandlingMiddleware(RequestDelegate next)
+    public GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMiddleware> logger)
     {
-        this.next = next;
+        this.logger = logger;
     }
-
-    public async Task Invoke(
+    public async Task InvokeAsync(
         HttpContext context,
-        ILogger<GlobalExceptionHandlingMiddleware> logger)
+        RequestDelegate next)
     {
         try
         {

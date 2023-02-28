@@ -27,7 +27,8 @@ namespace UzTexGroupV2
                     policyBuilder
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .Build();
                 });
             });
             builder.Services.AddControllers();
@@ -39,9 +40,10 @@ namespace UzTexGroupV2
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.UseHttpsRedirection();
             app.UseCors("Any");
+            app.UseHttpsRedirection();
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+            app.UseMiddleware<CorsPolicy>();
             app.UseStaticFiles(new StaticFileOptions()
             {
                 HttpsCompression = HttpsCompressionMode.Compress
