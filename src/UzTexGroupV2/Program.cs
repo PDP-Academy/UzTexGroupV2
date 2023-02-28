@@ -20,25 +20,27 @@ namespace UzTexGroupV2
                 .AutentificationService(builder.Configuration);
 
             builder.AdSeridLogg(builder.Configuration);
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Any", policyBuilder =>
+                {
+                    policyBuilder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
             builder.Services.AddControllers();
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
-
+            
             app.UseSwagger();
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-            app.UseCors(policyBuilder =>
-            {
-                policyBuilder.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-            });
+            app.UseCors("Any");
             app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseStaticFiles(new StaticFileOptions()
             {
